@@ -1,0 +1,12 @@
+#Ignore
+/*
+web/WEB-INF/lib
+web/WEB-INF/log4j.properties
+#!Ignore
+.gitignore
+!/src
+!/web
+!.gitignore
+!pom.xml
+!README.md
+
