@@ -8,22 +8,21 @@ import java.util.ResourceBundle;
 
 import static ru.my.helpers_operations.GlobalVariables.*;
 
-/**
- * Created by rkurbanov on 19.05.2017.
- */
+
+//Created by rkurbanov on 19.05.2017.
+
 public class SQL {
 
     public static ResultSet Query (String reqSQL) {
 
-        Connection connection = null;
+        Connection connection;
         ResultSet resultSet = null;
-
         try {
             //Class.forName("org.postgresql.Driver");
             Class.forName(dbdriver);
             connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
             //System.out.println("Соединение установлено");
-            Statement statement = null;
+            Statement statement;
 
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
@@ -36,6 +35,24 @@ public class SQL {
             ex.printStackTrace();
         }
         return resultSet;
+    }
+
+    public static void SaveInBD(String result, Integer status)
+    {
+        result = Split(result);
+        GlobalVariables.Response = Split(GlobalVariables.Response);
+
+        Query(StoredQuery.QueryToSave(result,status));
+    }
+
+    private static String Split(String str)
+    {
+        String[] arrstr;
+        arrstr = str.split("'");
+        str="";
+        for(String ar: arrstr)str+=ar;
+
+        return str;
     }
 
 }

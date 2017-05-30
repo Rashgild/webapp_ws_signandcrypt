@@ -1,13 +1,9 @@
 package ru.my.helpers_operations;
 
-/**
- * Created by rkurbanov on 22.05.2017.
- */
 public class StoredQuery {
 
     public static String PrParse_Query1(String disabilityId)
-    {
-        return "select\n" +
+    { return "select\n" +
                 "dd.issuedate, \n" +
                 "dd.id as DDID,    \n" +
                 "dd.patient_id as DD_PAT, \n" +
@@ -108,6 +104,17 @@ public class StoredQuery {
                 "left join patient vkname on vkname.id = w2.person_id\n" +
                 "left join VocWorkFunction vwf2 on vwf2.id = wf2.workFunction_id\n" +
                 "where dd.id = "+disabilityId;
+    }
+
+    protected static String QueryToSave(String result, Integer status)
+    {
+        return "INSERT INTO exportfsslog"+
+                "(result, responsecode, status, disabilitydocument, disabilitynumber, requestcode, requestdate, requesttime, requesttype)" +
+                "VALUES"+
+                "('"+result+"','"+GlobalVariables.Response+"','"
+                +status+"', "+GlobalVariables.DisabilityDocument_id+", '"
+                +GlobalVariables.t_ELN+"','"+GlobalVariables.Request+"', current_date, current_time, '"
+                +GlobalVariables.Type+"') RETURNING id;";
     }
 
 

@@ -1,0 +1,17 @@
+.ex {
+    border: 1px dashed #634f36;
+    background: #ebff95;
+    font-family: "Courier New", Courier, monospace;
+    padding: 7px;
+    margin: 0 0 1em;
+    white-space: pre-wrap;
+  }
+
+.ex2 {
+  border: 1px dashed #634f36;
+  background: #ffcbd5;
+  font-family: "Courier New", Courier, monospace;
+  padding: 7px;
+  margin: 0 0 1em;
+  white-space: pre-wrap;
+}

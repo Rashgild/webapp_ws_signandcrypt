@@ -1,7 +1,12 @@
 package ru.my.interceptor;
 
 
-import org.w3c.dom.Document;
+import org.apache.log4j.Logger;
+import ru.my.helpers_operations.GlobalVariables;
+import ru.my.helpers_operations.WorkWithXML;
+import ru.my.service_operations.newLNNumRange.NewLnNumRange_start;
+import ru.my.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start;
+import ru.my.signAndCrypt.VerifyAndDecrypt;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
@@ -9,126 +14,79 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
-import java.io.IOException;
 import java.util.Set;
 
-/**
- * Created by rkurbanov on 10.11.16.
- */
+//Created by rashgild on 19.11.2016.
 
 
 public class Injecter implements SOAPHandler<SOAPMessageContext> {
 
-
-
     @Override
     public boolean handleMessage(SOAPMessageContext context) {
 
+        Logger logger=Logger.getLogger("simple");
         Boolean isRequest = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
         if (isRequest) {
-
+            logger.info("2) Intercept request!");
             SOAPMessage soapMsg = context.getMessage();
-            try {
-                soapMsg.writeTo(System.out);
-            } catch (SOAPException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(WhatTheFunc(soapMsg)==1){
+                logger.info("2.1) initialized PrParseFileLnLpu_start!");
+                soapMsg  = PrParseFileLnLpu_start.Start(GlobalVariables.requestParam);
             }
-          /*  //Запрос на отправку ЛН.
-            if (WhatTheFunc(soapMsg) == 2)//
-            {
-                if(GlobalVariables.flag==1) {
-
-                    soapMsg = XmlFileLnLpuArray.Mess();
-                }
-                if(GlobalVariables.flag==2) {
-                    //soapMsg= XmlFileLnLpu.StartSetxmlFileLn();
-                    try {
-                        soapMsg = XmlFileLnLpuNew.Mess();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                //soapMsg= XmlFileLnLpu.StartSetxmlFileLn();
-                //soapMsg.writeTo(System.out);
-                GlobalVariables.Type="XmlFileLnLpu";
-
-              //  for (int i = 0; i < 2 ; i++) {
-                    System.out.println("Отсылаю!");
-                    context.setMessage(soapMsg);
-                //}
-            }*/
+            if(WhatTheFunc(soapMsg)==2){
+                logger.info("2.1) initialized NewLNNumRange_start!");
+                soapMsg  = NewLnNumRange_start.Start(soapMsg);
+            }
+            logger.info("Send Request!");
+            context.setMessage(soapMsg);
         }
-// TODO Работа с ответом
-            if(!isRequest)// Если не реквест, значит респонз
-            {
-                System.out.println("Принимаю ответ!");
+
+        if(!isRequest)
+        {
+            logger.info("Get Response");
+            try {
                 SOAPMessage msg = context.getMessage();
-
-                try {
-                    msg.writeTo(System.out);
-                } catch (SOAPException | IOException e) {
-                    e.printStackTrace();
-                }
-
-                /*System.out.println("Принимаю ответ!");
-                try {
-                    SOAPMessage msg = context.getMessage(); // перехватываем респонз
-                    msg = VerifyAndDecrypt.VerifyAndDecrypt(msg);
-
-                   *//* long curTime = System.currentTimeMillis();
-                    String curStringDate = new SimpleDateFormat("dd.MM.yyyy").format(curTime);
-                    //msg.writeTo(System.out);
-                    Doc.SaveSOAPToXML("Response"+curStringDate+".xml", msg);*//*
-
-                   //TODO Ответ храним в переменной
-                    GlobalVariables.Response = Doc.SoapMessageToString(msg);
-
-                    //System.out.println("\n-----\n");
-                    //msg.writeTo(System.out);
-
-
-                        context.setMessage(msg);
-
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
+                msg = VerifyAndDecrypt.Start(msg);
+                GlobalVariables.Response = WorkWithXML.SoapMessageToString(msg);
+                context.setMessage(msg);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        }
         return true;
     }
 
     @Override
     public boolean handleFault(SOAPMessageContext context)
     {
-        /*SOAPMessage msg = context.getMessage();
-        try {
-            System.out.println("\n--------------------\n " +
-                    "Ошибка:" +
-                    "\n--------------------");
-
-            msg.writeTo(System.out);
-            Doc.SaveSOAPToXML("Response"+System.currentTimeMillis(), msg);
-            System.out.println("\n--------------------\n");
-
-        } catch (SOAPException | IOException e) {
-            e.printStackTrace();
-        }*/
+        SOAPMessage msg = context.getMessage();
+        Logger logger=Logger.getLogger("simple");
+        logger.error(WorkWithXML.SoapMessageToString(msg));
         return false;
     }
 
     @Override
-    public void close(MessageContext context) {
-
-    }
-
+    public void close(MessageContext context) {    }
 
     @Override
     public Set<QName> getHeaders() {
         return null;
+    }
+
+    private static int WhatTheFunc(SOAPMessage msg) {
+        try {
+            String strdoc = WorkWithXML.DocToString(msg.getSOAPPart().getEnvelope().getOwnerDocument());
+
+            if (strdoc.contains("prParseFilelnlpu")) {
+                GlobalVariables.Type = "prParseFilelnlpu";
+                return 1;
+            }
+            if (strdoc.contains("getNewLNNumRange")) {
+                GlobalVariables.Type = "getNewLNNumRange";
+                return 2;
+            }
+        }catch (SOAPException e) {e.printStackTrace(); }
+        return 0;
     }
 }

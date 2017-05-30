@@ -11,9 +11,8 @@ import java.util.ResourceBundle;
 
 import static ru.my.helpers_operations.GlobalVariables.*;
 
-/**
- * Created by rkurbanov on 24.05.2017.
- */
+//Created by rashgild on 19.05.2017.
+
 public class ConfigInit implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
@@ -50,6 +49,10 @@ public class ConfigInit implements ServletContextListener {
         signXMLFileName = resource.getString("signXMLFileName");
 
         cryptXMLFileName = resource.getString("cryptXMLFileName");
+
+        pathandnameSSL= resource.getString("pathandnameSSL");
+        passwordSSL= resource.getString("passwordSSL");
+        HDImageStorePath=resource.getString("HDImageStorePath");
         logger.info("Конфигурация найдена и загружена");
     }
 }

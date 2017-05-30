@@ -28,21 +28,19 @@ public class Encrypt {
 
     /**
      * Зашифрование документа doc на sessionKey.
+     *
      * @param cert Сертификат, на котором проходит шифрование
      * @return шифрованный документ
      * @throws Exception ошибки шифрования
      */
-    public  static Document StartEncrypt(X509Certificate cert , String nameFile) throws Exception
-    {
+    private static Document StartEncrypt(X509Certificate cert, String nameFile) throws Exception {
         XmlInit.init();
         MessageFactory mf = MessageFactory.newInstance();
         SOAPMessage message = mf.createMessage();
         SOAPPart soapPart = message.getSOAPPart();
 
         //FileInputStream is = new FileInputStream("C:\\Documents and Settings\\rkurbanov\\IdeaProjects\\FSS_Client_test\\My.xml"); // ЕСЛИ берем из файла
-        System.out.println(GlobalVariables.pathtosave+nameFile);
-        FileInputStream is = new FileInputStream(GlobalVariables.pathtosave+nameFile); // ЕСЛИ берем из файла
-
+        FileInputStream is = new FileInputStream(GlobalVariables.pathtosave + nameFile); // ЕСЛИ берем из файла
 
         soapPart.setContent(new StreamSource(is));
         Document doc = message.getSOAPPart().getEnvelope().getOwnerDocument();
@@ -74,15 +72,13 @@ public class Encrypt {
      * зашифрование сессионного ключа sessionKey и создание
      * EncryptedKey с сертификатом.
      *
-     * @param doc xml документ
+     * @param doc        xml документ
      * @param sessionKey случайный сессионный ключ.
-     * @param cert сертификат
+     * @param cert       сертификат
      * @return зашифрованный ключ
      * @throws Exception ошибки шифрования
      */
-    public static EncryptedKey wrapKey(Document doc, SecretKey sessionKey,
-                                       X509Certificate cert)
-            throws Exception {
+    private static EncryptedKey wrapKey(Document doc, SecretKey sessionKey, X509Certificate cert) throws Exception {
 
         XMLCipher keyCipher = XMLCipher.getInstance(Consts.URI_GOST_TRANSPORT);
         keyCipher.init(XMLCipher.WRAP_MODE, cert.getPublicKey());
@@ -102,8 +98,8 @@ public class Encrypt {
      * 2)Шифрует подписанный документ;
      * 3)Помещает данные шифрование в созданный каркас;
      * 4)Сохраняет в файл
+     *
      * @param soapMessage перехваченное сообщение
-     * @Out Файл "tempEncrypted.xml"
      */
     public static SOAPMessage CreateXMLAndEncrypt(SOAPMessage soapMessage, String nameFile)
             throws Exception {
@@ -112,7 +108,7 @@ public class Encrypt {
         SOAPEnvelope soapEnv2 = soapMessage.getSOAPPart().getEnvelope();
         SOAPHeader soapHeader2 = soapEnv2.getHeader();
         SOAPBody soapBody2 = soapEnv2.getBody();
-        SOAPElement EncryptedData = soapBody2.addChildElement("EncryptedData",null,"http://www.w3.org/2001/04/xmlenc#");
+        SOAPElement EncryptedData = soapBody2.addChildElement("EncryptedData", null, "http://www.w3.org/2001/04/xmlenc#");
         Name name = soapEnv2.createName("Type");
         EncryptedData.addAttribute(name, "http://www.w3.org/2001/04/xmlenc#Element");
         SOAPElement EncryptionMethod = EncryptedData.addChildElement("EncryptionMethod"); // {
@@ -162,6 +158,7 @@ public class Encrypt {
 
 /**
  * Зашифрование документа doc на sessionKey.
+ *
  * @param doc документ, который будем шифровать
  * @param sessionKey сессионный ключ шифрования
  * @param encryptedKey зашифрованный sessionKey будет добавлен в документ
