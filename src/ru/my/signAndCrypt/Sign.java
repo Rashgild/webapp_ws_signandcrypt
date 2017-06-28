@@ -1,5 +1,6 @@
 package ru.my.signAndCrypt;
 
+import org.apache.log4j.Logger;
 import org.apache.ws.security.message.WSSecHeader;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xpath.XPathAPI;
@@ -33,12 +34,14 @@ public class Sign {
     public static SOAPMessage SignationByParametrs(String Actor, String Refer, String Alias,
                                                    String Password,String ELN) throws Exception {
 
+        Logger logger=Logger.getLogger("");
         X509Certificate cert = Certificate.GetCertificateFromStorage(Alias);
         PrivateKey privateKey = Certificate.GetPrivateKey(Password,Alias);
         MessageFactory mf = MessageFactory.newInstance();
         SOAPMessage message;
         message = mf.createMessage();
 
+        logger.info("100) Go");
         SOAPPart soapPart = message.getSOAPPart();
         //TODO What the path!?Send on config... If from file... mb from message?
         FileInputStream is = new FileInputStream(GlobalVariables.pathtosave+GlobalVariables.signXMLFileName);

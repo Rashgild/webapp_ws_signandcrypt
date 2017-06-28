@@ -3,6 +3,7 @@ package ru.my.servlets;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import ru.my.helpers_operations.GlobalVariables;
+import ru.my.helpers_operations.UTF8Control;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -24,9 +25,8 @@ public class ConfigInit implements ServletContextListener {
     private static void Configure(){
 
         Logger logger=Logger.getLogger("simple");
-
-        ResourceBundle resource = ResourceBundle.getBundle("config");
-
+       // ResourceBundle resource = ResourceBundle.getBundle("config");
+        ResourceBundle resource = ResourceBundle.getBundle("config", new UTF8Control());
         dbhost = resource.getString("dbhost");
         dblogin = resource.getString("dblogin");
         dbpassword = resource.getString("dbpassword");

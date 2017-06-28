@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 
 import static ru.my.helpers_operations.GlobalVariables.*;
+import static ru.my.helpers_operations.StoredQuery.SaveNumber;
 
 
 //Created by rkurbanov on 19.05.2017.
@@ -44,6 +45,8 @@ public class SQL {
 
         Query(StoredQuery.QueryToSave(result,status));
     }
+
+
 
     private static String Split(String str)
     {

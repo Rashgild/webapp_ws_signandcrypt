@@ -1,5 +1,6 @@
 package ru.my.signAndCrypt;
 
+import org.apache.log4j.Logger;
 import ru.CryptoPro.JCP.KeyStore.HDImage.HDImageStore;
 import ru.CryptoPro.JCPxml.xmldsig.JCPXMLDSigInit;
 import ru.my.helpers_operations.GlobalVariables;
@@ -31,6 +32,8 @@ public class Certificate {
         KeyStore allCertStore;
         String storepass = PasswordCertStor;
         String alias = AliasCert;
+        HDImageStore.setDir(GlobalVariables.HDImageStorePath);
+
         allCertStore = KeyStore.getInstance("CertStore");
         File f = new File(PathToCert);
         allCertStore.load(new FileInputStream(f), storepass.toCharArray());
@@ -47,6 +50,8 @@ public class Certificate {
      */
     public static PrivateKey GetPrivateKey(String Password, String Alias) throws Exception {
 
+        Logger logger=Logger.getLogger("");
+        logger.info(GlobalVariables.HDImageStorePath);
         JCPXMLDSigInit.init();
         HDImageStore.setDir(GlobalVariables.HDImageStorePath);
         KeyStore keystore = KeyStore.getInstance("HDImageStore");
@@ -66,6 +71,7 @@ public class Certificate {
             throws NoSuchProviderException, KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
 
         //System.out.println("init");
+
         JCPXMLDSigInit.init();
         HDImageStore.setDir(GlobalVariables.HDImageStorePath);
         KeyStore ks = KeyStore.getInstance("HDImageStore");

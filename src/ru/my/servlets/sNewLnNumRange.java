@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import static ru.my.helpers_operations.SQL.Query;
+import static ru.my.helpers_operations.StoredQuery.SaveNumber;
+
 //Created by rashgild on 19.05.2017.
 
 @WebServlet("/sNewLnNumRange")
@@ -23,7 +26,7 @@ public class sNewLnNumRange extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Logger logger=Logger.getLogger("simple");
-        logger.info("1) sPrparsefilelnlpu");
+        logger.info("1) SetLnData");
         response.setContentType("text/html ;charset=UTF-8");
 
         String ogrn = request.getParameter("ogrn");
@@ -58,6 +61,7 @@ public class sNewLnNumRange extends HttpServlet {
             for(int i=0; i<data.size();i++)
             {
                 out.println("<H1>"+i+") "+data.get(i)+"</H1>");
+                Query(SaveNumber(data.get(i)));
             }
 
         } catch (SOAPException_Exception e) {

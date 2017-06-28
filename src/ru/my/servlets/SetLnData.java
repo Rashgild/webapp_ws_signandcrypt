@@ -19,15 +19,15 @@ import static ru.my.helpers_operations.GlobalVariables.pathandnameSSL;
 
 //Created by rashgild on 25.05.2017.
 
-@WebServlet("/sPrparsefilelnlpu")
-public class sPrparsefilelnlpu extends HttpServlet {
+@WebServlet("/SetLnData")
+public class SetLnData extends HttpServlet {
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Logger logger=Logger.getLogger("");
         long start = System.currentTimeMillis();
-        logger.info("1) sPrparsefilelnlpu");
+        logger.info("1) SetLnData");
         response.setContentType("text/html ;charset=UTF-8");
         String id = request.getParameter("id");
         GlobalVariables.requestParam = id;
@@ -37,13 +37,29 @@ public class sPrparsefilelnlpu extends HttpServlet {
                 "  <meta charset=\"UTF-8\" />\n" +
                 "  <title>SignAndcrypt</title>\n" +
                 "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"> " +
-                " <link rel=\"stylesheet\" href=\"style.css\">" +
+                " <style> .ex {\n" +
+                "    border: 1px dashed #634f36;\n" +
+                "    background: #ebff95;\n" +
+                "    font-family: \"Courier New\", Courier, monospace;\n" +
+                "    padding: 7px;\n" +
+                "    margin: 0 0 1em;\n" +
+                "    white-space: pre-wrap;\n" +
+                "  }\n" +
+                "\n" +
+                ".ex2 {\n" +
+                "  border: 1px dashed #634f36;\n" +
+                "  background: #ffcbd5;\n" +
+                "  font-family: \"Courier New\", Courier, monospace;\n" +
+                "  padding: 7px;\n" +
+                "  margin: 0 0 1em;\n" +
+                "  white-space: pre-wrap;\n" +
+                "} </style>" +
                 "</head>");
         out.println("<body>");
         out.println("  <header>\n" +
-                "    <img src=\"/pic/logo-75x50.jpg\" width=\"75\" height=\"50\" alt=\"logo\" />\n" +
-                "    <img src=\"/pic/FSSlogo-208x191.gif\" width=\"75\" height=\"50\" alt=\"logo\" />\n" +
-                "    <img src=\"/pic/medosLogo-200x200.png\" width=\"75\" height=\"50\" alt=\"logo\" />\n" +
+               // "    <img src=\"/SignAndCrypt/pic/logo-75x50.jpg\" width=\"75\" height=\"50\" alt=\"logo\" />\n" +
+                "    <img src=\"/SignAndCrypt/pic/FSSlogo-208x191.gif\" width=\"75\" height=\"50\" alt=\"\" />\n" +
+                "    <img src=\"/SignAndCrypt/pic/medosLogo-200x200.png\" width=\"75\" height=\"50\" alt=\"\" />\n" +
                 " <h1>Результаты отправки ЛН:</h1>\n" +
                 "  </header>");
         WSResult result= setRequest();
@@ -53,19 +69,20 @@ public class sPrparsefilelnlpu extends HttpServlet {
         {
 
             if(row.getSTATUS()==0){
-                out.println("<p class=\"ex2\"> <font size=\"4\" color=\"#2d2d2b\">\n");
-            }else out.println("<p class=\"ex\"> <font size=\"4\" color=\"#2d2d2b\">\n");
-            out.println("Внутренний id: "+id+"");
-            out.println("№: "+row.getROWNO()+"");
-            out.println("Статус: "+row.getSTATUS()+"");
-            out.println("ЛН код: "+ row.getLNCODE()+"");
+                out.println("<p class=\"ex2\"> <font size=\"4\" color=\"#2d2d2b\"> ");
+            }else out.println("<p class=\"ex\"> <font size=\"4\" color=\"#2d2d2b\"> ");
+
+            out.println("Внутренний id: "+id+" <br>");
+            out.println("№: "+row.getROWNO()+" <br>");
+            out.println("Статус: "+row.getSTATUS()+" <br>");
+            out.println("ЛН код: "+ row.getLNCODE()+"<br>");
 
             List<INFO.ROWSET.ROW.ERRORS.ERROR> errors = row.getERRORS().getERROR();
 
-            out.println("Ответ: "+result.getMESS()+"");
+            out.println("Ответ: "+result.getMESS()+" <br>");
             for (INFO.ROWSET.ROW.ERRORS.ERROR errs: errors)
             {
-                out.println("Ошибка: "+errs.getERRMESS());
+                out.println("Ошибка: "+errs.getERRMESS()+" <br>");
             }
             out.println("</font>\n" +
                     "</p>" );//+
@@ -73,7 +90,7 @@ public class sPrparsefilelnlpu extends HttpServlet {
 
         long finish = System.currentTimeMillis();
         long timeConsumedMillis = finish - start;
-        out.println("<H3>Время выполнения: "+timeConsumedMillis/1000+" сек</H3>");
+        out.println("<H3> Время выполнения: "+timeConsumedMillis/1000+" сек</H3>");
         SQL.SaveInBD(result.getMESS(),result.getSTATUS());
         out.println("</body>");
         out.println("</html>");

@@ -1,5 +1,8 @@
 package ru.my.helpers_operations;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class StoredQuery {
 
     public static String PrParse_Query1(String disabilityId)
@@ -115,6 +118,15 @@ public class StoredQuery {
                 +status+"', "+GlobalVariables.DisabilityDocument_id+", '"
                 +GlobalVariables.t_ELN+"','"+GlobalVariables.Request+"', current_date, current_time, '"
                 +GlobalVariables.Type+"') RETURNING id;";
+    }
+
+    public static String SaveNumber(String number){
+        Date curTime = new Date();
+        DateFormat dtfrm = DateFormat.getDateInstance();
+        String dateTime = dtfrm.format(curTime);
+
+        return "INSERT INTO electronicdisabilitydocumentnumber\n" +
+                "(number, createdate) values ('"+number+"','"+dateTime+"');";
     }
 
 

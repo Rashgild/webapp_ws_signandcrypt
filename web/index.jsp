@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Rashgild
-  Date: 18.05.2017
-  Time: 10:33
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page language="java"%>
 <%@ page import="org.apache.log4j.Logger" %>
@@ -23,9 +17,8 @@
   <%logger.info("Logger is start!");%>
 
   <header>
-    <img src="/pic/logo-75x50.jpg" width="75" height="50" alt="logo" />
-    <h1>Super Bad</h1>
-    <nav><a>First Link</a><a>Second Link</a><a>Third Link</a></nav>
+    <img src="/SignAndCrypt/pic/logo-75x50.jpg" width="75" height="50" alt="logo" />
+    <h1>Сервис работы с ЭЛН</h1>
   </header>
 
 

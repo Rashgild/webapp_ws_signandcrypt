@@ -62,6 +62,7 @@ public class PrParseFileLnLpu_start {
             SOAPMessage CryptedMessage = mf.createMessage();
             CryptedMessage = Encrypt.CreateXMLAndEncrypt(CryptedMessage, signXMLFileName);
             SaveSOAPToXML(cryptXMLFileName,CryptedMessage);
+
             return CryptedMessage;
         } catch (Exception e) { logger.debug(e);}
 
@@ -266,12 +267,17 @@ public class PrParseFileLnLpu_start {
 
     private static SOAPMessage Signation(PrParseFileLnLpu prParseFileLnLpu, SOAPMessage message) throws Exception {
 
+        Logger logger=Logger.getLogger("");
+        logger.info("Signation");
+        logger.info(GlobalVariables.HDImageStorePath);
+
         List<ROW> rows = UnPack(prParseFileLnLpu);
         //org.apache.xml.security.Init.init();
         SaveSOAPToXML(signXMLFileName, message);
         for (ROW row:rows) {
 
             t_ELN = row.getLncode();
+            logger.info("SignationByParametrs");
             message = Sign.SignationByParametrs(
                     "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
                     "#" + row.getAttribId(), moAlias, moPass, t_ELN);
