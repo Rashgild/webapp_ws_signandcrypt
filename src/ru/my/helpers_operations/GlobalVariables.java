@@ -10,6 +10,7 @@ import java.io.File;
 
 public class GlobalVariables {
 
+    public static String DefaultLPU="";
     //config GlobalVariables
     public static String dbhost = "";
     public static String dblogin = "";

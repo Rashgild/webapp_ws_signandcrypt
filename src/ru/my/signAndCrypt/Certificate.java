@@ -58,6 +58,7 @@ public class Certificate {
         keystore.load(null, null);
         PrivateKey privateKey = (PrivateKey) keystore.getKey(Alias, Password.toCharArray());
 
+
         return privateKey;
     }
 
@@ -69,8 +70,6 @@ public class Certificate {
      */
     public static X509Certificate GetCertificateFromStorage(String Alias)
             throws NoSuchProviderException, KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
-
-        //System.out.println("init");
 
         JCPXMLDSigInit.init();
         HDImageStore.setDir(GlobalVariables.HDImageStorePath);

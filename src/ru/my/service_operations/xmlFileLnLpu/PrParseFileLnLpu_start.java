@@ -84,6 +84,7 @@ public class PrParseFileLnLpu_start {
             int DDID_1 = resultSet.getInt("DDID");
 
             ROW.LN_RESULT ln_result = new ROW.LN_RESULT();
+            Boolean  isClose=  resultSet.getString("IS_CLOSE").equals("1")?true:false;
             ln_result.setMseresult(resultSet.getString("MSE_RESULT"));
             ln_result.setOtherstatedt(resultSet.getString("other_state_dt"));
 
@@ -122,25 +123,37 @@ public class PrParseFileLnLpu_start {
             List<ROW.HOSPITAL_BREACH> hospital_breaches = new ArrayList<>();
             hospital_breaches.add(hospital_breach);
 
-            if(ln_result.getReturndatelpu()!=null && !ln_result.getReturndatelpu().equals("")  &&
-                    (!ln_result.getMseresult().equals("31") || !ln_result.getMseresult().equals("37")))
-            {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(format.parse(ln_result.getReturndatelpu()));  //.parse(returnDate));
-                cal.add(Calendar.DAY_OF_MONTH, 1);
-                ln_result.setReturndatelpu(new java.sql.Date(cal.getTime().getTime()).toString());
-            }
-            //Если закрыт по причине "продолжает болеть"
-            if(ln_result.getMseresult().equals("31") || ln_result.getMseresult().equals("37")){
-                ln_result.setNextlncode("000000000000");
-            }else{
-                ln_result.setNextlncode(resultSet.getString("NEXT_LN_CODE"));
+            //32|33
+
+            //Если документ не закрыт, то даты нет
+            if(isClose && ln_result.getMseresult()!=null) {
+                if (!ln_result.getMseresult().equals("31") && !ln_result.getMseresult().equals("37")){
+
+                    if (ln_result.getOtherstatedt()!= null && !ln_result.getOtherstatedt().equals("")){
+                    //    ln_result.setReturndatelpu(ln_result.getOtherstatedt());
+                        ln_result.setReturndatelpu(null);
+                    }else {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(format.parse(ln_result.getReturndatelpu()));  //.parse(returnDate));
+                    cal.add(Calendar.DAY_OF_MONTH, 1);
+                    ln_result.setReturndatelpu(new java.sql.Date(cal.getTime().getTime()).toString());
+                    }
+                } else { //Если закрыт по причине "продолжает болеть"
+                    ln_result.setReturndatelpu(null);
+                    ln_result.setNextlncode(resultSet.getString("NEXT_LN_CODE"));
+                }
+                ln_result.setAttribId("ELN_"+t_ELN+"_2_doc");
+            }else if(!isClose) ln_result.setReturndatelpu(null);
+            else if (isClose&&ln_result.getMseresult()==null) {
+                logger.error("Error_ больничный закрыт без причины закрытия");
+                return null;
             }
 
-            if ( (ln_result.getMseresult() != null && !ln_result.getMseresult().equals(""))
-                    || (ln_result.getReturndatelpu() !=null && !ln_result.getReturndatelpu().equals("")) ){
-                ln_result.setAttribId("ELN_"+t_ELN+"_2_doc");
-            }
+            logger.info("Закрыт: "+isClose+"" +
+                    " Дата выхода на работу:"+ln_result.getReturndatelpu()+"" +
+                    " MSE_RESULT:"+ln_result.getMseresult());
+
+
             List<ROW.LN_RESULT> ln_results = new ArrayList<>();
             ROW row = new ROW();
             String str[];
@@ -193,10 +206,7 @@ public class PrParseFileLnLpu_start {
             row.setMsedt2(resultSet.getString("MSE_DT2"));
             row.setMsedt3(resultSet.getString("MSE_DT3"));
             row.setLnstate(resultSet.getString("LN_STATE"));
-            //Если документ не закрыт, то даты нет
-            if(row.getLnstate().equals("") || row.getLnstate() == null){
-                ln_result.setReturndatelpu("");
-            }
+
 
             ln_results.add(ln_result);
             row.setLnresult(ln_results);
@@ -268,8 +278,8 @@ public class PrParseFileLnLpu_start {
     private static SOAPMessage Signation(PrParseFileLnLpu prParseFileLnLpu, SOAPMessage message) throws Exception {
 
         Logger logger=Logger.getLogger("");
-        logger.info("Signation");
-        logger.info(GlobalVariables.HDImageStorePath);
+        //logger.info("Signation");
+        //logger.info(GlobalVariables.HDImageStorePath);
 
         List<ROW> rows = UnPack(prParseFileLnLpu);
         //org.apache.xml.security.Init.init();
@@ -277,7 +287,7 @@ public class PrParseFileLnLpu_start {
         for (ROW row:rows) {
 
             t_ELN = row.getLncode();
-            logger.info("SignationByParametrs");
+            //logger.info("SignationByParametrs");
             message = Sign.SignationByParametrs(
                     "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
                     "#" + row.getAttribId(), moAlias, moPass, t_ELN);

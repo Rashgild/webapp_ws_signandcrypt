@@ -29,7 +29,9 @@ public class SQL {
                     ResultSet.CONCUR_READ_ONLY);
 
             resultSet = statement.executeQuery(reqSQL);
+            if(!dbdriver.equals("com.intersys.jdbc.CacheDriver")){
             connection.close();
+            }
             return resultSet;
 
         } catch (Exception ex) {
@@ -38,12 +40,29 @@ public class SQL {
         return resultSet;
     }
 
+    public static int SQL_UpdIns (String sql)
+    {
+        Connection connection = null;
+        int res=0;
+        try {
+            Class.forName(dbdriver);
+            connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
+            Statement statement = null;
+            statement = connection.createStatement();
+            res=  statement.executeUpdate(sql);
+            connection.close();
+            return res;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return res;
+    }
+
     public static void SaveInBD(String result, Integer status)
     {
         result = Split(result);
         GlobalVariables.Response = Split(GlobalVariables.Response);
-
-        Query(StoredQuery.QueryToSave(result,status));
+        SQL_UpdIns(StoredQuery.QueryToSave(result,status));
     }
 
 
@@ -54,7 +73,6 @@ public class SQL {
         arrstr = str.split("'");
         str="";
         for(String ar: arrstr)str+=ar;
-
         return str;
     }
 

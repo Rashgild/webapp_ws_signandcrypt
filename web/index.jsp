@@ -17,7 +17,7 @@
   <%logger.info("Logger is start!");%>
 
   <header>
-    <img src="/SignAndCrypt/pic/logo-75x50.jpg" width="75" height="50" alt="logo" />
+    <img src="res/pic/logo-75x50.jpg" width="75" height="50" alt="logo" />
     <h1>Сервис работы с ЭЛН</h1>
   </header>
 

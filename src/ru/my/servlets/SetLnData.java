@@ -57,9 +57,8 @@ public class SetLnData extends HttpServlet {
                 "</head>");
         out.println("<body>");
         out.println("  <header>\n" +
-               // "    <img src=\"/SignAndCrypt/pic/logo-75x50.jpg\" width=\"75\" height=\"50\" alt=\"logo\" />\n" +
-                "    <img src=\"/SignAndCrypt/pic/FSSlogo-208x191.gif\" width=\"75\" height=\"50\" alt=\"\" />\n" +
-                "    <img src=\"/SignAndCrypt/pic/medosLogo-200x200.png\" width=\"75\" height=\"50\" alt=\"\" />\n" +
+                "    <img src=\"res/pic/FSSlogo-208x191.gif\" width=\"75\" height=\"50\" alt=\"\" />\n" +
+                "    <img src=\"res/pic/medosLogo-200x200.png\" width=\"75\" height=\"50\" alt=\"\" />\n" +
                 " <h1>Результаты отправки ЛН:</h1>\n" +
                 "  </header>");
         WSResult result= setRequest();
@@ -70,20 +69,28 @@ public class SetLnData extends HttpServlet {
 
             if(row.getSTATUS()==0){
                 out.println("<p class=\"ex2\"> <font size=\"4\" color=\"#2d2d2b\"> ");
-            }else out.println("<p class=\"ex\"> <font size=\"4\" color=\"#2d2d2b\"> ");
+            }else {out.println("<p class=\"ex\"> <font size=\"4\" color=\"#2d2d2b\"> ");}
 
             out.println("Внутренний id: "+id+" <br>");
             out.println("№: "+row.getROWNO()+" <br>");
             out.println("Статус: "+row.getSTATUS()+" <br>");
             out.println("ЛН код: "+ row.getLNCODE()+"<br>");
-
-            List<INFO.ROWSET.ROW.ERRORS.ERROR> errors = row.getERRORS().getERROR();
-
             out.println("Ответ: "+result.getMESS()+" <br>");
-            for (INFO.ROWSET.ROW.ERRORS.ERROR errs: errors)
-            {
-                out.println("Ошибка: "+errs.getERRMESS()+" <br>");
-            }
+
+            logger.info("Внутренний id:"+id+" " +
+                    " Статус:"+row.getROWNO()+" " +
+                    " ЛН:"+row.getLNCODE()+" " +
+                    " Ответ:"+result.getMESS());
+            try {
+                if(row.getERRORS().getERROR().size()>0) {
+                    List<INFO.ROWSET.ROW.ERRORS.ERROR> errors = row.getERRORS().getERROR();
+                    for (INFO.ROWSET.ROW.ERRORS.ERROR errs : errors) {
+                        out.println("Ошибка: " + errs.getERRMESS() + " <br>");
+                        logger.info("Ошибка: "+errs.getERRMESS()+" "+errs.getERRCODE());
+                    }
+                }
+            }catch (Exception e){}
+
             out.println("</font>\n" +
                     "</p>" );//+
         }
@@ -111,6 +118,8 @@ public class SetLnData extends HttpServlet {
         try {
              result = start.prParseFilelnlpu(prParseFilelnlpuElement);
              return result;
+
+
         } catch (SOAPException_Exception e) {
             e.printStackTrace();
         }

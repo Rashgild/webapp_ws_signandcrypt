@@ -41,8 +41,15 @@ public class NewLnNumRange_start {
      * Меняет перехваченное сообщение под нужный шаблон
      * @param soapMessage перехваченное сообщение
      */
-    private static void Create(SOAPMessage soapMessage)
+    public static void Create(SOAPMessage soapMessage)
             throws SOAPException, IOException {
+
+
+        System.out.println("_________________");
+        soapMessage.writeTo(System.out);
+        System.out.println("_________________");
+
+
         SOAPEnvelope soapEnv = soapMessage.getSOAPPart().getEnvelope();
         SOAPHeader soapHeader = soapEnv.getHeader();
         soapEnv.addHeader();
@@ -56,6 +63,10 @@ public class NewLnNumRange_start {
         Name name = soapEnv.createName("Id");
         soapBody.addAttribute(name, "OGRN_"+ GlobalVariables.ogrnMo);
         soapMessage.saveChanges();
+
+        System.out.println("_________________");
+        soapMessage.writeTo(System.out);
+        System.out.println("_________________");
         WorkWithXML.SaveSOAPToXML("tempSkeleton.xml", soapMessage);
     }
 
