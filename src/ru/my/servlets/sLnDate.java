@@ -65,6 +65,7 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> name="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getNAME()+"</H1>");
             out.print("<H1> birthday="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getBIRTHDAY()+"</H1>");
             out.print("<H1> state="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE()+"</H1>");
+            out.print("<H1> hash="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNHASH()+"</H1>");
 
             //fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).
           /*  out.println("<H1>"+Num.getMESS()+"</H1>");

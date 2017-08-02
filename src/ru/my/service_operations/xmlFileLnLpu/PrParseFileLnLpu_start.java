@@ -13,8 +13,10 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class PrParseFileLnLpu_start {
         PrParseFileLnLpu prParseFileLnLpu = null;
         try {
             prParseFileLnLpu = CreateSkeleton(PrParse_Query1(disabilityId),PrParse_Query2(disabilityId));
-        } catch (SQLException | ParseException e) { logger.debug(e); }
+        } catch (SQLException | ParseException e) { logger.error(e); }
         GlobalVariables.prparse = prParseFileLnLpu;
 
         logger.info("2)Create message");
@@ -51,7 +53,7 @@ public class PrParseFileLnLpu_start {
         logger.info("3)Singing");
         try {
             message = Signation(prParseFileLnLpu,message);
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {logger.error(e);}
 
         logger.info("3.5) Prepatre request");
         GlobalVariables.Request = SoapMessageToString(message);
@@ -64,7 +66,7 @@ public class PrParseFileLnLpu_start {
             SaveSOAPToXML(cryptXMLFileName,CryptedMessage);
 
             return CryptedMessage;
-        } catch (Exception e) { logger.debug(e);}
+        } catch (Exception e) { logger.error(e);}
 
         return message;
     }
@@ -76,6 +78,7 @@ public class PrParseFileLnLpu_start {
         ResultSet resultSet = SQL.Query(sql1);
         ResultSet resultSet2 = SQL.Query(sql2);
 
+        String StartPeriod=null,EndPeriod="";
         List<ROW> rows = new ArrayList<>();
         while (resultSet.next()) {
             GlobalVariables.t_ELN = resultSet.getString("LN_CODE");
@@ -95,6 +98,10 @@ public class PrParseFileLnLpu_start {
                 if (DDID_1 == DDID_2) {
                     TREAT_PERIOD treat_period = new TREAT_PERIOD();
                     treat_period.setTreatdt1(resultSet2.getString("TREAT_DT1"));
+                    if (StartPeriod==null) {
+                        StartPeriod= resultSet2.getString("TREAT_DT1");
+                    }
+                    EndPeriod = resultSet2.getString("TREAT_DT2");
                     treat_period.setTreatdt2(resultSet2.getString("TREAT_DT2"));
                     ln_result.setReturndatelpu(resultSet2.getString("TREAT_DT2"));//берем день выхода на работу
                     treat_period.setTreatdoctorrole(resultSet2.getString("TREAT_DOCTOR_ROLE"));
@@ -144,14 +151,11 @@ public class PrParseFileLnLpu_start {
                 }
                 ln_result.setAttribId("ELN_"+t_ELN+"_2_doc");
             }else if(!isClose) ln_result.setReturndatelpu(null);
-            else if (isClose&&ln_result.getMseresult()==null) {
-                logger.error("Error_ больничный закрыт без причины закрытия");
-                return null;
-            }
+
 
             logger.info("Закрыт: "+isClose+"" +
-                    " Дата выхода на работу:"+ln_result.getReturndatelpu()+"" +
-                    " MSE_RESULT:"+ln_result.getMseresult());
+                    " Дата выхода на работу:"+ln_result.getReturndatelpu()+"");
+                    //" MSE_RESULT:"+ln_result.getMseresult());
 
 
             List<ROW.LN_RESULT> ln_results = new ArrayList<>();
@@ -166,6 +170,10 @@ public class PrParseFileLnLpu_start {
             row.setIdDD(DDID_1);
             row.setAttribId("ELN_" + t_ELN);
             row.setSnils(snils);
+
+            if(!GlobalVariables.hash.equals("")) {
+                row.setLnhash(GlobalVariables.hash);
+            }
             row.setSurname(resultSet.getString("SURNAME"));
             row.setName(resultSet.getString("NAME"));
             row.setPatronimic(resultSet.getString("PATRONIMIC"));
@@ -174,6 +182,7 @@ public class PrParseFileLnLpu_start {
             row.setLpuemplflag(resultSet.getInt("LPU_EMPL_FLAG"));
             row.setLncode(resultSet.getString("LN_CODE"));
             row.setPrevlncode(resultSet.getString("PREV_LN"));
+
 
             row.setPrimaryflag(resultSet.getInt("PRIMARY_FLAG"));
             //int primaryFlag =  row.getPrimaryflag();
@@ -194,6 +203,7 @@ public class PrParseFileLnLpu_start {
             row.setVoucherno(resultSet.getString("VOUCHER_NO"));
             row.setVoucherogrn(resultSet.getString("VOUCHER_OGRN"));
             row.setServ1AGE(resultSet.getString("SERV1_AGE"));
+
             row.setServ1RELATIONCODE(resultSet.getString("SERV1_RELATION_CODE"));
             row.setServ1FIO(resultSet.getString("SERV1_FIO"));
             row.setServ2AGE(resultSet.getString("SERV2_AGE"));
@@ -207,6 +217,29 @@ public class PrParseFileLnLpu_start {
             row.setMsedt3(resultSet.getString("MSE_DT3"));
             row.setLnstate(resultSet.getString("LN_STATE"));
 
+
+
+            try {
+                if(row.getServ1AGE()!=null && !row.getServ1AGE().equals("")) {
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date1 =  new java.sql.Date(format.parse(row.getServ1AGE()).getTime());
+                    Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
+                    row.setServ1AGE(String.valueOf(calcYear(date1, date2)));
+                    row.setServ1MM(calcMonth(date1, date2));
+                    //row.setServ1DT1(StartPeriod);
+                    //row.setServ1DT2(EndPeriod);
+                }
+
+                if(row.getServ2AGE()!=null && !row.getServ2AGE().equals("")) {
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date1 =  new java.sql.Date(format.parse(row.getServ2AGE()).getTime());
+                    Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
+                    row.setServ1AGE(String.valueOf(calcYear(date1, date2)));
+                    row.setServ2MM(calcMonth(date1, date2));
+                    //row.setServ2DT1(StartPeriod);
+                    //row.setServ2DT2(EndPeriod);
+                }
+            }catch (Exception e){ e.printStackTrace();}
 
             ln_results.add(ln_result);
             row.setLnresult(ln_results);
@@ -248,7 +281,26 @@ public class PrParseFileLnLpu_start {
 
         return prParseFilelnlpu;
     }
+    private static int calcMonth(Date aBirthDate, Date aFromDate){
+        Calendar birth = Calendar.getInstance();
+        birth.setTime(aBirthDate);
+        Calendar from = Calendar.getInstance();
+        from.setTime(aFromDate);
 
+        int month = from.get(Calendar.MONTH) - birth.get(Calendar.MONTH);
+        if(month<0) month=(month*-1);
+        return month;
+    }
+    private static int calcYear(Date aBirthDate, Date aFromDate){
+        Calendar birth = Calendar.getInstance();
+        birth.setTime(aBirthDate);
+        Calendar from = Calendar.getInstance();
+        from.setTime(aFromDate);
+
+        int year = from.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+        if(year<0) year=(year*-1);
+        return year;
+    }
     private static SOAPMessage CreateSoapMessage(PrParseFileLnLpu prParseFileLnLpu){
 
         SOAPMessage message = null;

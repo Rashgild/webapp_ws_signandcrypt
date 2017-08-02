@@ -46,6 +46,7 @@ public class GlobalVariables {
 
     public static String requestParam="";
     public static Integer requestParam2=0;
+    public static String hash="";
 
     //parser
     public static Parser parser;

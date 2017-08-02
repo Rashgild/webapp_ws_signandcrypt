@@ -3,6 +3,7 @@ package ru.my.interceptor;
 
 import org.apache.log4j.Logger;
 import ru.my.helpers_operations.GlobalVariables;
+import ru.my.helpers_operations.SQL;
 import ru.my.helpers_operations.WorkWithXML;
 import ru.my.service_operations.LNDate.LnDate_start;
 import ru.my.service_operations.disableLn.DisableLn;
@@ -32,6 +33,7 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
         Boolean isRequest = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
 
+         try {
         if (isRequest) {
 
             logger.info("2) Intercept request!");
@@ -63,22 +65,26 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
                 soapMsg  = DisableLn.Start(soapMsg);
             }
             logger.info("Send Request!");
+
             context.setMessage(soapMsg);
         }
 
         if(!isRequest)
         {
             logger.info("Get Response");
-            try {
+
                 SOAPMessage msg = context.getMessage();
                 msg = VerifyAndDecrypt.Start(msg);
                 GlobalVariables.Response = WorkWithXML.SoapMessageToString(msg);
                 context.setMessage(msg);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
         }
-        return true;
+             return true;
+         } catch (Exception e) {
+             SQL.SaveInBD("ErrorInSending",0);
+             e.printStackTrace();
+             return false;
+         }
     }
 
     @Override

@@ -61,9 +61,12 @@ public class SQL {
     public static void SaveInBD(String result, Integer status)
     {
         result = Split(result);
-        GlobalVariables.Response = Split(GlobalVariables.Response);
+        if(GlobalVariables.Response!=null&& !GlobalVariables.Response.equals("")) {
+            GlobalVariables.Response = Split(GlobalVariables.Response);
+        }
         SQL_UpdIns(StoredQuery.QueryToSave(result,status));
     }
+
 
 
 
