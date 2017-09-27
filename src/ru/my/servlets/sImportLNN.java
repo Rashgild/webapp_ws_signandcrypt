@@ -36,7 +36,7 @@ public class sImportLNN extends HttpServlet {
     }
 
     private boolean isExistNumber(String ELN){
-        ResultSet rs =  SQL.Query("select id from disabilitydocument where id="+ELN);
+        ResultSet rs =  SQL.Query("select id from disabilitydocument where number='"+ELN+"'");
         int idDoc=0;
         try {
             while (rs.next()){
