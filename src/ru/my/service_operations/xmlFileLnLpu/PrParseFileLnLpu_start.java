@@ -101,7 +101,7 @@ public class PrParseFileLnLpu_start {
                     if (StartPeriod==null) {
                         StartPeriod= resultSet2.getString("TREAT_DT1");
                     }
-                    EndPeriod = resultSet2.getString("TREAT_DT2");
+                    //EndPeriod = resultSet2.getString("TREAT_DT2");
                     treat_period.setTreatdt2(resultSet2.getString("TREAT_DT2"));
                     ln_result.setReturndatelpu(resultSet2.getString("TREAT_DT2"));//берем день выхода на работу
                     treat_period.setTreatdoctorrole(resultSet2.getString("TREAT_DOCTOR_ROLE"));

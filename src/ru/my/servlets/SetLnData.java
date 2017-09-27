@@ -37,38 +37,7 @@ public class SetLnData extends HttpServlet {
         GlobalVariables.requestParam = id;
 
         getLnHash(id);
-        /**
-        *
-        */
 
-       /*
-       String snils="",eln="";
-        GlobalVariables.hash="";
-        ResultSet resultSet = SQL.Query(StoredQuery.getLNandSnils(id));
-        try {
-            while (resultSet.next()) {
-                snils = resultSet.getString("snils");
-                eln =resultSet.getString("ln_code");
-                }
-        } catch (SQLException e) {e.printStackTrace();}
-
-        try {
-        System.setProperty("javax.net.ssl.trustStore",GlobalVariables.pathandnameSSL);//КОНФ
-        System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
-        FileOperationsLnImplService service = new  FileOperationsLnImplService();
-        FileOperationsLn start = service.getFileOperationsLnPort();
-        FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(GlobalVariables.ogrnMo,eln,snils);
-        GlobalVariables.hash  = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNHASH();
-        logger.info("Хэш: "+hash);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-
-        /**
-         *
-         */
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>\n" +//
@@ -102,48 +71,50 @@ public class SetLnData extends HttpServlet {
         WSResult result= setRequest();
         List<INFO.ROWSET.ROW> rows = result.getINFO().getROWSET().getROW();
         String saveResult="";
-        String state ="",hash="";
-        for (INFO.ROWSET.ROW row:rows)
-        // for (int i=0;i<rows.size();i++)
-        {
-
-            if(row.getSTATUS()==0){
-                out.println("<p class=\"ex2\"> <font size=\"4\" color=\"#2d2d2b\"> ");
-            }else {out.println("<p class=\"ex\"> <font size=\"4\" color=\"#2d2d2b\"> ");}
-
-             state = row.getLNSTATE();
-             hash = row.getLNHASH();
-
-            out.println("Внутренний id: "+id+" <br>");
-            out.println("№: "+row.getROWNO()+" <br>");
-            out.println("Статус: "+row.getSTATUS()+" <br>");
-            out.println("Состояние: "+state+"<br>");
-            out.println("Хэш: "+hash+"<br>");
-            out.println("ЛН код: "+ row.getLNCODE()+"<br>");
-            out.println("Ответ: "+result.getMESS()+" <br>");
-
-
-
-            logger.info("Внутренний id:"+id+" " +
-                    " Статус:"+row.getROWNO()+" " +
-                    " ЛН:"+row.getLNCODE()+" " +
-                    " Ответ:"+result.getMESS());
-
-            saveResult+=result.getMESS();
-            try {
-                if(row.getERRORS().getERROR().size()>0) {
-                    List<INFO.ROWSET.ROW.ERRORS.ERROR> errors = row.getERRORS().getERROR();
-                    for (INFO.ROWSET.ROW.ERRORS.ERROR errs : errors) {
-                        out.println("Ошибка: " + errs.getERRMESS() + " <br>");
-                        logger.info("Ошибка: "+errs.getERRMESS()+" "+errs.getERRCODE());
-                        saveResult+=":"+errs.getERRMESS();
-                    }
+        String state ="",hash="",status="";
+        try {
+            for (INFO.ROWSET.ROW row : rows) {
+                if (row.getSTATUS() == 0) {
+                    out.println("<p class=\"ex2\"> <font size=\"4\" color=\"#2d2d2b\"> ");
+                } else {
+                    out.println("<p class=\"ex\"> <font size=\"4\" color=\"#2d2d2b\"> ");
                 }
-            }catch (Exception e){}
 
-            out.println("</font>\n" +
-                    "</p>" );//+
-        }
+                state = row.getLNSTATE();
+                hash = row.getLNHASH();
+
+                out.println("Внутренний id: " + id + " <br>");
+                out.println("№: " + row.getROWNO() + " <br>");
+                out.println("Статус: " + row.getSTATUS() + " <br>");
+
+                if (state != null && !state.equals("")) {
+                    out.println("Состояние: " + state + "<br>");
+                }
+                out.println("Хэш: " + hash + "<br>");
+                out.println("ЛН код: " + row.getLNCODE() + "<br>");
+                out.println("Ответ: " + result.getMESS() + " <br>");
+
+                logger.info("Внутренний id:" + id + " " +
+                        " Статус:" + row.getROWNO() + " " +
+                        " ЛН:" + row.getLNCODE() + " " +
+                        " Ответ:" + result.getMESS());
+
+                saveResult += result.getMESS();
+                try {
+                    if (row.getERRORS().getERROR().size() > 0) {
+                        List<INFO.ROWSET.ROW.ERRORS.ERROR> errors = row.getERRORS().getERROR();
+                        for (INFO.ROWSET.ROW.ERRORS.ERROR errs : errors) {
+                            out.println("Ошибка: " + errs.getERRMESS() + " <br>");
+                            logger.info("Ошибка: " + errs.getERRMESS() + " " + errs.getERRCODE());
+                            saveResult += ":" + errs.getERRMESS();
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                out.println("</font>\n" +
+                        "</p>");//+
+            }
+        }catch (Exception e){e.printStackTrace();}
 
         long finish = System.currentTimeMillis();
         long timeConsumedMillis = finish - start;
@@ -151,6 +122,18 @@ public class SetLnData extends HttpServlet {
 
 
         if(state != null && !state.equals("")  || hash!=null && !hash.equals("")){
+
+            /*//GetVoc
+            ResultSet resultSet = SQL.Query(StoredQuery.GetVoc(state));
+            Integer vocId=0;
+            try {
+                while (resultSet.next()) {
+                    vocId= resultSet.getInt("id");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }*/
+            System.out.println(state+"_"+hash+" "+GlobalVariables.t_ELN);
             SQL.SQL_UpdIns(StoredQuery.SaveStatusAndHash(state,hash,GlobalVariables.t_ELN));
         }
 

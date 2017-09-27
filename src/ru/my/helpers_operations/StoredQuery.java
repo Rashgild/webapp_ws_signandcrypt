@@ -97,7 +97,8 @@ public class StoredQuery {
                 "                 left join patient p22 on p22.id=k2.person_id\n" +
                 "                 left join medsoccommission mss on mss.disabilitydocument_id=dd.id \n" +
                 "                 left join mislpu lpu on lpu.id= "+DefaultLPU+
-                "                 where dd3.number is null and\n" +
+                "                 where " +
+                // "dd3.number is null and\n" +
                 "                 p.snils is not null and p.snils != '' \n" +
                 "                 and dd.id ="+disabilityId;
     }
@@ -144,7 +145,6 @@ public class StoredQuery {
     public static String SaveStatusAndHash(String status, String hash,String ELN)
     {
         java.sql.Date curDate = new java.sql.Date(System.currentTimeMillis());
-
         return "update ElectronicDisabilityDocumentNumber " +
                 "set status_id=(select id from VocDisabilityDocumentExportStatus where code='"+status+"')," +
                 " lasthash='"+hash+"'," +
@@ -159,5 +159,15 @@ public class StoredQuery {
                 "(number, createdate) values ('"+number+"',to_date('"+dateTime+"','dd.MM.yyyy'))";
     }
 
+    public static String GetVoc(String code){
+        return "select id from vocdisabilitydocumentexportstatus where code='"+code+"'";
+    }
+
+
+    //--------------Importer
+
+    public static String setDisabilityCase(String patientId){
+        return "INSERT into disabilitycase (patient_id, createdate,createusername) values ("+patientId+", current_date, 'Importer') returning id;";
+    }
 
 }

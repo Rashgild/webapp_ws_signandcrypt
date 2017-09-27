@@ -34,6 +34,7 @@ public class GlobalVariables {
     public static String pathandnameSSL="";
     public static String passwordSSL="";
 
+    public static String ServiceFSS="";
 
 
     //internal Global Temp Variables

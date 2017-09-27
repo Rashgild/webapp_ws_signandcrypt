@@ -1,5 +1,6 @@
 package ru.my.service_operations.newLNNumRange;
 
+import org.apache.log4j.Logger;
 import ru.my.helpers_operations.GlobalVariables;
 import ru.my.helpers_operations.WorkWithXML;
 import ru.my.service_operations.xmlFileLnLpu.*;
@@ -19,14 +20,19 @@ public class NewLnNumRange_start {
      */
     public static SOAPMessage Start(SOAPMessage soapMsg)
     {
+        Logger logger=Logger.getLogger("simple");
         try {
+
+            logger.info("CreateMessage:");
             Create(soapMsg);
+            logger.info("SigningMessage");
             soapMsg= Sign.Signation();
             WorkWithXML.SaveSOAPToXML("GetNumSigned.xml", soapMsg);
             GlobalVariables.Request = WorkWithXML.SoapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();
+            logger.info("EncryptingMessage");
             NewMessg = Encrypt.CreateXMLAndEncrypt(NewMessg, "GetNumSigned.xml");
 
             return NewMessg;

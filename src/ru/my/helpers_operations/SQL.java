@@ -68,8 +68,6 @@ public class SQL {
     }
 
 
-
-
     private static String Split(String str)
     {
         String[] arrstr;

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import static ru.my.helpers_operations.SQL.Query;
 import static ru.my.helpers_operations.StoredQuery.SaveNumber;
@@ -67,6 +68,26 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> state="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE()+"</H1>");
             out.print("<H1> hash="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNHASH()+"</H1>");
 
+            List<TREATFULLPERIOD> treatfullperiods = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getTREATPERIODS().getTREATFULLPERIOD();
+
+
+            ROW.LNRESULT lnresult = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNRESULT();
+            if(lnresult!=null){
+                out.print("<H1> co: "+lnresult.getNEXTLNCODE()+"</H1>");
+                out.print("<H1> doc role: "+lnresult.getOTHERSTATEDT()+"</H1>");
+                out.print("<H1> doc role: "+lnresult.getMSERESULT()+"</H1>");
+                out.print("<H1> выход на работу: "+lnresult.getRETURNDATELPU()+"</H1>");
+            }
+            for(TREATFULLPERIOD treatfullperiod: treatfullperiods){
+                out.print("<H1> ______________________</H1>");
+                out.print("<H1> Период: "+treatfullperiod.getTREATPERIOD().getTREATDT1()+"</H1>");
+                out.print("<H1> Период2: "+treatfullperiod.getTREATPERIOD().getTREATDT2()+"</H1>");
+                out.print("<H1> ВК: "+treatfullperiod.getTREATCHAIRMAN()+"</H1>");
+                out.print("<H1> ВК роль: "+treatfullperiod.getTREATCHAIRMANROLE()+"</H1>");
+                out.print("<H1> doc: "+treatfullperiod.getTREATPERIOD().getTREATDOCTOR()+"</H1>");
+                out.print("<H1> doc role: "+treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE()+"</H1>");
+                out.print("<H1> ______________________</H1>");
+            }
             //fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).
           /*  out.println("<H1>"+Num.getMESS()+"</H1>");
             out.println("<H1> Получен номер: </H1>");

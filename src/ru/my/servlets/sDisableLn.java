@@ -27,12 +27,16 @@ public class sDisableLn  extends  HttpServlet {
         Logger logger=Logger.getLogger("simple");
         logger.info("1) NewLnNum");
         response.setContentType("text/html ;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+
         String ogrn = request.getParameter("ogrn");
         String lnCode = request.getParameter("lnCode");
         String snils = request.getParameter("snils");
         String reasonCode = request.getParameter("reasonCode");
         String reason = request.getParameter("reason");
 
+        System.out.println("Ogrn:"+ogrn+",lncode:"+lnCode+",snils:"+snils+",reasonCode:"+reasonCode+",reason:"+reason);
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>" +
@@ -48,13 +52,12 @@ public class sDisableLn  extends  HttpServlet {
         FileOperationsLn start = service.getFileOperationsLnPort();
         try {
             FileOperationsLnUserDisableLnOut fileOperationsLnUserDisableLnOut =  start.disableLn(ogrn,lnCode,snils,reasonCode,reason);
-            out.println("<H1>"+fileOperationsLnUserDisableLnOut.getMESS()+"</H1>");
-            out.println("<H1>1)"+fileOperationsLnUserDisableLnOut.getDATA()+"</H1>");
-            out.println("<H1>1)"+fileOperationsLnUserDisableLnOut.getINFO()+"</H1>");
-            out.println("<H1>1)"+fileOperationsLnUserDisableLnOut.getSTATUS()+"</H1>");
+            out.println("<H1>Статус:"+fileOperationsLnUserDisableLnOut.getMESS()+"</H1>");
+            //out.println("<H1>Status:"+fileOperationsLnUserDisableLnOut.getSTATUS()+"</H1>");
         } catch (SOAPException_Exception e) {
             e.printStackTrace();
         }
 
+        out.println("</body></html>");
     }
 }
