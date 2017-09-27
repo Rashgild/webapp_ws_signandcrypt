@@ -1,5 +1,7 @@
 package ru.my.helpers_operations;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -49,13 +51,36 @@ public class SQL {
             connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
             Statement statement = null;
             statement = connection.createStatement();
-            res=  statement.executeUpdate(sql);
+            res =  statement.executeUpdate(sql);
             connection.close();
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return res;
+    }
+
+    public static String Insert_returning (String sql)
+    {
+        Connection connection = null;
+        ResultSet rs = null;
+        String id="";
+        try {
+            Class.forName(dbdriver);
+            connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
+            Statement statement = null;
+            statement = connection.createStatement();
+            rs =  statement.executeQuery(sql);
+            connection.close();
+
+            while (rs.next()){
+              id=  rs.getString("id");
+            }
+            return id;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return id;
     }
 
     public static void SaveInBD(String result, Integer status)

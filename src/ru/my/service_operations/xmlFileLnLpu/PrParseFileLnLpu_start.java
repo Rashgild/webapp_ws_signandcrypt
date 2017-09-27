@@ -94,6 +94,8 @@ public class PrParseFileLnLpu_start {
             List<TREAT_FULL_PERIOD> treat_full_periods = new ArrayList<>();
             while (resultSet2.next()) {
 
+                //TODO CheckIT!
+                String isexport = resultSet2.getString("isexport");
                  int DDID_2 = resultSet2.getInt("DDID");
                 if (DDID_1 == DDID_2) {
                     TREAT_PERIOD treat_period = new TREAT_PERIOD();
@@ -107,6 +109,9 @@ public class PrParseFileLnLpu_start {
                     treat_period.setTreatdoctorrole(resultSet2.getString("TREAT_DOCTOR_ROLE"));
                     treat_period.setTreatdoctor(resultSet2.getString("TREAT_DOCTOR"));
                     treat_period.setAttribId("ELN_" + t_ELN + "_" + per + "_doc");
+
+
+
                     List<TREAT_PERIOD> treat_periods = new ArrayList<>();
                     treat_periods.add(treat_period);
                     TREAT_FULL_PERIOD treat_full_period = new TREAT_FULL_PERIOD();
@@ -115,6 +120,16 @@ public class PrParseFileLnLpu_start {
                     if (treat_full_period.getTreatchairmanrole() != null) {
                         treat_full_period.setAttribIdVk("ELN_" + t_ELN + "_" + per + "_vk");
                     }
+
+                    //TODO А это надо?
+                    System.out.println("ISEXPORT>>>>>>>"+isexport);
+                    if(isexport!=null && (isexport.equals("true") || isexport.equals("t"))){
+                        treat_full_period.setExport("true");
+                    }else {
+                        treat_full_period.setExport("false");
+                    }
+
+
                     treat_full_period.setTreat_period(treat_periods);
                     treat_full_periods.add(treat_full_period);
                     per++;
@@ -370,7 +385,7 @@ public class PrParseFileLnLpu_start {
             for(TREAT_FULL_PERIOD treat_full_per: treat_full_periods){
 
                 treat_full_period = treat_full_per;
-                if (treat_full_period.getAttribIdVk() != null) {
+                if (treat_full_period.getAttribIdVk() != null && treat_full_period.getExport().equals("false")) {
                     message = Sign.SignationByParametrs("http://eln.fss.ru/actor/doc/" + treat_full_period.getAttribIdVk(),
                             "#" + treat_full_period.getAttribIdVk(), vkAlias, vkPass, t_ELN);
                     SaveSOAPToXML(signXMLFileName, message);
@@ -379,7 +394,7 @@ public class PrParseFileLnLpu_start {
 
                 for (TREAT_PERIOD num:treat_periods1) {
                       treat_period =num;
-                    if (treat_period.getAttribId() != null) {
+                    if (treat_period.getAttribId() != null && treat_full_period.getExport().equals("false")) {
                         message = Sign.SignationByParametrs("http://eln.fss.ru/actor/doc/" + treat_period.getAttribId(),
                                 "#" + treat_period.getAttribId(), docAlias, docPass, t_ELN);
                         SaveSOAPToXML(signXMLFileName, message);

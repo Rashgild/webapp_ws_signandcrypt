@@ -18,12 +18,20 @@ import java.util.List;
  * Created by rkurbanov on 05.12.2016.
  */
 @XmlRootElement(name = "ROW")
-@XmlType(propOrder = {"treatchairmanrole","treatchairman","treat_period"})
+@XmlType(propOrder = {"treatchairmanrole","treatchairman","treat_period","export"})
 public class TREAT_FULL_PERIOD {
 
     protected String AttribIdVk;
+
     protected String treatchairmanrole;
     protected String treatchairman;
+    protected String export;
+
+    public String getExport() {return export;}
+
+    @XmlElement(name = "Export", required = true)
+    public void setExport(String export) {this.export = export;}
+
     protected List<TREAT_PERIOD> treat_period;
 
     public List<TREAT_PERIOD> getTreat_period() {

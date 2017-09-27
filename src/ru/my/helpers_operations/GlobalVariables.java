@@ -33,8 +33,9 @@ public class GlobalVariables {
     public static String HDImageStorePath="";
     public static String pathandnameSSL="";
     public static String passwordSSL="";
-
+public static String country="-";
     public static String ServiceFSS="";
+
 
 
     //internal Global Temp Variables

@@ -134,6 +134,9 @@ public class SetLnData extends HttpServlet {
                 e.printStackTrace();
             }*/
             System.out.println(state+"_"+hash+" "+GlobalVariables.t_ELN);
+
+            System.out.println(state+"_"+hash+" "+GlobalVariables.t_ELN);
+            //TODO disabilityRecord isExport = true;
             SQL.SQL_UpdIns(StoredQuery.SaveStatusAndHash(state,hash,GlobalVariables.t_ELN));
         }
 

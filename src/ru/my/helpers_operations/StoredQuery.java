@@ -115,6 +115,7 @@ public class StoredQuery {
                 ",docname.lastname ||' '|| docname.firstname ||' '|| docname.middlename as TREAT_DOCTOR \n" +
                 ",vwf2.name as TREAT_CHAIRMAN_ROLE\n" +
                 ",vkname.lastname ||' '|| vkname.firstname ||' '|| vkname.middlename as TREAT_CHAIRMAN\n" +
+                ",disrec.isexport as isexport\n" +
                 "from disabilitydocument dd\n" +
                 "left join disabilitycase dc on dc.id=dd.disabilitycase_id \n" +
                 "left join patient p on p.id=dc.patient_id left join disabilityrecord disrec on disrec.disabilitydocument_id = dd.id\n" +
@@ -169,5 +170,7 @@ public class StoredQuery {
     public static String setDisabilityCase(String patientId){
         return "INSERT into disabilitycase (patient_id, createdate,createusername) values ("+patientId+", current_date, 'Importer') returning id;";
     }
+
+
 
 }
