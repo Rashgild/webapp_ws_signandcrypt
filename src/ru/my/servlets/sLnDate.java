@@ -3,7 +3,6 @@ package ru.my.servlets;
 import org.apache.log4j.Logger;
 import ru.ibs.fss.ln.ws.fileoperationsln.*;
 import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.SQL;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,61 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 
-import static ru.my.helpers_operations.GlobalVariables.ogrnMo;
+import static ru.my.helpers_operations.SQL.Query;
+import static ru.my.helpers_operations.StoredQuery.SaveNumber;
 
 /**
  * Created by rkurbanov on 28.06.2017.
  */
-
 @WebServlet("/sLnDate")
 public class sLnDate extends HttpServlet {
-
-        private void Out(HttpServletResponse response,String string){
-        PrintWriter out = null;
-        try {
-            out = response.getWriter();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        out.println(string);
-    }
-
-    private boolean isExistNumber(String ELN){
-        ResultSet rs =  SQL.Query("select id from disabilitydocument where id="+ELN);
-        int idDoc=0;
-        try {
-            while (rs.next()){
-                idDoc = rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        //idDoc>0 ? return true :return false;
-        if (idDoc>0) return true; else return false;
-    }
-
-    private String checkLPU(String OGRN){
-        ResultSet rs =  SQL.Query("Select id from mislpu where ogrn='"+OGRN+"'");
-        String idLpu="";
-        try {
-            while (rs.next()){
-                idLpu = rs.getString("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        if(!idLpu.equals("")){
-            return idLpu;
-        }else {
-            return "";
-        }
-    }
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Logger logger=Logger.getLogger("simple");
@@ -76,13 +29,15 @@ public class sLnDate extends HttpServlet {
         String ogrn = request.getParameter("ogrn");
         String eln = request.getParameter("eln");
         String snils = request.getParameter("snils");
-        String pid = request.getParameter("pid");
 
-        String outString="";
-        outString+="<html><head><meta charset=\"UTF-8\"/><title>SignAndCrypt</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head><body>";
+        PrintWriter out = response.getWriter();
+        out.println("<html>");
+        out.println("<head>" +
+                "  <meta charset=\"UTF-8\" />\n" +
+                "  <title>SignAndCrypt</title>\n" +
+                "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"> </head>");
 
-       PrintWriter out = response.getWriter();
-       Out(response,outString);
+        out.println("<body>");
         out.print("<H1> ogrn="+ogrn+"</H1>");
         out.print("<H1> eln="+eln+"</H1>");
         out.print("<H1> snils="+snils+"</H1>");
@@ -93,8 +48,7 @@ public class sLnDate extends HttpServlet {
         FileOperationsLn start = service.getFileOperationsLnPort();
         try {
 
-            FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(ogrn, eln, snils);
-            ru.ibs.fss.ln.ws.fileoperationsln.ROW row = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0);
+            FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(ogrn,eln,snils);
 
             out.print("<H1> info="+fileOperationsLnUserGetLNDataOut.getINFO()+"</H1>");
             out.print("<H1> mess="+fileOperationsLnUserGetLNDataOut.getMESS()+"</H1>");
@@ -105,9 +59,7 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> state="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE()+"</H1>");
             out.print("<H1> hash="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNHASH()+"</H1>");
 
-
             List<TREATFULLPERIOD> treatfullperiods = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getTREATPERIODS().getTREATFULLPERIOD();
-
 
             ROW.LNRESULT lnresult = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNRESULT();
             if(lnresult!=null){
@@ -126,102 +78,11 @@ public class sLnDate extends HttpServlet {
                 out.print("<H1> doc role: "+treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE()+"</H1>");
                 out.print("<H1> ______________________</H1>");
             }
-            //fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).
-          /*  out.println("<H1>"+Num.getMESS()+"</H1>");
-            out.println("<H1> Получен номер: </H1>");
-            out.println("<H1>1)"+Num.getDATA()+"</H1>");
-            Query(SaveNumber(Num.getDATA()));*/
-           /* //if(!isExistNumber(eln)){
-                String idDisCase = SQL.Insert_returning("INSERT into disabilitycase (patient_id, createdate,createusername) values ("+pid+", current_date, 'Importer') RETURNING id");
-                System.out.println("idDisCase>>"+idDisCase);
-
-                String insertDisDoc="insert INTO disabilitydocument (";
-                String insertDisDovValues="Values(";
-
-                String lpuOGRN = row.getLPUOGRN();
-                String AnotherLPUid="";
-            if(ogrnMo.equals(lpuOGRN))
-            {
-                System.out.println("lpuOGRN>>>>"+lpuOGRN);
-            }else {
-                if(!checkLPU(lpuOGRN).equals("")){
-                    AnotherLPUid=checkLPU(lpuOGRN);
-                }else {
-                    AnotherLPUid = SQL.Insert_returning("INSERT into mislpu (name, ogrn, printaddress) values ('"+row.getLPUNAME()+"','"+row.getLPUOGRN()+"', '"+row.getLPUADDRESS()+"') returning id;");
-                }
-                insertDisDoc+="anotherlpu_id,"; insertDisDovValues+=AnotherLPUid+",";
-            }
-                insertDisDoc+="number,"; insertDisDovValues+="'"+row.getLNCODE()+"',";
-                insertDisDoc+="issuedate,"; insertDisDovValues+="'"+row.getLNDATE().toString()+"',";
-                insertDisDoc+="noactuality,"; insertDisDovValues+="false,";
-                insertDisDoc+="patient_id,"; insertDisDovValues+=pid+",";
-
-                if(row.getREASON1()!=null && row.getREASON1().equals("01")){
-                    insertDisDoc+="disabilityreason_id,"; insertDisDovValues+="1,";
-                }
-                insertDisDoc+="disabilitycase_id,"; insertDisDovValues+=idDisCase+",";
-                insertDisDoc+="primarity_id,"; insertDisDovValues+=row.getPRIMARYFLAG()+",";
-                insertDisDoc+="job,"; insertDisDovValues+="'"+row.getLPUEMPLOYER()+"',";
-
-            if(row.getHOSPITALDT1()!= null && !row.getHOSPITALDT1().toString().equals("")){
-                insertDisDoc+="hospitalizedfrom,"; insertDisDovValues+="'"+row.getHOSPITALDT1()+"',";}
-            if(row.getHOSPITALDT2()!=null && !row.getHOSPITALDT2().toString().equals("")) {
-                insertDisDoc += "hospitalizedto,"; insertDisDovValues += "'" + row.getHOSPITALDT2() + "',";
-            }
-
-
-            System.out.println("DIAG:>>>"+row.getDIAGNOS());
-            if(row.getDIAGNOS()!=null && !row.getDIAGNOS().equals("")){
-
-                String id10 = SQL.Insert_returning("select id from vocidc10 where code = '"+row.getDIAGNOS()+"'");
-                insertDisDoc += "idc10_id,"; insertDisDovValues += id10+",";
-                insertDisDoc += "idc10final_id,"; insertDisDovValues += id10+",";
-            }
-
-            ROW.LNRESULT lnresult = row.getLNRESULT();
-            if(lnresult!=null){
-
-                insertDisDoc += "isclose,"; insertDisDovValues += "true,";
-
-                if(lnresult.getMSERESULT()!=null && !lnresult.getMSERESULT().equals("")){
-                    String reasonId =  SQL.Insert_returning("select id from vocdisabilitydocumentclosereason where codef = '"+lnresult.getMSERESULT()+"'");
-                    insertDisDoc += "closereason_id,"; insertDisDovValues += reasonId+",";
-                }else {
-                    insertDisDoc += "closereason_id,"; insertDisDovValues += "1,";
-                }
-
-               *//* if(lnresult.getNEXTLNCODE()!=null && !lnresult.getNEXTLNCODE().equals("")){
-                    insertDisDoc += "createdate,"; insertDisDovValues += "current_date,";
-                }*//*
-               *//* if(lnresult.getOTHERSTATEDT()!=null && !lnresult.getOTHERSTATEDT().equals("")){
-                    insertDisDoc += "createdate,"; insertDisDovValues += "current_date,";
-                }*//*
-
-                if(lnresult.getRETURNDATELPU()!=null && !lnresult.getRETURNDATELPU().equals("")){
-                    insertDisDoc += "beginworkdate,"; insertDisDovValues += "'"+lnresult.getRETURNDATELPU()+"',";
-                }
-            }
-            insertDisDoc += "createdate,"; insertDisDovValues += "current_date,";
-            insertDisDoc += "createusername,"; insertDisDovValues += "'Importer',";
-
-            insertDisDoc += "documenttype_id,"; insertDisDovValues += "1,";
-            insertDisDoc += "status_id)"; insertDisDovValues += "1)";
-                SQL.SQL_UpdIns(insertDisDoc+insertDisDovValues);
-
-            System.out.println("row.getLNRESULT().getMSERESULT();>>"+row.getLNRESULT().getMSERESULT());
-            System.out.println("row.getLNRESULT().getMSERESULT();>>"+row.getLNRESULT().getNEXTLNCODE());
-            System.out.println("row.getLNRESULT().getMSERESULT();>>"+row.getLNRESULT().getOTHERSTATEDT());
-            System.out.println("row.getLNRESULT().getMSERESULT();>>"+row.getLNRESULT().getRETURNDATELPU());
-
-            out.print("<H1> info="+fget.getINFO()+"</H1>");
-            out.print("<H1> mess="+fget.getMESS()+"</H1>");
-            out.print("<H1> status="+fget.getSTATUS()+"</H1>");
 
         } catch (SOAPException_Exception e) {
             e.printStackTrace();
-        }*/
-        } catch (SOAPException_Exception e) {
-                e.printStackTrace();
-            }
+        }
+
+
     }
-  }
+}
