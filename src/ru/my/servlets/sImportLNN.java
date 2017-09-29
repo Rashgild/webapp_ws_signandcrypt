@@ -243,6 +243,9 @@ public class sImportLNN extends HttpServlet {
                     }
 
                     //System.out.println(resultReq);
+                    out.print("<br>");
+                    out.print("Создано! <a href=\"http://192.168.10.20:8080/riams/entityParentView-dis_case.do?id="+idDisCase+"\">Перейти</a>");
+                    out.print("<br>");
                     out.print("<H1> info=" + fget.getINFO() + "</H1>");
                     out.print("<H1> mess=" + fget.getMESS() + "</H1>");
                     out.print("<H1> status=" + fget.getSTATUS() + "</H1>");
