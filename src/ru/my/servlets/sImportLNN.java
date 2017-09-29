@@ -152,10 +152,12 @@ public class sImportLNN extends HttpServlet {
                     if (row.getDIAGNOS() != null && !row.getDIAGNOS().equals("")) {
 
                         String id10 = SQL.Insert_returning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
+                        System.out.println("DIAG!!>>>"+id10);
+                        if (id10!=null &&!id10.equals("")){
                         insertDisDoc += "idc10_id,";
                         insertDisDovValues += id10 + ",";
                         insertDisDoc += "idc10final_id,";
-                        insertDisDovValues += id10 + ",";
+                        insertDisDovValues += id10 + ",";}
                     }
 
                     ROW.LNRESULT lnresult = row.getLNRESULT();
@@ -192,6 +194,8 @@ public class sImportLNN extends HttpServlet {
                     insertDisDoc += "status_id)";
                     insertDisDovValues += "1) returning id";
 
+
+                    System.out.println("DISABILITYDOC>>>"+insertDisDoc+insertDisDovValues);
                     String DisabilityDocumentId = SQL.Insert_returning(insertDisDoc + insertDisDovValues);
 
 
@@ -233,6 +237,8 @@ public class sImportLNN extends HttpServlet {
                         disbilityRecordHeader += "isexport)";
                         disabilityRecordBody += "true);";
                         resultReq += disbilityRecordHeader + disabilityRecordBody;
+
+                        System.out.println(resultReq);
                         SQL.SQL_UpdIns(resultReq);
                     }
 
