@@ -43,14 +43,14 @@ public class StoredQuery {
                 ",case when (select count(a.id) from disabilitydocument a where a.duplicate_id=dd.id) >0 then '1' else '0'end as DUPLICATE_FLAG\n" +
                 ",dd.issuedate as LN_DATE\n" +
                 ",case when dd.anotherlpu_id is not null then anlpu.name else lpu.name end as LPU_NAME\n" +
-                ",case when dd.anotherlpu_id is not null then anlpu.printAddress else lpu.name end as LPU_ADDRESS\n" +
-                ",case when dd.anotherlpu_id is not null then cast(anlpu.ogrn as text) else lpu.name end as LPU_OGRN\n" +
+                ",case when dd.anotherlpu_id is not null then anlpu.printAddress else lpu.printAddress end as LPU_ADDRESS\n" +
+                ",case when dd.anotherlpu_id is not null then anlpu.ogrn else lpu.ogrn end as LPU_OGRN\n" +
                 ",p.birthday as BIRTHDAY    \n" +
                 ",case when sex.omccode = '1' then '0' else '1' end as GENDER  \n" +
                 ",vdr.codef as REASON1  \n" +
                 ",vdr2.code as REASON2 \n" +
                 ",vdr3.code as REASON3 \n" +
-                ",mkb.code as DIAGNOS\n" +
+                ",case when dd.diagnos is null then mkb.code else dd.diagnos end as DIAGNOS\n" +
                 ",dd.mainworkdocumentnumber as PARENT_CODE \n" +
                 ",dd.sanatoriumdatefrom as DATE1 \n" +
                 ",dd.sanatoriumdateto as DATE2\n" +
