@@ -1,5 +1,6 @@
 package ru.my.servlets;
 
+import com.sun.xml.bind.v2.TODO;
 import org.apache.log4j.Logger;
 import ru.ibs.fss.ln.ws.fileoperationsln.*;
 import ru.my.helpers_operations.GlobalVariables;
@@ -153,7 +154,9 @@ public class sImportLNN extends HttpServlet {
 
                         String id10 = SQL.Insert_returning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
                         System.out.println("DIAG!!>>>"+id10);
+
                         if (id10!=null &&!id10.equals("")){
+                            //TODO Диагноз в тексовое поле
                         insertDisDoc += "idc10_id,";
                         insertDisDovValues += id10 + ",";
                         insertDisDoc += "idc10final_id,";

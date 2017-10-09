@@ -42,6 +42,7 @@ public class sLnDate extends HttpServlet {
         out.print("<H1> eln="+eln+"</H1>");
         out.print("<H1> snils="+snils+"</H1>");
 
+
         System.setProperty("javax.net.ssl.trustStore",GlobalVariables.pathandnameSSL);//КОНФ
         System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
         FileOperationsLnImplService service = new  FileOperationsLnImplService();
@@ -54,6 +55,7 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> mess="+fileOperationsLnUserGetLNDataOut.getMESS()+"</H1>");
             out.print("<H1> status="+fileOperationsLnUserGetLNDataOut.getSTATUS()+"</H1>");
 
+            out.print("<H1> diag="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getDIAGNOS()+"</H1>");
             out.print("<H1> name="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getNAME()+"</H1>");
             out.print("<H1> birthday="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getBIRTHDAY()+"</H1>");
             out.print("<H1> state="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE()+"</H1>");
