@@ -259,6 +259,12 @@ public class StoredQuery {
                 " exportdate='"+curDate+"'" +
                 " where number='"+ELN+"'";
     }
+    public static String updateDisRecord(String id)
+    {
+        return "update disabilityrecord " +
+                "set isexport=true" +
+                " where disabilitydocument_id="+id;
+    }
     public static String SaveNumber(String number){
         Date curTime = new Date();
         DateFormat dtfrm = DateFormat.getDateInstance();

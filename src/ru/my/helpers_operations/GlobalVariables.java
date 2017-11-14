@@ -49,6 +49,7 @@ public static String country="-";
     public static String requestParam="";
     public static Integer requestParam2=0;
     public static String hash="";
+    public static String state="";
 
     //parser
     public static Parser parser;
