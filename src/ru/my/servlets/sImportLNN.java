@@ -161,6 +161,9 @@ public class sImportLNN extends HttpServlet {
                             insertDisDoc +="diagnos,";
                             insertDisDovValues +=row.getDIAGNOS()+ ",";
                         }
+                    }else {
+                        insertDisDoc +="diagnos,";
+                        insertDisDovValues +="null,";
                     }
 
                     ROW.LNRESULT lnresult = row.getLNRESULT();
