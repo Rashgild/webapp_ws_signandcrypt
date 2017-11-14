@@ -134,8 +134,16 @@ public class sImportLNN extends HttpServlet {
                     }
                     insertDisDoc += "disabilitycase_id,";
                     insertDisDovValues += idDisCase + ",";
+
+
+                    if(row.getPRIMARYFLAG()==1){
                     insertDisDoc += "primarity_id,";
-                    insertDisDovValues += row.getPRIMARYFLAG() + ",";
+                    insertDisDovValues += "1,";
+                    }else {
+                        insertDisDoc += "primarity_id,";
+                        insertDisDovValues += "2,";
+                    }
+
                     insertDisDoc += "job,";
                     insertDisDovValues += "'" + row.getLPUEMPLOYER() + "',";
 
