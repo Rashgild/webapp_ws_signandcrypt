@@ -48,21 +48,28 @@ public class sLnDate extends HttpServlet {
         FileOperationsLnImplService service = new  FileOperationsLnImplService();
         FileOperationsLn start = service.getFileOperationsLnPort();
         try {
-
             FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(ogrn,eln,snils);
+            out.print("<H1> Инфо="+fileOperationsLnUserGetLNDataOut.getINFO()+"</H1>");
+            out.print("<H1> Сообщение="+fileOperationsLnUserGetLNDataOut.getMESS()+"</H1>");
+            out.print("<H1> Статус="+fileOperationsLnUserGetLNDataOut.getSTATUS()+"</H1>");
+            out.print("<H1> Состояние="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE()+"</H1>");
+            out.print("<H1> Хэш:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNHASH()+"</H1>");
 
-            out.print("<H1> info="+fileOperationsLnUserGetLNDataOut.getINFO()+"</H1>");
-            out.print("<H1> mess="+fileOperationsLnUserGetLNDataOut.getMESS()+"</H1>");
-            out.print("<H1> status="+fileOperationsLnUserGetLNDataOut.getSTATUS()+"</H1>");
+            out.print("<H1> Фамилия: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSURNAME()+"</H1>");
+            out.print("<H1> Имя: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getNAME()+"</H1>");
+            out.print("<H1> Отчество: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPATRONIMIC()+"</H1>");
+            out.print("<H1> Дата рождения:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getBIRTHDAY()+"</H1>");
+            out.print("<H1> Место работы: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUEMPLOYER()+"</H1>");
+            out.print("<H1> Диагнох: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getDIAGNOS()+"</H1>");
 
-            out.print("<H1> diag="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getDIAGNOS()+"</H1>");
-            out.print("<H1> name="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getNAME()+"</H1>");
-            out.print("<H1> birthday="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getBIRTHDAY()+"</H1>");
-            out.print("<H1> state="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE()+"</H1>");
-            out.print("<H1> hash="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNHASH()+"</H1>");
+            out.print("<H1> Дата выдачи:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNDATE()+"</H1>");
+            out.print("<H1> Наименование ЛПУ:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUNAME()+"</H1>");
+            out.print("<H1> ОГРН ЛПУ:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUOGRN()+"</H1>");
+            out.print("<H1> Адрес ЛПУ"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUADDRESS()+"</H1>");
+
+
 
             List<TREATFULLPERIOD> treatfullperiods = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getTREATPERIODS().getTREATFULLPERIOD();
-
             ROW.LNRESULT lnresult = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNRESULT();
             if(lnresult!=null){
                 out.print("<H1> co: "+lnresult.getNEXTLNCODE()+"</H1>");
@@ -72,19 +79,17 @@ public class sLnDate extends HttpServlet {
             }
             for(TREATFULLPERIOD treatfullperiod: treatfullperiods){
                 out.print("<H1> ______________________</H1>");
-                out.print("<H1> Период: "+treatfullperiod.getTREATPERIOD().getTREATDT1()+"</H1>");
-                out.print("<H1> Период2: "+treatfullperiod.getTREATPERIOD().getTREATDT2()+"</H1>");
-                out.print("<H1> ВК: "+treatfullperiod.getTREATCHAIRMAN()+"</H1>");
-                out.print("<H1> ВК роль: "+treatfullperiod.getTREATCHAIRMANROLE()+"</H1>");
-                out.print("<H1> doc: "+treatfullperiod.getTREATPERIOD().getTREATDOCTOR()+"</H1>");
-                out.print("<H1> doc role: "+treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE()+"</H1>");
+                out.print("<H1>Начало периода: "+treatfullperiod.getTREATPERIOD().getTREATDT1()+"</H1>");
+                out.print("<H1>Конец периода: "+treatfullperiod.getTREATPERIOD().getTREATDT2()+"</H1>");
+                out.print("<H1>ВК"+treatfullperiod.getTREATCHAIRMAN()+"</H1>");
+                out.print("<H1>Роль ВК:"+treatfullperiod.getTREATCHAIRMANROLE()+"</H1>");
+                out.print("<H1>Врач:"+treatfullperiod.getTREATPERIOD().getTREATDOCTOR()+"</H1>");
+                out.print("<H1>Роль врача:"+treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE()+"</H1>");
                 out.print("<H1> ______________________</H1>");
             }
 
         } catch (SOAPException_Exception e) {
             e.printStackTrace();
         }
-
-
     }
 }

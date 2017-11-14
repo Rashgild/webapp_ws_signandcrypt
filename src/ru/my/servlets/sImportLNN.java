@@ -148,19 +148,19 @@ public class sImportLNN extends HttpServlet {
                         insertDisDovValues += "'" + row.getHOSPITALDT2() + "',";
                     }
 
-
-                    System.out.println("DIAG:>>>" + row.getDIAGNOS());
                     if (row.getDIAGNOS() != null && !row.getDIAGNOS().equals("")) {
 
                         String id10 = SQL.Insert_returning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
-                        System.out.println("DIAG!!>>>"+id10);
 
                         if (id10!=null &&!id10.equals("")){
-                            //TODO Диагноз в тексовое поле
                         insertDisDoc += "idc10_id,";
                         insertDisDovValues += id10 + ",";
                         insertDisDoc += "idc10final_id,";
                         insertDisDovValues += id10 + ",";}
+                        else {
+                            insertDisDoc +="diagnos,";
+                            insertDisDovValues +=row.getDIAGNOS()+ ",";
+                        }
                     }
 
                     ROW.LNRESULT lnresult = row.getLNRESULT();
