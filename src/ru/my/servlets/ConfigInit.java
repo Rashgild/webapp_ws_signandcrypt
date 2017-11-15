@@ -1,7 +1,5 @@
 package ru.my.servlets;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import ru.my.helpers_operations.GlobalVariables;
 import ru.my.helpers_operations.SQL;
 import ru.my.helpers_operations.StoredQuery;
@@ -9,9 +7,13 @@ import ru.my.helpers_operations.UTF8Control;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.io.File;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import static ru.my.helpers_operations.GlobalVariables.*;
@@ -21,15 +23,41 @@ import static ru.my.helpers_operations.GlobalVariables.*;
 public class ConfigInit implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
-        Configure();
+        try {
+            Configure();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void contextDestroyed(ServletContextEvent event) {}
 
-    private static void Configure(){
 
-        Logger logger=Logger.getLogger("simple");
-        ResourceBundle resource = ResourceBundle.getBundle("config", new UTF8Control());
+    private static void Configure() throws IOException {
+
+        ResourceBundle res = ResourceBundle.getBundle("update",new UTF8Control());
+
+        InputStream input;
+        ResourceBundle resource = null;
+        if(!res.getString("configType").equals("default")){
+
+            if (res.getString("configType").equals("tomcat")) {
+                input = new FileInputStream(new File(res.getString("defaultPath1"))
+                        + System.getProperty("file.separator") + res.getString("defaultPath2"));
+            }else{
+                input = new FileInputStream(new File(res.getString("absPath")));
+            }
+            Reader reader = new InputStreamReader(input, "UTF-8");
+            resource  = new PropertyResourceBundle(reader);
+
+        }else {
+            resource = ResourceBundle.getBundle("config",new UTF8Control());
+        }
+
         dbhost = resource.getString("dbhost");
         dblogin = resource.getString("dblogin");
         dbpassword = resource.getString("dbpassword");
@@ -68,8 +96,63 @@ public class ConfigInit implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
-        logger.info("НОМЕР ЛПУ: " +GlobalVariables.DefaultLPU);
-        logger.info("Конфигурация найдена и загружена");
+    public static String ReadFile(String fileName){
+        StringBuilder stringBuilder = new StringBuilder();
+        try(FileReader reader = new FileReader(fileName))
+        {
+            int c;
+            while((c=reader.read())!=-1){
+                stringBuilder.append((char)c);
+                //System.out.print((char)c);
+            }
+        }
+        catch(IOException ex){
+            System.out.println(ex.getMessage());
+        }
+        return stringBuilder.toString();
+    }
+    private static void downloadFile(String URL, String savePath)   {
+        try {
+            java.net.URL url = new URL(URL);
+            BufferedInputStream bis = new BufferedInputStream(url.openStream());
+            FileOutputStream fis = new FileOutputStream(savePath);
+            byte[] buffer = new byte[1024];
+            int count=0;
+            while((count = bis.read(buffer,0,1024)) != -1)
+            {
+                fis.write(buffer, 0, count);
+            }
+            fis.close();
+            bis.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private static int getUnixTime(){
+        Date now = new Date();
+        Long longTime = new Long(now.getTime()/1000);
+        return longTime.intValue();
+    }
+    private static void create(){
+        File file = new File("version.txt");
+        try {
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            PrintWriter out = new PrintWriter(file.getAbsoluteFile());
+            try {
+                out.print(getUnixTime());
+            } finally {
+                out.close();
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void main(String[] args) {
+        create();
     }
 }
