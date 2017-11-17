@@ -14,12 +14,12 @@ function forwardbyClick(clicked, aLink) {
     });
 }
 
-function forwardbyLinkWithoutClick(Link) {
+function forwardbyLinkWithoutClick(Link,todiv) {
     $.ajax({
         type:"POST",
         url: Link,
         success: function (response){
-            $(".content").html(response);
+            $(todiv).html(response);
         }
     });
 }

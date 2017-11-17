@@ -87,10 +87,7 @@ public class ConfigInit implements ServletContextListener {
         passwordSSL= resource.getString("passwordSSL");
         HDImageStorePath=resource.getString("HDImageStorePath");
 
-
-
         ResultSet resultSet = SQL.Query(StoredQuery.getDefultLPU());
-
         try {
             while (resultSet.next()) {
                 GlobalVariables.DefaultLPU = resultSet.getString("keyvalue");
@@ -98,22 +95,6 @@ public class ConfigInit implements ServletContextListener {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public static String ReadFile(String fileName){
-        StringBuilder stringBuilder = new StringBuilder();
-        try(FileReader reader = new FileReader(fileName))
-        {
-            int c;
-            while((c=reader.read())!=-1){
-                stringBuilder.append((char)c);
-                //System.out.print((char)c);
-            }
-        }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }
-        return stringBuilder.toString();
     }
     private static void downloadFile(String URL, String savePath)   {
         try {
@@ -132,7 +113,6 @@ public class ConfigInit implements ServletContextListener {
             e.printStackTrace();
         }
     }
-
     private static int getUnixTime(){
         Date now = new Date();
         Long longTime = new Long(now.getTime()/1000);
