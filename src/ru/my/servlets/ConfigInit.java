@@ -37,7 +37,7 @@ public class ConfigInit implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent event) {}
 
 
-    private static void Configure() throws IOException {
+    public static void Configure() throws IOException {
 
         ResourceBundle res = ResourceBundle.getBundle("update",new UTF8Control());
 
@@ -46,8 +46,10 @@ public class ConfigInit implements ServletContextListener {
         if(!res.getString("configType").equals("default")){
 
             if (res.getString("configType").equals("tomcat")) {
-                input = new FileInputStream(new File(res.getString("defaultPath1"))
-                        + System.getProperty("file.separator") + res.getString("defaultPath2"));
+            /*    input = new FileInputStream(new File(res.getString("defaultPath1"))
+                        + System.getProperty("file.separator") + res.getString("defaultPath2"));*/
+
+                input = new FileInputStream(res.getString("defaultPath"));
             }else{
                 input = new FileInputStream(new File(res.getString("absPath")));
             }
