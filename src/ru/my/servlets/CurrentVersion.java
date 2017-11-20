@@ -20,11 +20,12 @@ public class CurrentVersion extends HttpServlet {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
-        //URL resource = new CurrentVersion().getClass().getResource("/../../");
         Calendar cal = Calendar.getInstance();
         String path = new CurrentVersion().getClass().getResource("/../../").getFile()+"version.txt";
+        path= path.replace("%20"," ");
         cal.setTimeInMillis(Long.parseLong(ReadFile(path)) * 1000);
-        response.getWriter().write("version by "+cal.get(Calendar.DAY_OF_MONTH)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.YEAR)+" ("+cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+")");
+        String ver = "version by "+cal.get(Calendar.DAY_OF_MONTH)+"-"+(cal.get(Calendar.MONTH)+1)+"-"+cal.get(Calendar.YEAR)+" ("+cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+")";
+        response.getWriter().write(ver);
     }
 
     public static String ReadFile(String fileName){
