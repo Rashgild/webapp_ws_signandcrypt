@@ -1,6 +1,5 @@
 package ru.my.servlets;
 
-import com.sun.xml.bind.v2.TODO;
 import org.apache.log4j.Logger;
 import ru.ibs.fss.ln.ws.fileoperationsln.*;
 import ru.my.helpers_operations.GlobalVariables;
@@ -14,7 +13,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static ru.my.helpers_operations.GlobalVariables.ogrnMo;
 
@@ -71,7 +72,7 @@ public class sImportLNN extends HttpServlet {
 
         try {
             Logger logger = Logger.getLogger("simple");
-            logger.info("1) NewLnNum");
+            logger.info("Start Import>>>");
             response.setContentType("text/html ;charset=UTF-8");
 
             String ogrn = request.getParameter("ogrn");
@@ -92,180 +93,131 @@ public class sImportLNN extends HttpServlet {
             System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
             FileOperationsLnImplService service = new FileOperationsLnImplService();
             FileOperationsLn start = service.getFileOperationsLnPort();
-            try {
 
+            try {
                 FileOperationsLnUserGetLNDataOut fget = start.getLNData(ogrn, eln, snils);
                 ru.ibs.fss.ln.ws.fileoperationsln.ROW row = fget.getDATA().getOUTROWSET().getROW().get(0);
-
-
                 if (!isExistNumber(eln)) {
-                    String idDisCase = SQL.Insert_returning("INSERT into disabilitycase (patient_id, createdate,createusername) values (" + pid + ", current_date, 'Importer') RETURNING id");
-                    System.out.println("idDisCase>>" + idDisCase);
+                    Map<String, String> SQLrequest = new HashMap<String, String>();
 
-                    String insertDisDoc = "insert INTO disabilitydocument (";
-                    String insertDisDovValues = "Values(";
+                    SQL.SQL_UpdIns("INSERT into disabilitycase (patient_id, createdate,createusername) values (" + pid + ", current_date, 'Importer')");
+                    String idDisCase = SQL.Insert_returning("select max(id) as id from disabilitycase");
 
                     String lpuOGRN = row.getLPUOGRN();
                     String AnotherLPUid = "";
                     if (ogrnMo.equals(lpuOGRN)) {
                         System.out.println("lpuOGRN>>>>" + lpuOGRN);
+
                     } else {
                         if (!checkLPU(lpuOGRN).equals("")) {
                             AnotherLPUid = checkLPU(lpuOGRN);
                         } else {
-                            AnotherLPUid = SQL.Insert_returning("INSERT into mislpu (name, ogrn, printaddress) values ('" + row.getLPUNAME() + "','" + row.getLPUOGRN() + "', '" + row.getLPUADDRESS() + "') returning id;");
+                            SQL.SQL_UpdIns("INSERT into mislpu (name, ogrn, printaddress) values ('" + row.getLPUNAME() + "','" + row.getLPUOGRN() + "', '" + row.getLPUADDRESS() + "')");
+                            AnotherLPUid = SQL.Insert_returning("select max(id) as id from mislpu");
                         }
-                        insertDisDoc += "anotherlpu_id,";
-                        insertDisDovValues += AnotherLPUid + ",";
+                        SQLrequest.put("anotherlpu_id",AnotherLPUid);
                     }
-
-                    insertDisDoc += "number,";
-                    insertDisDovValues += "'" + row.getLNCODE() + "',";
-                    insertDisDoc += "issuedate,";
-                    insertDisDovValues += "'" + row.getLNDATE().toString() + "',";
-                    insertDisDoc += "noactuality,";
-                    insertDisDovValues += "false,";
-                    insertDisDoc += "patient_id,";
-                    insertDisDovValues += pid + ",";
+                    SQLrequest.put("number","'"+row.getLNCODE()+"'");
+                    SQLrequest.put("issuedate","'"+row.getLNDATE().toString()+"'");
+                    SQLrequest.put("noactuality","false");
+                    SQLrequest.put("patient_id",pid);
 
                     if (row.getREASON1() != null && row.getREASON1().equals("01")) {
-                        insertDisDoc += "disabilityreason_id,";
-                        insertDisDovValues += "1,";
+                        SQLrequest.put("disabilityreason_id","1");
                     }
-                    insertDisDoc += "disabilitycase_id,";
-                    insertDisDovValues += idDisCase + ",";
-
+                    SQLrequest.put("disabilitycase_id",idDisCase);
 
                     if(row.getPRIMARYFLAG()==1){
-                    insertDisDoc += "primarity_id,";
-                    insertDisDovValues += "1,";
+                        SQLrequest.put("primarity_id","1");
                     }else {
-                        insertDisDoc += "primarity_id,";
-                        insertDisDovValues += "2,";
+                        SQLrequest.put("primarity_id","2");
                     }
-
-                    insertDisDoc += "job,";
-                    insertDisDovValues += "'" + row.getLPUEMPLOYER() + "',";
+                    SQLrequest.put("job","'"+row.getLPUEMPLOYER()+"'");
 
                     if (row.getHOSPITALDT1() != null && !row.getHOSPITALDT1().toString().equals("")) {
-                        insertDisDoc += "hospitalizedfrom,";
-                        insertDisDovValues += "'" + row.getHOSPITALDT1() + "',";
+                        SQLrequest.put("hospitalizedfrom","'"+row.getHOSPITALDT1()+"'");
                     }
                     if (row.getHOSPITALDT2() != null && !row.getHOSPITALDT2().toString().equals("")) {
-                        insertDisDoc += "hospitalizedto,";
-                        insertDisDovValues += "'" + row.getHOSPITALDT2() + "',";
+                        SQLrequest.put("hospitalizedto","'"+row.getHOSPITALDT2()+"'");
                     }
 
                     if (row.getDIAGNOS() != null && !row.getDIAGNOS().equals("")) {
-
                         String id10 = SQL.Insert_returning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
-
                         if (id10!=null &&!id10.equals("")){
-                        insertDisDoc += "idc10_id,";
-                        insertDisDovValues += id10 + ",";
-                        insertDisDoc += "idc10final_id,";
-                        insertDisDovValues += id10 + ",";}
+                            SQLrequest.put("idc10_id",id10);
+                            SQLrequest.put("idc10final_id",id10);
+                        }
+
                         else {
-                            insertDisDoc +="diagnos,";
-                            insertDisDovValues +=row.getDIAGNOS()+ ",";
+                            SQLrequest.put("diagnos",row.getDIAGNOS());
                         }
                     }else {
-                        insertDisDoc +="diagnos,";
-                        insertDisDovValues +="null,";
+                        SQLrequest.put("diagnos","'null'");
                     }
 
                     ROW.LNRESULT lnresult = row.getLNRESULT();
                     if (lnresult != null) {
-                        insertDisDoc += "isclose,";
-                        insertDisDovValues += "true,";
+                        SQLrequest.put("isclose","true");
                         if (lnresult.getMSERESULT() != null && !lnresult.getMSERESULT().equals("")) {
                             String reasonId = SQL.Insert_returning("select id from vocdisabilitydocumentclosereason where codef = '" + lnresult.getMSERESULT() + "'");
-                            insertDisDoc += "closereason_id,";
-                            insertDisDovValues += reasonId + ",";
+                            SQLrequest.put("closereason_id",reasonId);
                         } else {
-                            insertDisDoc += "closereason_id,";
-                            insertDisDovValues += "1,";
+                            SQLrequest.put("closereason_id","1");
                         }
-               /* if(lnresult.getNEXTLNCODE()!=null && !lnresult.getNEXTLNCODE().equals("")){
-                    insertDisDoc += "createdate,"; insertDisDovValues += "current_date,";
-                }*/
                         if (lnresult.getOTHERSTATEDT() != null && !lnresult.getOTHERSTATEDT().equals("")) {
-                            insertDisDoc += "otherclosedate,";
-                            insertDisDovValues += "'" + lnresult.getOTHERSTATEDT() + "',";
+                            SQLrequest.put("otherclosedate","'"+lnresult.getOTHERSTATEDT()+"'");
                         }
                         if (lnresult.getRETURNDATELPU() != null && !lnresult.getRETURNDATELPU().equals("")) {
-                            insertDisDoc += "beginworkdate,";
-                            insertDisDovValues += "'" + lnresult.getRETURNDATELPU() + "',";
+                            SQLrequest.put("beginworkdate","'"+lnresult.getRETURNDATELPU()+"'");
                         }
                     }
-                    insertDisDoc += "createdate,";
-                    insertDisDovValues += "current_date,";
-                    insertDisDoc += "createusername,";
-                    insertDisDovValues += "'Importer',";
+                    SQLrequest.put("createdate","current_date");
+                    SQLrequest.put("createusername","'Importer'");
+                    SQLrequest.put("documenttype_id","1");
 
-                    insertDisDoc += "documenttype_id,";
-                    insertDisDovValues += "1,";
-                    insertDisDoc += "status_id)";
-                    insertDisDovValues += "1) returning id";
-
-
-                    System.out.println("DISABILITYDOC>>>"+insertDisDoc+insertDisDovValues);
-                    String DisabilityDocumentId = SQL.Insert_returning(insertDisDoc + insertDisDovValues);
-
-
+                    SQLrequest.put("status_id","1");
+                    String req =  buildRequest(SQLrequest, "disabilitydocument");
+                    SQL.SQL_UpdIns(req);
+                    String DisabilityDocumentId = SQL.Insert_returning("Select max(id) as id from disabilitydocument");
                     List<TREATFULLPERIOD> treatfullperiods = row.getTREATPERIODS().getTREATFULLPERIOD();
-
-
                     for (TREATFULLPERIOD treatfullperiod : treatfullperiods) {
-                        String disbilityRecordHeader = "insert into disabilityrecord (", disabilityRecordBody = "values(";
-                        String resultReq = "";
+
+                        SQLrequest = new HashMap<String, String>();
                         if (isNotNull(treatfullperiod.getTREATPERIOD().getTREATDT1())) {
-                            disbilityRecordHeader += "datefrom,";
-                            disabilityRecordBody += "'" + treatfullperiod.getTREATPERIOD().getTREATDT1() + "',";
+                            SQLrequest.put("datefrom","'"+treatfullperiod.getTREATPERIOD().getTREATDT1() + "'");
                         }
 
                         if (isNotNull(treatfullperiod.getTREATPERIOD().getTREATDT2())) {
-                            disbilityRecordHeader += "dateto,";
-                            disabilityRecordBody += "'" + treatfullperiod.getTREATPERIOD().getTREATDT2() + "',";
+                            SQLrequest.put("dateto","'"+treatfullperiod.getTREATPERIOD().getTREATDT2() + "'");
                         }
 
                         if (isNotNull(treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE())) {
-                            disbilityRecordHeader += "docrole,";
-                            disabilityRecordBody += "'" + treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE() + "',";
+                            SQLrequest.put("docrole","'"+treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE() + "'");
                         }
 
                         if (isNotNull(treatfullperiod.getTREATPERIOD().getTREATDOCTOR())) {
-                            disbilityRecordHeader += "docname,";
-                            disabilityRecordBody += "'" + treatfullperiod.getTREATPERIOD().getTREATDOCTOR() + "',";
+                            SQLrequest.put("docname","'"+treatfullperiod.getTREATPERIOD().getTREATDOCTOR() + "'");
                         }
 
                         if (isNotNull(treatfullperiod.getTREATCHAIRMAN()) && isNotNull(treatfullperiod.getTREATCHAIRMANROLE())) {
-                            disbilityRecordHeader += "vkname,";
-                            disabilityRecordBody += "'" + treatfullperiod.getTREATCHAIRMAN() + "',";
-                            disbilityRecordHeader += "vkrole,";
-                            disabilityRecordBody += "'" + treatfullperiod.getTREATCHAIRMANROLE() + "',";
+                            SQLrequest.put("vkname","'"+treatfullperiod.getTREATCHAIRMAN()+ "'");
+                            SQLrequest.put("vkrole","'"+treatfullperiod.getTREATCHAIRMANROLE()+"'");
                         }
 
-                        disbilityRecordHeader += "disabilitydocument_id,";
-                        disabilityRecordBody += DisabilityDocumentId.toString() + ",";
-                        disbilityRecordHeader += "isexport)";
-                        disabilityRecordBody += "true);";
-                        resultReq += disbilityRecordHeader + disabilityRecordBody;
-
-                        System.out.println(resultReq);
-                        SQL.SQL_UpdIns(resultReq);
+                        SQLrequest.put("disabilitydocument_id",DisabilityDocumentId.toString());
+                        SQLrequest.put("isexport","true");
+                        req = buildRequest(SQLrequest,"disabilityrecord");
+                        SQL.SQL_UpdIns(req);
                     }
 
-                    //System.out.println(resultReq);
                     out.print("<br>");
-                    out.print("Создано! <a href=\"http://192.168.10.20:8080/riams/entityParentView-dis_case.do?id="+idDisCase+"\">Перейти</a>");
+                    out.print("Создано! <a href=\"/riams/entityParentView-dis_case.do?id="+idDisCase+"\">Перейти</a>");
                     out.print("<br>");
                     out.print("<H1> info=" + fget.getINFO() + "</H1>");
                     out.print("<H1> mess=" + fget.getMESS() + "</H1>");
                     out.print("<H1> status=" + fget.getSTATUS() + "</H1>");
                     out.print("</body></html>");
                 }else {
-
                     request.getRequestDispatcher("/sLnDate").forward(request, response);
                 }
             } catch(SOAPException_Exception e){
@@ -276,5 +228,31 @@ public class sImportLNN extends HttpServlet {
 
     private static Boolean isNotNull(Object obj){
         if(obj!=null && !obj.equals("")) return true; else return false;
+    }
+
+    private static String buildRequest(Map<String, String> SQLrequest, String tablename){
+
+        StringBuilder header = new StringBuilder().append("insert into "+tablename+" (");
+        StringBuilder body = new StringBuilder().append(" values (");
+
+        boolean f = false;
+        int size = SQLrequest.size(),i=0;
+
+        System.out.println(size);
+        for (Map.Entry entry : SQLrequest.entrySet()) {
+
+            header.append(entry.getKey());
+            body.append(entry.getValue());
+            i++;
+            if(i<size){
+                header.append(",");
+                body.append(",");
+            }
+        }
+        header.append(")");
+        body.append(")");
+
+        String sql = (header.append(body)).toString();
+        return sql;
     }
 }
