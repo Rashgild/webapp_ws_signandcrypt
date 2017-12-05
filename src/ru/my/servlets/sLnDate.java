@@ -55,6 +55,8 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> Состояние="+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE()+"</H1>");
             out.print("<H1> Хэш:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNHASH()+"</H1>");
 
+            out.print("<H1> Предыдущий ЛН:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPREVLNCODE()+"</H1>");
+
             out.print("<H1> Фамилия: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSURNAME()+"</H1>");
             out.print("<H1> Имя: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getNAME()+"</H1>");
             out.print("<H1> Отчество: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPATRONIMIC()+"</H1>");

@@ -38,7 +38,7 @@ public class StoredQuery {
                 ",dd.job as LPU_EMPLOYER  \n" +
                 ",case when (dd.workcombotype_id is null) then '1' else '0' end as LPU_EMPL_FLAG \n" +
                 ",dd.number as LN_CODE \n" +
-                ",(select dd2.number from disabilitydocument dd2 where dd2.id = dd.prevdocument_id) as PREV_LN \n" +
+                ",case when dd.anotherlpu_id is not null then dd.anotherprevln else (select dd2.number from disabilitydocument dd2 where dd2.id = dd.prevdocument_id) end as PREV_LN \n" +
                 ",case when (vddp.code ='2') then '0' else '1' end as PRIMARY_FLAG \n" +
                 ",case when (select count(a.id) from disabilitydocument a where a.duplicate_id=dd.id) >0 then '1' else '0'end as DUPLICATE_FLAG\n" +
                 ",dd.issuedate as LN_DATE\n" +

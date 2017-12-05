@@ -127,6 +127,10 @@ public class sImportLNN extends HttpServlet {
                     }
                     SQLrequest.put("disabilitycase_id",idDisCase);
 
+
+                    if(row.getPREVLNCODE()!=null && !row.getPREVLNCODE().equals("")){
+                        SQLrequest.put("anotherprevln","'"+row.getPREVLNCODE()+"'");
+                    }
                     if(row.getPRIMARYFLAG()==1){
                         SQLrequest.put("primarity_id","1");
                     }else {
