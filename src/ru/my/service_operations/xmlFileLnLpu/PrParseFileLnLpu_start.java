@@ -13,6 +13,8 @@ import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -324,10 +326,16 @@ public class PrParseFileLnLpu_start {
             Document document= GlobalVariables.parser.ObjToSoap(prParseFileLnLpu);
             MessageFactory mf = MessageFactory.newInstance();
             message  = mf.createMessage();
-            SOAPEnvelope soapEnv = message.getSOAPPart().getEnvelope();
+
+
+            String s = SoapMessageToString(message);
+            s = s.replace("SOAP-ENV","soapenv");
+            InputStream is = new ByteArrayInputStream(s.getBytes());
+            SOAPMessage request = MessageFactory.newInstance().createMessage(null, is);
+
+            SOAPEnvelope soapEnv = request.getSOAPPart().getEnvelope();
             SOAPBody soapBody = soapEnv.getBody();
             soapBody.addDocument(document);
-
             soapEnv.addNamespaceDeclaration("ds","http://www.w3.org/2000/09/xmldsig#");
             soapEnv.addNamespaceDeclaration("wsse","http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
             soapEnv.addNamespaceDeclaration("wsu","http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");
@@ -335,7 +343,7 @@ public class PrParseFileLnLpu_start {
             soapEnv.addNamespaceDeclaration("xsi","http://www.w3.org/2001/XMLSchema-instance");
             soapEnv.addNamespaceDeclaration("fil","http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl");
 
-            return message;
+            return request;
         } catch (Exception e) {
             e.printStackTrace();
         }
