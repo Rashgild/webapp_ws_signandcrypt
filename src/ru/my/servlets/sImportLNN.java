@@ -51,8 +51,9 @@ public class sImportLNN extends HttpServlet {
         if (idDoc>0) return true; else return false;
     }
 
-    private String checkLPU(String OGRN){
-        ResultSet rs =  SQL.Query("Select id from mislpu where ogrn='"+OGRN+"'");
+    private String checkLPU(String OGRN, String name,String address){
+        //ResultSet rs =  SQL.Query("Select id from mislpu where ogrn='"+OGRN+"'");
+        ResultSet rs =  SQL.Query("Select id from mislpu where ogrn='"+OGRN+"' and name='"+name+"' and printaddress='"+address+"'");
         String idLpu="";
         try {
             while (rs.next()){
@@ -66,6 +67,10 @@ public class sImportLNN extends HttpServlet {
         }else {
             return "";
         }
+    }
+
+    private String con(String str){
+        return  "'".concat(str.concat("'"));
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -104,21 +109,27 @@ public class sImportLNN extends HttpServlet {
                     String idDisCase = SQL.Insert_returning("select max(id) as id from disabilitycase");
 
                     String lpuOGRN = row.getLPUOGRN();
+                    String lpuAddress = row.getLPUADDRESS();
+                    String lpuName = row.getLPUNAME();
                     String AnotherLPUid = "";
                     if (ogrnMo.equals(lpuOGRN)) {
                         System.out.println("lpuOGRN>>>>" + lpuOGRN);
 
                     } else {
-                        if (!checkLPU(lpuOGRN).equals("")) {
-                            AnotherLPUid = checkLPU(lpuOGRN);
+                        AnotherLPUid = checkLPU(lpuOGRN,lpuName,lpuAddress);
+                        if (!AnotherLPUid.equals("")) {
+                            SQLrequest.put("anotherlpu_id",AnotherLPUid);
                         } else {
-                            SQL.SQL_UpdIns("INSERT into mislpu (name, ogrn, printaddress) values ('" + row.getLPUNAME() + "','" + row.getLPUOGRN() + "', '" + row.getLPUADDRESS() + "')");
-                            AnotherLPUid = SQL.Insert_returning("select max(id) as id from mislpu");
+                            SQLrequest.put("anotherlpuaddress",con(row.getLPUADDRESS()));
+                            SQLrequest.put("anotherlpuogrn",con(row.getLPUOGRN()));
+                            SQLrequest.put("anotherlpuname",con(row.getLPUNAME()));
+                            //SQL.SQL_UpdIns("INSERT into mislpu (name, ogrn, printaddress) values ('" + row.getLPUNAME() + "','" + row.getLPUOGRN() + "', '" + row.getLPUADDRESS() + "')");
+                            //AnotherLPUid = SQL.Insert_returning("select max(id) as id from mislpu");
                         }
-                        SQLrequest.put("anotherlpu_id",AnotherLPUid);
+
                     }
-                    SQLrequest.put("number","'"+row.getLNCODE()+"'");
-                    SQLrequest.put("issuedate","'"+row.getLNDATE().toString()+"'");
+                    SQLrequest.put("number",con(row.getLNCODE()));
+                    SQLrequest.put("issuedate",con(row.getLNDATE().toString()));
                     SQLrequest.put("noactuality","false");
                     SQLrequest.put("patient_id",pid);
 
