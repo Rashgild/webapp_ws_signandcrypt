@@ -232,6 +232,11 @@ public class PrParseFileLnLpu_start {
             row.setMsedt1(resultSet.getString("MSE_DT1"));
             row.setMsedt2(resultSet.getString("MSE_DT2"));
             row.setMsedt3(resultSet.getString("MSE_DT3"));
+
+            String inv = resultSet.getString("MSE_INVALID_GROUP");
+            if(inv!=null && !inv.equals("")){
+            row.setMseinvalidgroup(Integer.valueOf(inv));
+            }
             row.setLnstate(resultSet.getString("LN_STATE"));
 
 

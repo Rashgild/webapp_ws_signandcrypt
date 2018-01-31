@@ -156,8 +156,13 @@ public class sImportLNN extends HttpServlet {
                         SQLrequest.put("hospitalizedto","'"+row.getHOSPITALDT2()+"'");
                     }
 
+
                     if (row.getDIAGNOS() != null && !row.getDIAGNOS().equals("")) {
+                        System.out.println(">>>>>"+row.getDIAGNOS());
+                        System.out.println("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
+
                         String id10 = SQL.Insert_returning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
+                        System.out.println(id10);
                         if (id10!=null &&!id10.equals("")){
                             SQLrequest.put("idc10_id",id10);
                             SQLrequest.put("idc10final_id",id10);

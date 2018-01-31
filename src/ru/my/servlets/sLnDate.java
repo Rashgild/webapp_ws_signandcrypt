@@ -64,10 +64,20 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> Место работы: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUEMPLOYER()+"</H1>");
             out.print("<H1> Диагнох: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getDIAGNOS()+"</H1>");
 
+            out.print("<H1> ранние сроки беременности: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPREGN12WFLAG()+"</H1>");
+
             out.print("<H1> Дата выдачи:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNDATE()+"</H1>");
             out.print("<H1> Наименование ЛПУ:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUNAME()+"</H1>");
             out.print("<H1> ОГРН ЛПУ:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUOGRN()+"</H1>");
             out.print("<H1> Адрес ЛПУ"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUADDRESS()+"</H1>");
+
+            out.print("<H1> Адрес ЛПУ"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getREASON1()+"</H1>");
+
+            out.print("<H1> ______________________</H1>");
+            out.print("<H1> МСЭ1:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getMSEDT1()+"</H1>");
+            out.print("<H1> МСЭ2:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getMSEDT2()+"</H1>");
+            out.print("<H1> МСЭ3:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getMSEDT3()+"</H1>");
+            out.print("<H1> МСЭ группа:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getMSEINVALIDGROUP()+"</H1>");
 
 
 
