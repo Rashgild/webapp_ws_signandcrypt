@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static ru.my.helpers_operations.GlobalVariables.*;
@@ -246,8 +247,10 @@ public class PrParseFileLnLpu_start {
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     Date date1 =  new java.sql.Date(format.parse(row.getServ1AGE()).getTime());
                     Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
-                    row.setServ1AGE(String.valueOf(calcYear(date1, date2)));
-                    row.setServ1MM(calcMonth(date1, date2));
+
+                    System.out.println(StartPeriod);
+                    row.setServ1AGE(calculateAge(date2,date1,0));
+                    row.setServ1MM(Integer.valueOf(calculateAge(date2,date1,2)));
                     //row.setServ1DT1(StartPeriod);
                     //row.setServ1DT2(EndPeriod);
                 }
@@ -256,8 +259,11 @@ public class PrParseFileLnLpu_start {
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     Date date1 =  new java.sql.Date(format.parse(row.getServ2AGE()).getTime());
                     Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
-                    row.setServ1AGE(String.valueOf(calcYear(date1, date2)));
-                    row.setServ2MM(calcMonth(date1, date2));
+
+                    row.setServ2AGE(calculateAge(date2,date1,0));
+                    row.setServ2MM(Integer.valueOf(calculateAge(date2,date1,2)));
+                   /* row.setServ1AGE(String.valueOf(calcYear(date1, date2)));
+                    row.setServ2MM(calcMonth(date1, date2));*/
                     //row.setServ2DT1(StartPeriod);
                     //row.setServ2DT2(EndPeriod);
                 }
@@ -323,6 +329,57 @@ public class PrParseFileLnLpu_start {
         if(year<0) year=(year*-1);
         return year;
     }
+
+    public static String calculateAge(java.util.Date aDateFrom,java.util.Date aDateTo, int aFormat){
+        /**
+         * 0 - вернуть кол-во лет
+         *  1 -
+         *  2- вернуть кол-во месяцев
+         */
+        if (aDateFrom.getTime()<aDateTo.getTime()) return "Дата "+aDateFrom+" не может быть позже даты "+aDateTo ;
+        Calendar d1 = Calendar.getInstance();
+        Calendar d2 = Calendar.getInstance();
+        d2.setTime(aDateTo);
+        d1.setTime(aDateFrom);
+        int year1 = d1.get(Calendar.YEAR) ; int year2 = d2.get(Calendar.YEAR) ;
+        int month1 = d1.get(Calendar.MONTH) ; int month2 = d2.get(Calendar.MONTH) ;
+        int day1 = d1.get(Calendar.DAY_OF_MONTH) ; int day2 = d2.get(Calendar.DAY_OF_MONTH) ;
+        int day = day1 - day2 ;
+        int tst;
+        int month ;
+        tst=0 ;
+        if (day<0){
+            Calendar d3 = Calendar.getInstance() ;
+            d3.setTime(d1.getTime()) ;
+            d3.set(Calendar.MONTH, month2) ;
+            day=d3.getActualMaximum(Calendar.DAY_OF_MONTH)+day;tst=1 ;
+        }
+        month=month1-month2-tst;
+        tst=0 ;
+        if (month<0) {
+            month=12+month ;
+            tst=1 ;
+        }
+        int year=year1-year2-tst ;
+        if (aFormat==0) return new StringBuilder().append(year).toString() ;
+        if (aFormat==2) return new StringBuilder().append(month).toString() ;
+        if (aFormat==1) return new StringBuilder().append(year)
+                .append(".").append(month)
+                .append(".").append(day).toString() ;
+        String dy=(year==1)?" год ":
+                ((year==0||year>4)?" лет ":" года ") ;
+        String dm=(month==1)?" месяц ":
+                (((month>1)&&(month<5))?" месяца ":" месяцев " );
+        String dd = (day>4?" дней ":
+                ((day==0||(day>10&&(day<15)))?" дней ":((day==1)?" день ":" дня ")));
+
+
+        return new StringBuilder().append(year)
+                .append(dy).append(month)
+                .append(dm).append(day)
+                .append(dd).toString() ;
+    }
+
     private static SOAPMessage CreateSoapMessage(PrParseFileLnLpu prParseFileLnLpu){
 
         SOAPMessage message = null;
