@@ -42,9 +42,9 @@ public class StoredQuery {
                 ",case when (vddp.code ='2') then '0' else '1' end as PRIMARY_FLAG\n" +
                 ",case when (select count(a.id) from disabilitydocument a where a.duplicate_id=dd.id) >0 then '1' else '0'end as DUPLICATE_FLAG\n" +
                 ",dd.issuedate as LN_DATE\n" +
-                ",case when dd.anotherlpu_id is not null then anlpu.name else lpu.name end as LPU_NAME\n" +
-                ",case when dd.anotherlpu_id is not null then anlpu.printAddress else lpu.printaddress end as LPU_ADDRESS\n" +
-                ",case when dd.anotherlpu_id is not null then anlpu.ogrn else lpu.ogrn end as LPU_OGRN\n" +
+                ",case when dd.anotherlpu_id is not null then dd.anotherlpuname else lpu.name end as LPU_NAME\n" +
+                ",case when dd.anotherlpu_id is not null then dd.anotherlpuaddress else lpu.printaddress end as LPU_ADDRESS\n" +
+                ",case when dd.anotherlpu_id is not null then cast(dd.anotherlpuogrn as bigint) else lpu.ogrn end as LPU_OGRN\n" +
                 ",p.birthday as BIRTHDAY\n" +
                 ",case when sex.omccode = '1' then '0' else '1' end as GENDER\n" +
                 ",vdr.codef as REASON1\n" +
@@ -72,7 +72,7 @@ public class StoredQuery {
                 ",vi.code as MSE_INVALID_GROUP\n" +
                 ",dd.status_id as LN_STATE\n" +
                 ",rvr.datefrom as HOSPITAL_BREACH_DT\n" +
-                ",rvr.regimeviolationtype_id as HOSPITAL_BREACH_CODE\n" +
+                ",vrvr.codef as HOSPITAL_BREACH_CODE\n" +
                 ",coalesce(vddcr.codef,'') as MSE_RESULT\n" +
                 ",dd.otherclosedate as other_state_dt\n" +
                 ",dd3.number as NEXT_LN_CODE\n" +
@@ -81,6 +81,7 @@ public class StoredQuery {
                 "left join vocdisabilitydocumentclosereason vddcr on vddcr.id = dd.closereason_id\n" +
                 "left join disabilitydocument dd3 on dd3.prevdocument_id=dd.id\n" +
                 "left join regimeviolationrecord rvr on rvr.disabilitydocument_id = dd.id\n" +
+                "left join vocregimeviolationtype vrvr on vrvr.id = rvr.regimeviolationtype_id\n" +
                 "left join disabilitycase dc on dc.id=dd.disabilitycase_id\n" +
                 "left join patient p on p.id=dc.patient_id\n" +
                 "left join vocdisabilitydocumentprimarity vddp on vddp.id=dd.primarity_id\n" +
@@ -99,7 +100,7 @@ public class StoredQuery {
                 "left join patient p22 on p22.id=k2.person_id\n" +
                 "left join medsoccommission mss on mss.disabilitydocument_id=dd.id\n" +
                 "left join vocinvalidity vi on vi.id=mss.invalidity_id\n" +
-                "left join mislpu lpu on lpu.id=" +DefaultLPU+
+                "left join mislpu lpu on lpu.id="+DefaultLPU +"\n "+
                 "left join mislpu anlpu on anlpu.id = dd.anotherlpu_id\n" +
                 "where\n" +
                 "p.snils is not null and p.snils != ''\n" +

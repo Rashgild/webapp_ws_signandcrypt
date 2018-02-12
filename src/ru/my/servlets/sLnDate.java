@@ -30,6 +30,7 @@ public class sLnDate extends HttpServlet {
         String eln = request.getParameter("eln");
         String snils = request.getParameter("snils");
 
+        snils = snils.replace("-","").replace(" " ,"");
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>" +
