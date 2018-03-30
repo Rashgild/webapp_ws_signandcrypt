@@ -50,12 +50,6 @@ public class NewLnNumRange_start {
     public static void Create(SOAPMessage soapMessage)
             throws SOAPException, IOException {
 
-
-        System.out.println("_________________");
-        soapMessage.writeTo(System.out);
-        System.out.println("_________________");
-
-
         SOAPEnvelope soapEnv = soapMessage.getSOAPPart().getEnvelope();
         SOAPHeader soapHeader = soapEnv.getHeader();
         soapEnv.addHeader();
@@ -70,9 +64,6 @@ public class NewLnNumRange_start {
         soapBody.addAttribute(name, "OGRN_"+ GlobalVariables.ogrnMo);
         soapMessage.saveChanges();
 
-        System.out.println("_________________");
-        soapMessage.writeTo(System.out);
-        System.out.println("_________________");
         WorkWithXML.SaveSOAPToXML("tempSkeleton.xml", soapMessage);
     }
 

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetExistingLNNumRangeOut;
+import ru.ibs.fss.ln.ws.fileoperationsln.LnNumList;
 import ru.my.helpers_operations.GlobalVariables;
 
 import javax.servlet.annotation.WebServlet;
@@ -44,24 +45,29 @@ public class sExistingLNNumRange extends HttpServlet {
         FileOperationsLnImplService service = new FileOperationsLnImplService();
         FileOperationsLn start = service.getFileOperationsLnPort();
 
-
         try {
-            FileOperationsLnUserGetExistingLNNumRangeOut rangeOut = start.getExistingLNNumRange(ogrn);
 
+            FileOperationsLnUserGetExistingLNNumRangeOut rangeOut = start.getExistingLNNumRange(ogrn);
 
             out.print("<H1> Инфо="+rangeOut.getINFO()+"</H1>");
             out.print("<H1> Сообщение="+rangeOut.getMESS()+"</H1>");
             out.print("<H1> Статус="+rangeOut.getSTATUS()+"</H1>");
 
             if(rangeOut.getDATA()!=null){
-                List<String> lns = rangeOut.getDATA().getLNNum();
+                LnNumList s = rangeOut.getDATA();
+                List<String> lns = s.getLNNum();
                 for (String ln:lns){
-                    System.out.println(ln);
+                    out.print("<H1> eln# "+ln+"</H1>");
                 }
+            }else {
+                out.print("<H1> Нет данных по неиспользованным номерам </H1>");
             }
+
         }catch(Exception e){
             e.printStackTrace();
         }
 
+        out.println("</body>");
+        out.println("</html>");
     }
 }

@@ -127,9 +127,7 @@ public class Sign {
 
         try {
             X509Certificate cert = Certificate.GetCertificateFromStorage(GlobalVariables.moAlias);
-            logger.info("cert>>" + cert);
             PrivateKey privateKey = Certificate.GetPrivateKey(GlobalVariables.moPass, GlobalVariables.moAlias);
-            logger.info("Key>>" + privateKey);
 
             MessageFactory mf = MessageFactory.newInstance();
             SOAPMessage message = mf.createMessage();  // ЕСЛИ берем из файла
