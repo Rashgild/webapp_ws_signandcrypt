@@ -7,6 +7,7 @@ import ru.my.helpers_operations.SQL;
 import ru.my.helpers_operations.WorkWithXML;
 import ru.my.service_operations.LNDate.LnDate_start;
 import ru.my.service_operations.disableLn.DisableLn;
+import ru.my.service_operations.existingLNNum.ExistingLNNumRange;
 import ru.my.service_operations.newLNNum.NewLNNum;
 import ru.my.service_operations.newLNNumRange.NewLnNumRange_start;
 import ru.my.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start;
@@ -63,6 +64,11 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
             if(WhatTheFunc(soapMsg)==5){
                 logger.info("2.1) initialized disableLn!");
                 soapMsg  = DisableLn.Start(soapMsg);
+            }
+
+            if(WhatTheFunc(soapMsg)==6){
+                logger.info("2.1) initialized ExistingLNNumRange!");
+                soapMsg  = ExistingLNNumRange.Start(soapMsg);
             }
             logger.info("Send Request!");
 
@@ -131,6 +137,11 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
                 GlobalVariables.Type = "disableLn";
                 return 5;
             }
+            if (strdoc.contains("ExistingLNNumRange")) {
+                GlobalVariables.Type = "ExistingLNNumRange";
+                return 6;
+            }
+
         }catch (SOAPException e) {e.printStackTrace(); }
         return 0;
     }
