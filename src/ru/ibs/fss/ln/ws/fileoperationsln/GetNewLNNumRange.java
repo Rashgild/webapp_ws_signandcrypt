@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for getNewLNNumRange complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="getNewLNNumRange">
  *   &lt;complexContent>
@@ -23,13 +23,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getNewLNNumRange", propOrder = {
-    "ogrn",
-    "cntLnNumbers"
+        "ogrn",
+        "cntLnNumbers"
 })
 public class GetNewLNNumRange {
 
@@ -38,11 +38,11 @@ public class GetNewLNNumRange {
 
     /**
      * Gets the value of the ogrn property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getOgrn() {
         return ogrn;
@@ -50,11 +50,11 @@ public class GetNewLNNumRange {
 
     /**
      * Sets the value of the ogrn property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setOgrn(String value) {
         this.ogrn = value;
@@ -62,7 +62,7 @@ public class GetNewLNNumRange {
 
     /**
      * Gets the value of the cntLnNumbers property.
-     * 
+     *
      */
     public int getCntLnNumbers() {
         return cntLnNumbers;
@@ -70,7 +70,7 @@ public class GetNewLNNumRange {
 
     /**
      * Sets the value of the cntLnNumbers property.
-     * 
+     *
      */
     public void setCntLnNumbers(int value) {
         this.cntLnNumbers = value;

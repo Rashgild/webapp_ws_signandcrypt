@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for PrParseFilelnlpuElement complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="PrParseFilelnlpuElement">
  *   &lt;complexContent>
@@ -34,13 +34,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PrParseFilelnlpuElement", propOrder = {
-    "ogrn",
-    "pXmlFile"
+        "ogrn",
+        "pXmlFile"
 })
 public class PrParseFilelnlpuElement {
 
@@ -51,11 +51,11 @@ public class PrParseFilelnlpuElement {
 
     /**
      * Gets the value of the ogrn property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getOgrn() {
         return ogrn;
@@ -63,11 +63,11 @@ public class PrParseFilelnlpuElement {
 
     /**
      * Sets the value of the ogrn property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setOgrn(String value) {
         this.ogrn = value;
@@ -75,11 +75,11 @@ public class PrParseFilelnlpuElement {
 
     /**
      * Gets the value of the pXmlFile property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link PrParseFilelnlpuElement.PXmlFile }
-     *     
+     *
      */
     public PrParseFilelnlpuElement.PXmlFile getPXmlFile() {
         return pXmlFile;
@@ -87,11 +87,11 @@ public class PrParseFilelnlpuElement {
 
     /**
      * Sets the value of the pXmlFile property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link PrParseFilelnlpuElement.PXmlFile }
-     *     
+     *
      */
     public void setPXmlFile(PrParseFilelnlpuElement.PXmlFile value) {
         this.pXmlFile = value;
@@ -100,9 +100,9 @@ public class PrParseFilelnlpuElement {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -114,12 +114,12 @@ public class PrParseFilelnlpuElement {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "rowset"
+            "rowset"
     })
     public static class PXmlFile {
 
@@ -128,11 +128,11 @@ public class PrParseFilelnlpuElement {
 
         /**
          * Gets the value of the rowset property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link ROWSET }
-         *     
+         *
          */
         public ROWSET getROWSET() {
             return rowset;
@@ -140,11 +140,11 @@ public class PrParseFilelnlpuElement {
 
         /**
          * Sets the value of the rowset property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link ROWSET }
-         *     
+         *
          */
         public void setROWSET(ROWSET value) {
             this.rowset = value;

@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for getNewLNNum complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="getNewLNNum">
  *   &lt;complexContent>
@@ -22,12 +22,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getNewLNNum", propOrder = {
-    "ogrn"
+        "ogrn"
 })
 public class GetNewLNNum {
 
@@ -35,11 +35,11 @@ public class GetNewLNNum {
 
     /**
      * Gets the value of the ogrn property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getOgrn() {
         return ogrn;
@@ -47,11 +47,11 @@ public class GetNewLNNum {
 
     /**
      * Sets the value of the ogrn property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setOgrn(String value) {
         this.ogrn = value;

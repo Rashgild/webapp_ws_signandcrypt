@@ -17,9 +17,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>Java class for ROWSET complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="ROWSET">
  *   &lt;complexContent>
@@ -60,14 +60,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *                   &lt;element name="SERV1_MM" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *                   &lt;element name="SERV1_RELATION_CODE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="SERV1_FIO" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="SERV1_DT1" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *                   &lt;element name="SERV1_DT2" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *                   &lt;element name="SERV2_AGE" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *                   &lt;element name="SERV2_MM" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *                   &lt;element name="SERV2_RELATION_CODE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *                   &lt;element name="SERV2_FIO" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                   &lt;element name="SERV2_DT1" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *                   &lt;element name="SERV2_DT2" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *                   &lt;element name="PREGN12W_FLAG" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *                   &lt;element name="HOSPITAL_DT1" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *                   &lt;element name="HOSPITAL_DT2" type="{http://www.w3.org/2001/XMLSchema}date"/>
@@ -133,12 +129,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ROWSET", propOrder = {
-    "row"
+        "row"
 })
 public class ROWSET {
 
@@ -159,25 +155,25 @@ public class ROWSET {
 
     /**
      * Gets the value of the row property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the row property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getROW().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link ROWSET.ROW }
-     * 
-     * 
+     *
+     *
      */
     public List<ROWSET.ROW> getROW() {
         if (row == null) {
@@ -188,11 +184,11 @@ public class ROWSET {
 
     /**
      * Gets the value of the version property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getVersion() {
         return version;
@@ -200,11 +196,11 @@ public class ROWSET {
 
     /**
      * Sets the value of the version property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setVersion(String value) {
         this.version = value;
@@ -212,11 +208,11 @@ public class ROWSET {
 
     /**
      * Gets the value of the software property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getSoftware() {
         return software;
@@ -224,11 +220,11 @@ public class ROWSET {
 
     /**
      * Sets the value of the software property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setSoftware(String value) {
         this.software = value;
@@ -236,11 +232,11 @@ public class ROWSET {
 
     /**
      * Gets the value of the versionSoftware property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getVersionSoftware() {
         return versionSoftware;
@@ -248,11 +244,11 @@ public class ROWSET {
 
     /**
      * Sets the value of the versionSoftware property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setVersionSoftware(String value) {
         this.versionSoftware = value;
@@ -260,11 +256,11 @@ public class ROWSET {
 
     /**
      * Gets the value of the author property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAuthor() {
         return author;
@@ -272,11 +268,11 @@ public class ROWSET {
 
     /**
      * Sets the value of the author property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAuthor(String value) {
         this.author = value;
@@ -284,11 +280,11 @@ public class ROWSET {
 
     /**
      * Gets the value of the phone property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getPhone() {
         return phone;
@@ -296,11 +292,11 @@ public class ROWSET {
 
     /**
      * Sets the value of the phone property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setPhone(String value) {
         this.phone = value;
@@ -308,11 +304,11 @@ public class ROWSET {
 
     /**
      * Gets the value of the email property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getEmail() {
         return email;
@@ -320,11 +316,11 @@ public class ROWSET {
 
     /**
      * Sets the value of the email property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setEmail(String value) {
         this.email = value;
@@ -333,9 +329,9 @@ public class ROWSET {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -371,14 +367,10 @@ public class ROWSET {
      *         &lt;element name="SERV1_MM" type="{http://www.w3.org/2001/XMLSchema}int"/>
      *         &lt;element name="SERV1_RELATION_CODE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="SERV1_FIO" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="SERV1_DT1" type="{http://www.w3.org/2001/XMLSchema}date"/>
-     *         &lt;element name="SERV1_DT2" type="{http://www.w3.org/2001/XMLSchema}date"/>
      *         &lt;element name="SERV2_AGE" type="{http://www.w3.org/2001/XMLSchema}int"/>
      *         &lt;element name="SERV2_MM" type="{http://www.w3.org/2001/XMLSchema}int"/>
      *         &lt;element name="SERV2_RELATION_CODE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
      *         &lt;element name="SERV2_FIO" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *         &lt;element name="SERV2_DT1" type="{http://www.w3.org/2001/XMLSchema}date"/>
-     *         &lt;element name="SERV2_DT2" type="{http://www.w3.org/2001/XMLSchema}date"/>
      *         &lt;element name="PREGN12W_FLAG" type="{http://www.w3.org/2001/XMLSchema}int"/>
      *         &lt;element name="HOSPITAL_DT1" type="{http://www.w3.org/2001/XMLSchema}date"/>
      *         &lt;element name="HOSPITAL_DT2" type="{http://www.w3.org/2001/XMLSchema}date"/>
@@ -433,8 +425,8 @@ public class ROWSET {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -454,8 +446,8 @@ public class ROWSET {
         protected int bozflag;
         @XmlElement(name = "LPU_EMPLOYER")
         protected String lpuemployer;
-        @XmlElement(name = "LPU_EMPL_FLAG")
-        protected int lpuemplflag;
+        @XmlElement(name = "LPU_EMPL_FLAG", required = true, type = Integer.class, nillable = true)
+        protected Integer lpuemplflag;
         @XmlElement(name = "LN_CODE", required = true)
         protected String lncode;
         @XmlElement(name = "PREV_LN_CODE")
@@ -506,12 +498,6 @@ public class ROWSET {
         protected String serv1RELATIONCODE;
         @XmlElement(name = "SERV1_FIO")
         protected String serv1FIO;
-        @XmlElement(name = "SERV1_DT1", required = true, nillable = true)
-        @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar serv1DT1;
-        @XmlElement(name = "SERV1_DT2", required = true, nillable = true)
-        @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar serv1DT2;
         @XmlElement(name = "SERV2_AGE", required = true, type = Integer.class, nillable = true)
         protected Integer serv2AGE;
         @XmlElement(name = "SERV2_MM", required = true, type = Integer.class, nillable = true)
@@ -520,12 +506,6 @@ public class ROWSET {
         protected String serv2RELATIONCODE;
         @XmlElement(name = "SERV2_FIO")
         protected String serv2FIO;
-        @XmlElement(name = "SERV2_DT1", required = true, nillable = true)
-        @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar serv2DT1;
-        @XmlElement(name = "SERV2_DT2", required = true, nillable = true)
-        @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar serv2DT2;
         @XmlElement(name = "PREGN12W_FLAG", required = true, type = Integer.class, nillable = true)
         protected Integer pregn12WFLAG;
         @XmlElement(name = "HOSPITAL_DT1", required = true, nillable = true)
@@ -563,11 +543,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the snils property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getSNILS() {
             return snils;
@@ -575,11 +555,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the snils property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setSNILS(String value) {
             this.snils = value;
@@ -587,11 +567,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the surname property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getSURNAME() {
             return surname;
@@ -599,11 +579,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the surname property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setSURNAME(String value) {
             this.surname = value;
@@ -611,11 +591,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the name property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getNAME() {
             return name;
@@ -623,11 +603,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the name property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setNAME(String value) {
             this.name = value;
@@ -635,11 +615,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the patronimic property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getPATRONIMIC() {
             return patronimic;
@@ -647,11 +627,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the patronimic property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setPATRONIMIC(String value) {
             this.patronimic = value;
@@ -659,7 +639,7 @@ public class ROWSET {
 
         /**
          * Gets the value of the bozflag property.
-         * 
+         *
          */
         public int getBOZFLAG() {
             return bozflag;
@@ -667,7 +647,7 @@ public class ROWSET {
 
         /**
          * Sets the value of the bozflag property.
-         * 
+         *
          */
         public void setBOZFLAG(int value) {
             this.bozflag = value;
@@ -675,11 +655,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the lpuemployer property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getLPUEMPLOYER() {
             return lpuemployer;
@@ -687,11 +667,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lpuemployer property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setLPUEMPLOYER(String value) {
             this.lpuemployer = value;
@@ -699,27 +679,35 @@ public class ROWSET {
 
         /**
          * Gets the value of the lpuemplflag property.
-         * 
+         *
+         * @return
+         *     possible object is
+         *     {@link Integer }
+         *
          */
-        public int getLPUEMPLFLAG() {
+        public Integer getLPUEMPLFLAG() {
             return lpuemplflag;
         }
 
         /**
          * Sets the value of the lpuemplflag property.
-         * 
+         *
+         * @param value
+         *     allowed object is
+         *     {@link Integer }
+         *
          */
-        public void setLPUEMPLFLAG(int value) {
+        public void setLPUEMPLFLAG(Integer value) {
             this.lpuemplflag = value;
         }
 
         /**
          * Gets the value of the lncode property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getLNCODE() {
             return lncode;
@@ -727,11 +715,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lncode property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setLNCODE(String value) {
             this.lncode = value;
@@ -739,11 +727,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the prevlncode property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getPREVLNCODE() {
             return prevlncode;
@@ -751,11 +739,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the prevlncode property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setPREVLNCODE(String value) {
             this.prevlncode = value;
@@ -763,7 +751,7 @@ public class ROWSET {
 
         /**
          * Gets the value of the primaryflag property.
-         * 
+         *
          */
         public int getPRIMARYFLAG() {
             return primaryflag;
@@ -771,7 +759,7 @@ public class ROWSET {
 
         /**
          * Sets the value of the primaryflag property.
-         * 
+         *
          */
         public void setPRIMARYFLAG(int value) {
             this.primaryflag = value;
@@ -779,7 +767,7 @@ public class ROWSET {
 
         /**
          * Gets the value of the duplicateflag property.
-         * 
+         *
          */
         public int getDUPLICATEFLAG() {
             return duplicateflag;
@@ -787,7 +775,7 @@ public class ROWSET {
 
         /**
          * Sets the value of the duplicateflag property.
-         * 
+         *
          */
         public void setDUPLICATEFLAG(int value) {
             this.duplicateflag = value;
@@ -795,11 +783,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the lndate property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getLNDATE() {
             return lndate;
@@ -807,11 +795,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lndate property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setLNDATE(XMLGregorianCalendar value) {
             this.lndate = value;
@@ -819,11 +807,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the lpuname property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getLPUNAME() {
             return lpuname;
@@ -831,11 +819,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lpuname property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setLPUNAME(String value) {
             this.lpuname = value;
@@ -843,11 +831,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the lpuaddress property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getLPUADDRESS() {
             return lpuaddress;
@@ -855,11 +843,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lpuaddress property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setLPUADDRESS(String value) {
             this.lpuaddress = value;
@@ -867,11 +855,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the lpuogrn property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getLPUOGRN() {
             return lpuogrn;
@@ -879,11 +867,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lpuogrn property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setLPUOGRN(String value) {
             this.lpuogrn = value;
@@ -891,11 +879,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the birthday property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getBIRTHDAY() {
             return birthday;
@@ -903,11 +891,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the birthday property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setBIRTHDAY(XMLGregorianCalendar value) {
             this.birthday = value;
@@ -915,7 +903,7 @@ public class ROWSET {
 
         /**
          * Gets the value of the gender property.
-         * 
+         *
          */
         public int getGENDER() {
             return gender;
@@ -923,7 +911,7 @@ public class ROWSET {
 
         /**
          * Sets the value of the gender property.
-         * 
+         *
          */
         public void setGENDER(int value) {
             this.gender = value;
@@ -931,11 +919,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the reason1 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getREASON1() {
             return reason1;
@@ -943,11 +931,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the reason1 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setREASON1(String value) {
             this.reason1 = value;
@@ -955,11 +943,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the reason2 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getREASON2() {
             return reason2;
@@ -967,11 +955,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the reason2 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setREASON2(String value) {
             this.reason2 = value;
@@ -979,11 +967,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the reason3 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getREASON3() {
             return reason3;
@@ -991,11 +979,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the reason3 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setREASON3(String value) {
             this.reason3 = value;
@@ -1003,11 +991,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the diagnos property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getDIAGNOS() {
             return diagnos;
@@ -1015,11 +1003,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the diagnos property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setDIAGNOS(String value) {
             this.diagnos = value;
@@ -1027,11 +1015,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the parentcode property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getPARENTCODE() {
             return parentcode;
@@ -1039,11 +1027,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the parentcode property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setPARENTCODE(String value) {
             this.parentcode = value;
@@ -1051,11 +1039,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the date1 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getDATE1() {
             return date1;
@@ -1063,11 +1051,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the date1 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setDATE1(XMLGregorianCalendar value) {
             this.date1 = value;
@@ -1075,11 +1063,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the date2 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getDATE2() {
             return date2;
@@ -1087,11 +1075,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the date2 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setDATE2(XMLGregorianCalendar value) {
             this.date2 = value;
@@ -1099,11 +1087,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the voucherno property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getVOUCHERNO() {
             return voucherno;
@@ -1111,11 +1099,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the voucherno property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setVOUCHERNO(String value) {
             this.voucherno = value;
@@ -1123,11 +1111,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the voucherogrn property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getVOUCHEROGRN() {
             return voucherogrn;
@@ -1135,11 +1123,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the voucherogrn property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setVOUCHEROGRN(String value) {
             this.voucherogrn = value;
@@ -1147,11 +1135,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the serv1AGE property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link Integer }
-         *     
+         *
          */
         public Integer getSERV1AGE() {
             return serv1AGE;
@@ -1159,11 +1147,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the serv1AGE property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link Integer }
-         *     
+         *
          */
         public void setSERV1AGE(Integer value) {
             this.serv1AGE = value;
@@ -1171,11 +1159,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the serv1MM property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link Integer }
-         *     
+         *
          */
         public Integer getSERV1MM() {
             return serv1MM;
@@ -1183,11 +1171,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the serv1MM property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link Integer }
-         *     
+         *
          */
         public void setSERV1MM(Integer value) {
             this.serv1MM = value;
@@ -1195,11 +1183,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the serv1RELATIONCODE property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getSERV1RELATIONCODE() {
             return serv1RELATIONCODE;
@@ -1207,11 +1195,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the serv1RELATIONCODE property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setSERV1RELATIONCODE(String value) {
             this.serv1RELATIONCODE = value;
@@ -1219,11 +1207,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the serv1FIO property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getSERV1FIO() {
             return serv1FIO;
@@ -1231,71 +1219,23 @@ public class ROWSET {
 
         /**
          * Sets the value of the serv1FIO property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setSERV1FIO(String value) {
             this.serv1FIO = value;
         }
 
         /**
-         * Gets the value of the serv1DT1 property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public XMLGregorianCalendar getSERV1DT1() {
-            return serv1DT1;
-        }
-
-        /**
-         * Sets the value of the serv1DT1 property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public void setSERV1DT1(XMLGregorianCalendar value) {
-            this.serv1DT1 = value;
-        }
-
-        /**
-         * Gets the value of the serv1DT2 property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public XMLGregorianCalendar getSERV1DT2() {
-            return serv1DT2;
-        }
-
-        /**
-         * Sets the value of the serv1DT2 property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public void setSERV1DT2(XMLGregorianCalendar value) {
-            this.serv1DT2 = value;
-        }
-
-        /**
          * Gets the value of the serv2AGE property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link Integer }
-         *     
+         *
          */
         public Integer getSERV2AGE() {
             return serv2AGE;
@@ -1303,11 +1243,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the serv2AGE property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link Integer }
-         *     
+         *
          */
         public void setSERV2AGE(Integer value) {
             this.serv2AGE = value;
@@ -1315,11 +1255,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the serv2MM property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link Integer }
-         *     
+         *
          */
         public Integer getSERV2MM() {
             return serv2MM;
@@ -1327,11 +1267,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the serv2MM property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link Integer }
-         *     
+         *
          */
         public void setSERV2MM(Integer value) {
             this.serv2MM = value;
@@ -1339,11 +1279,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the serv2RELATIONCODE property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getSERV2RELATIONCODE() {
             return serv2RELATIONCODE;
@@ -1351,11 +1291,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the serv2RELATIONCODE property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setSERV2RELATIONCODE(String value) {
             this.serv2RELATIONCODE = value;
@@ -1363,11 +1303,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the serv2FIO property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getSERV2FIO() {
             return serv2FIO;
@@ -1375,71 +1315,23 @@ public class ROWSET {
 
         /**
          * Sets the value of the serv2FIO property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setSERV2FIO(String value) {
             this.serv2FIO = value;
         }
 
         /**
-         * Gets the value of the serv2DT1 property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public XMLGregorianCalendar getSERV2DT1() {
-            return serv2DT1;
-        }
-
-        /**
-         * Sets the value of the serv2DT1 property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public void setSERV2DT1(XMLGregorianCalendar value) {
-            this.serv2DT1 = value;
-        }
-
-        /**
-         * Gets the value of the serv2DT2 property.
-         * 
-         * @return
-         *     possible object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public XMLGregorianCalendar getSERV2DT2() {
-            return serv2DT2;
-        }
-
-        /**
-         * Sets the value of the serv2DT2 property.
-         * 
-         * @param value
-         *     allowed object is
-         *     {@link XMLGregorianCalendar }
-         *     
-         */
-        public void setSERV2DT2(XMLGregorianCalendar value) {
-            this.serv2DT2 = value;
-        }
-
-        /**
          * Gets the value of the pregn12WFLAG property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link Integer }
-         *     
+         *
          */
         public Integer getPREGN12WFLAG() {
             return pregn12WFLAG;
@@ -1447,11 +1339,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the pregn12WFLAG property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link Integer }
-         *     
+         *
          */
         public void setPREGN12WFLAG(Integer value) {
             this.pregn12WFLAG = value;
@@ -1459,11 +1351,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the hospitaldt1 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getHOSPITALDT1() {
             return hospitaldt1;
@@ -1471,11 +1363,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the hospitaldt1 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setHOSPITALDT1(XMLGregorianCalendar value) {
             this.hospitaldt1 = value;
@@ -1483,11 +1375,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the hospitaldt2 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getHOSPITALDT2() {
             return hospitaldt2;
@@ -1495,11 +1387,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the hospitaldt2 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setHOSPITALDT2(XMLGregorianCalendar value) {
             this.hospitaldt2 = value;
@@ -1507,11 +1399,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the hospitalbreach property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link ROWSET.ROW.HOSPITALBREACH }
-         *     
+         *
          */
         public ROWSET.ROW.HOSPITALBREACH getHOSPITALBREACH() {
             return hospitalbreach;
@@ -1519,11 +1411,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the hospitalbreach property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link ROWSET.ROW.HOSPITALBREACH }
-         *     
+         *
          */
         public void setHOSPITALBREACH(ROWSET.ROW.HOSPITALBREACH value) {
             this.hospitalbreach = value;
@@ -1531,11 +1423,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the msedt1 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getMSEDT1() {
             return msedt1;
@@ -1543,11 +1435,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the msedt1 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setMSEDT1(XMLGregorianCalendar value) {
             this.msedt1 = value;
@@ -1555,11 +1447,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the msedt2 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getMSEDT2() {
             return msedt2;
@@ -1567,11 +1459,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the msedt2 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setMSEDT2(XMLGregorianCalendar value) {
             this.msedt2 = value;
@@ -1579,11 +1471,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the msedt3 property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public XMLGregorianCalendar getMSEDT3() {
             return msedt3;
@@ -1591,11 +1483,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the msedt3 property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link XMLGregorianCalendar }
-         *     
+         *
          */
         public void setMSEDT3(XMLGregorianCalendar value) {
             this.msedt3 = value;
@@ -1603,11 +1495,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the mseinvalidgroup property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link Integer }
-         *     
+         *
          */
         public Integer getMSEINVALIDGROUP() {
             return mseinvalidgroup;
@@ -1615,11 +1507,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the mseinvalidgroup property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link Integer }
-         *     
+         *
          */
         public void setMSEINVALIDGROUP(Integer value) {
             this.mseinvalidgroup = value;
@@ -1627,11 +1519,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the treatperiods property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link ROWSET.ROW.TREATPERIODS }
-         *     
+         *
          */
         public ROWSET.ROW.TREATPERIODS getTREATPERIODS() {
             return treatperiods;
@@ -1639,11 +1531,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the treatperiods property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link ROWSET.ROW.TREATPERIODS }
-         *     
+         *
          */
         public void setTREATPERIODS(ROWSET.ROW.TREATPERIODS value) {
             this.treatperiods = value;
@@ -1651,11 +1543,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the lnresult property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link ROWSET.ROW.LNRESULT }
-         *     
+         *
          */
         public ROWSET.ROW.LNRESULT getLNRESULT() {
             return lnresult;
@@ -1663,11 +1555,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lnresult property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link ROWSET.ROW.LNRESULT }
-         *     
+         *
          */
         public void setLNRESULT(ROWSET.ROW.LNRESULT value) {
             this.lnresult = value;
@@ -1675,11 +1567,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the lnstate property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getLNSTATE() {
             return lnstate;
@@ -1687,11 +1579,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lnstate property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setLNSTATE(String value) {
             this.lnstate = value;
@@ -1699,11 +1591,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the lnhash property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getLNHASH() {
             return lnhash;
@@ -1711,11 +1603,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the lnhash property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setLNHASH(String value) {
             this.lnhash = value;
@@ -1723,11 +1615,11 @@ public class ROWSET {
 
         /**
          * Gets the value of the id property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link String }
-         *     
+         *
          */
         public String getId() {
             return id;
@@ -1735,11 +1627,11 @@ public class ROWSET {
 
         /**
          * Sets the value of the id property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link String }
-         *     
+         *
          */
         public void setId(String value) {
             this.id = value;
@@ -1748,9 +1640,9 @@ public class ROWSET {
 
         /**
          * <p>Java class for anonymous complex type.
-         * 
+         *
          * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -1764,13 +1656,13 @@ public class ROWSET {
          *   &lt;/complexContent>
          * &lt;/complexType>
          * </pre>
-         * 
-         * 
+         *
+         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
-            "hospitalbreachcode",
-            "hospitalbreachdt"
+                "hospitalbreachcode",
+                "hospitalbreachdt"
         })
         public static class HOSPITALBREACH {
 
@@ -1787,11 +1679,11 @@ public class ROWSET {
 
             /**
              * Gets the value of the hospitalbreachcode property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getHOSPITALBREACHCODE() {
                 return hospitalbreachcode;
@@ -1799,11 +1691,11 @@ public class ROWSET {
 
             /**
              * Sets the value of the hospitalbreachcode property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setHOSPITALBREACHCODE(String value) {
                 this.hospitalbreachcode = value;
@@ -1811,11 +1703,11 @@ public class ROWSET {
 
             /**
              * Gets the value of the hospitalbreachdt property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link XMLGregorianCalendar }
-             *     
+             *
              */
             public XMLGregorianCalendar getHOSPITALBREACHDT() {
                 return hospitalbreachdt;
@@ -1823,11 +1715,11 @@ public class ROWSET {
 
             /**
              * Sets the value of the hospitalbreachdt property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link XMLGregorianCalendar }
-             *     
+             *
              */
             public void setHOSPITALBREACHDT(XMLGregorianCalendar value) {
                 this.hospitalbreachdt = value;
@@ -1835,11 +1727,11 @@ public class ROWSET {
 
             /**
              * Gets the value of the id property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getId() {
                 return id;
@@ -1847,11 +1739,11 @@ public class ROWSET {
 
             /**
              * Sets the value of the id property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setId(String value) {
                 this.id = value;
@@ -1862,9 +1754,9 @@ public class ROWSET {
 
         /**
          * <p>Java class for anonymous complex type.
-         * 
+         *
          * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -1880,8 +1772,8 @@ public class ROWSET {
          *   &lt;/complexContent>
          * &lt;/complexType>
          * </pre>
-         * 
-         * 
+         *
+         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
@@ -1907,11 +1799,11 @@ public class ROWSET {
 
             /**
              * Gets the value of the returndatelpu property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link XMLGregorianCalendar }
-             *     
+             *
              */
             public XMLGregorianCalendar getRETURNDATELPU() {
                 return returndatelpu;
@@ -1919,11 +1811,11 @@ public class ROWSET {
 
             /**
              * Sets the value of the returndatelpu property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link XMLGregorianCalendar }
-             *     
+             *
              */
             public void setRETURNDATELPU(XMLGregorianCalendar value) {
                 this.returndatelpu = value;
@@ -1931,11 +1823,11 @@ public class ROWSET {
 
             /**
              * Gets the value of the mseresult property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getMSERESULT() {
                 return mseresult;
@@ -1943,11 +1835,11 @@ public class ROWSET {
 
             /**
              * Sets the value of the mseresult property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setMSERESULT(String value) {
                 this.mseresult = value;
@@ -1955,11 +1847,11 @@ public class ROWSET {
 
             /**
              * Gets the value of the otherstatedt property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link XMLGregorianCalendar }
-             *     
+             *
              */
             public XMLGregorianCalendar getOTHERSTATEDT() {
                 return otherstatedt;
@@ -1967,11 +1859,11 @@ public class ROWSET {
 
             /**
              * Sets the value of the otherstatedt property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link XMLGregorianCalendar }
-             *     
+             *
              */
             public void setOTHERSTATEDT(XMLGregorianCalendar value) {
                 this.otherstatedt = value;
@@ -1979,11 +1871,11 @@ public class ROWSET {
 
             /**
              * Gets the value of the nextlncode property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getNEXTLNCODE() {
                 return nextlncode;
@@ -1991,11 +1883,11 @@ public class ROWSET {
 
             /**
              * Sets the value of the nextlncode property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setNEXTLNCODE(String value) {
                 this.nextlncode = value;
@@ -2003,11 +1895,11 @@ public class ROWSET {
 
             /**
              * Gets the value of the id property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getId() {
                 return id;
@@ -2015,11 +1907,11 @@ public class ROWSET {
 
             /**
              * Sets the value of the id property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setId(String value) {
                 this.id = value;
@@ -2030,9 +1922,9 @@ public class ROWSET {
 
         /**
          * <p>Java class for anonymous complex type.
-         * 
+         *
          * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -2044,12 +1936,12 @@ public class ROWSET {
          *   &lt;/complexContent>
          * &lt;/complexType>
          * </pre>
-         * 
-         * 
+         *
+         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
-            "treatfullperiod"
+                "treatfullperiod"
         })
         public static class TREATPERIODS {
 
@@ -2058,25 +1950,25 @@ public class ROWSET {
 
             /**
              * Gets the value of the treatfullperiod property.
-             * 
+             *
              * <p>
              * This accessor method returns a reference to the live list,
              * not a snapshot. Therefore any modification you make to the
              * returned list will be present inside the JAXB object.
              * This is why there is not a <CODE>set</CODE> method for the treatfullperiod property.
-             * 
+             *
              * <p>
              * For example, to add a new item, do as follows:
              * <pre>
              *    getTREATFULLPERIOD().add(newItem);
              * </pre>
-             * 
-             * 
+             *
+             *
              * <p>
              * Objects of the following type(s) are allowed in the list
              * {@link TREATFULLPERIOD }
-             * 
-             * 
+             *
+             *
              */
             public List<TREATFULLPERIOD> getTREATFULLPERIOD() {
                 if (treatfullperiod == null) {

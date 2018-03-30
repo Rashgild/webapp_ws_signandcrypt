@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for FileOperationsLnUser_getLNData_Out complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="FileOperationsLnUser_getLNData_Out">
  *   &lt;complexContent>
@@ -33,15 +33,15 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "FileOperationsLnUser_getLNData_Out", propOrder = {
-    "data"
+        "data"
 })
 public class FileOperationsLnUserGetLNDataOut
-    extends WSResult
+        extends WSResult
 {
 
     @XmlElement(name = "DATA")
@@ -49,11 +49,11 @@ public class FileOperationsLnUserGetLNDataOut
 
     /**
      * Gets the value of the data property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link FileOperationsLnUserGetLNDataOut.DATA }
-     *     
+     *
      */
     public FileOperationsLnUserGetLNDataOut.DATA getDATA() {
         return data;
@@ -61,11 +61,11 @@ public class FileOperationsLnUserGetLNDataOut
 
     /**
      * Sets the value of the data property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link FileOperationsLnUserGetLNDataOut.DATA }
-     *     
+     *
      */
     public void setDATA(FileOperationsLnUserGetLNDataOut.DATA value) {
         this.data = value;
@@ -74,9 +74,9 @@ public class FileOperationsLnUserGetLNDataOut
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -88,12 +88,12 @@ public class FileOperationsLnUserGetLNDataOut
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "outrowset"
+            "outrowset"
     })
     public static class DATA {
 
@@ -102,11 +102,11 @@ public class FileOperationsLnUserGetLNDataOut
 
         /**
          * Gets the value of the outrowset property.
-         * 
+         *
          * @return
          *     possible object is
          *     {@link OUTROWSET }
-         *     
+         *
          */
         public OUTROWSET getOUTROWSET() {
             return outrowset;
@@ -114,11 +114,11 @@ public class FileOperationsLnUserGetLNDataOut
 
         /**
          * Sets the value of the outrowset property.
-         * 
+         *
          * @param value
          *     allowed object is
          *     {@link OUTROWSET }
-         *     
+         *
          */
         public void setOUTROWSET(OUTROWSET value) {
             this.outrowset = value;

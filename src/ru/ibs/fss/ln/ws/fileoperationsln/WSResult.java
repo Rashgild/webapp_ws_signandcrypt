@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for WSResult complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="WSResult">
  *   &lt;complexContent>
@@ -27,21 +27,22 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "WSResult", propOrder = {
-    "requestid",
-    "status",
-    "mess",
-    "info"
+        "requestid",
+        "status",
+        "mess",
+        "info"
 })
 @XmlSeeAlso({
-    FileOperationsLnUserGetNewLNNumOut.class,
-    FileOperationsLnUserDisableLnOut.class,
-    FileOperationsLnUserGetLNDataOut.class,
-    FileOperationsLnUserGetNewLNNumRangeOut.class
+        FileOperationsLnUserGetNewLNNumOut.class,
+        FileOperationsLnUserGetNewLNNumRangeOut.class,
+        FileOperationsLnUserDisableLnOut.class,
+        FileOperationsLnUserGetLNDataOut.class,
+        FileOperationsLnUserGetExistingLNNumRangeOut.class
 })
 public class WSResult {
 
@@ -56,11 +57,11 @@ public class WSResult {
 
     /**
      * Gets the value of the requestid property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getREQUESTID() {
         return requestid;
@@ -68,11 +69,11 @@ public class WSResult {
 
     /**
      * Sets the value of the requestid property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setREQUESTID(String value) {
         this.requestid = value;
@@ -80,7 +81,7 @@ public class WSResult {
 
     /**
      * Gets the value of the status property.
-     * 
+     *
      */
     public int getSTATUS() {
         return status;
@@ -88,7 +89,7 @@ public class WSResult {
 
     /**
      * Sets the value of the status property.
-     * 
+     *
      */
     public void setSTATUS(int value) {
         this.status = value;
@@ -96,11 +97,11 @@ public class WSResult {
 
     /**
      * Gets the value of the mess property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getMESS() {
         return mess;
@@ -108,11 +109,11 @@ public class WSResult {
 
     /**
      * Sets the value of the mess property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setMESS(String value) {
         this.mess = value;
@@ -120,11 +121,11 @@ public class WSResult {
 
     /**
      * Gets the value of the info property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link INFO }
-     *     
+     *
      */
     public INFO getINFO() {
         return info;
@@ -132,11 +133,11 @@ public class WSResult {
 
     /**
      * Sets the value of the info property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link INFO }
-     *     
+     *
      */
     public void setINFO(INFO value) {
         this.info = value;

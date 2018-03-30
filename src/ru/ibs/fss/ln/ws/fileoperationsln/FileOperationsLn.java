@@ -20,12 +20,71 @@ import javax.xml.ws.ResponseWrapper;
  */
 @WebService(name = "FileOperationsLn", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
 @XmlSeeAlso({
-        ru.ibs.fss.ln.ws.fileoperationslninternal.ObjectFactory.class,
         ru.ibs.fss.ln.ws.fileoperationsln.ObjectFactory.class,
         org.oasis_open.docs.wss._2004._01.oasis_200401_wss_wssecurity_utility_1_0.ObjectFactory.class
 })
 public interface FileOperationsLn {
 
+
+    /**
+     *
+     * @param ogrn
+     * @return
+     *     returns ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetExistingLNNumRangeOut
+     * @throws SOAPException_Exception
+     */
+    @WebMethod(action = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/getExistingLNNumRange")
+    @WebResult(name = "FileOperationsLnUserGetExistingLNNumRangeOut", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
+    @RequestWrapper(localName = "getExistingLNNumRange", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.GetExistingLNNumRange")
+    @ResponseWrapper(localName = "getExistingLNNumRangeResponse", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.GetExistingLNNumRangeResponse")
+    @Action(input = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/getExistingLNNumRange", output = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/getExistingLNNumRangeResponse", fault = {
+            @FaultAction(className = SOAPException_Exception.class, value = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/getExistingLNNumRange/Fault/SOAPException")
+    })
+    public FileOperationsLnUserGetExistingLNNumRangeOut getExistingLNNumRange(
+            @WebParam(name = "ogrn", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
+                    String ogrn)
+            throws SOAPException_Exception
+    ;
+
+    /**
+     *
+     * @param request
+     * @return
+     *     returns ru.ibs.fss.ln.ws.fileoperationsln.WSResult
+     * @throws SOAPException_Exception
+     */
+    @WebMethod(action = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/prParseFilelnlpu")
+    @WebResult(name = "WSResult", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
+    @RequestWrapper(localName = "prParseFilelnlpu", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.PrParseFilelnlpu")
+    @ResponseWrapper(localName = "prParseFilelnlpuResponse", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.PrParseFilelnlpuResponse")
+    @Action(input = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/prParseFilelnlpu", output = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/prParseFilelnlpuResponse", fault = {
+            @FaultAction(className = SOAPException_Exception.class, value = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/prParseFilelnlpu/Fault/SOAPException")
+    })
+    public WSResult prParseFilelnlpu(
+            @WebParam(name = "request", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
+                    PrParseFilelnlpuElement request)
+            throws SOAPException_Exception
+    ;
+
+    /**
+     *
+     * @param ogrn
+     * @return
+     *     returns ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetNewLNNumOut
+     * @throws SOAPException_Exception
+     */
+    @WebMethod(action = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/getNewLNNum")
+    @WebResult(name = "fileOperationsLnUserGetNewLNNumOut", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
+    @RequestWrapper(localName = "getNewLNNum", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.GetNewLNNum")
+    @ResponseWrapper(localName = "getNewLNNumResponse", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.GetNewLNNumResponse")
+    @Action(input = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/getNewLNNum", output = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/getNewLNNumResponse", fault = {
+            @FaultAction(className = SOAPException_Exception.class, value = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/getNewLNNum/Fault/SOAPException")
+    })
+    public FileOperationsLnUserGetNewLNNumOut getNewLNNum(
+            @WebParam(name = "ogrn", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
+                    String ogrn)
+            throws SOAPException_Exception
+    ;
 
     /**
      *
@@ -105,46 +164,6 @@ public interface FileOperationsLn {
                     String reasonCode,
             @WebParam(name = "reason", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
                     String reason)
-            throws SOAPException_Exception
-    ;
-
-    /**
-     *
-     * @param request
-     * @return
-     *     returns ru.ibs.fss.ln.ws.fileoperationsln.WSResult
-     * @throws SOAPException_Exception
-     */
-    @WebMethod(action = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/prParseFilelnlpu")
-    @WebResult(name = "WSResult", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
-    @RequestWrapper(localName = "prParseFilelnlpu", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.PrParseFilelnlpu")
-    @ResponseWrapper(localName = "prParseFilelnlpuResponse", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.PrParseFilelnlpuResponse")
-    @Action(input = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/prParseFilelnlpu", output = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/prParseFilelnlpuResponse", fault = {
-            @FaultAction(className = SOAPException_Exception.class, value = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/prParseFilelnlpu/Fault/SOAPException")
-    })
-    public WSResult prParseFilelnlpu(
-            @WebParam(name = "request", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
-                    PrParseFilelnlpuElement request)
-            throws SOAPException_Exception
-    ;
-
-    /**
-     *
-     * @param ogrn
-     * @return
-     *     returns ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetNewLNNumOut
-     * @throws SOAPException_Exception
-     */
-    @WebMethod(action = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/getNewLNNum")
-    @WebResult(name = "fileOperationsLnUserGetNewLNNumOut", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
-    @RequestWrapper(localName = "getNewLNNum", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.GetNewLNNum")
-    @ResponseWrapper(localName = "getNewLNNumResponse", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", className = "ru.ibs.fss.ln.ws.fileoperationsln.GetNewLNNumResponse")
-    @Action(input = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/getNewLNNum", output = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/getNewLNNumResponse", fault = {
-            @FaultAction(className = SOAPException_Exception.class, value = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl/FileOperationsLn/getNewLNNum/Fault/SOAPException")
-    })
-    public FileOperationsLnUserGetNewLNNumOut getNewLNNum(
-            @WebParam(name = "ogrn", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl")
-                    String ogrn)
             throws SOAPException_Exception
     ;
 

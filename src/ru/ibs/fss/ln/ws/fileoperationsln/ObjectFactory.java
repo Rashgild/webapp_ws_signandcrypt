@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
  * type definitions, element declarations and model 
  * groups.  Factory methods for each of these are 
  * provided in this class.
- * 
+ *
  */
 @XmlRegistry
 public class ObjectFactory {
@@ -29,10 +29,12 @@ public class ObjectFactory {
     private final static QName _PrParseFilelnlpu_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "prParseFilelnlpu");
     private final static QName _DisableLn_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "disableLn");
     private final static QName _OUTROWSET_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "OUT_ROWSET");
+    private final static QName _GetExistingLNNumRange_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "getExistingLNNumRange");
     private final static QName _GetNewLNNumRangeResponse_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "getNewLNNumRangeResponse");
     private final static QName _GetNewLNNum_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "getNewLNNum");
     private final static QName _GetNewLNNumResponse_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "getNewLNNumResponse");
     private final static QName _SOAPException_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "SOAPException");
+    private final static QName _GetExistingLNNumRangeResponse_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "getExistingLNNumRangeResponse");
     private final static QName _GetNewLNNumRange_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "getNewLNNumRange");
     private final static QName _GetLNDataResponse_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "getLNDataResponse");
     private final static QName _ROWSET_QNAME = new QName("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", "ROWSET");
@@ -41,14 +43,14 @@ public class ObjectFactory {
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ru.ibs.fss.ln.ws.fileoperationsln
-     * 
+     *
      */
     public ObjectFactory() {
     }
 
     /**
      * Create an instance of {@link FileOperationsLnUserGetLNDataOut }
-     * 
+     *
      */
     public FileOperationsLnUserGetLNDataOut createFileOperationsLnUserGetLNDataOut() {
         return new FileOperationsLnUserGetLNDataOut();
@@ -56,31 +58,31 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link FileOperationsLnUserDisableLnOut }
-     * 
+     *
      */
     public FileOperationsLnUserDisableLnOut createFileOperationsLnUserDisableLnOut() {
         return new FileOperationsLnUserDisableLnOut();
     }
 
     /**
-     * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROW }
-     * 
-     */
-    public ru.ibs.fss.ln.ws.fileoperationsln.ROW createROW() {
-        return new ru.ibs.fss.ln.ws.fileoperationsln.ROW();
-    }
-
-    /**
      * Create an instance of {@link PrParseFilelnlpuElement }
-     * 
+     *
      */
     public PrParseFilelnlpuElement createPrParseFilelnlpuElement() {
         return new PrParseFilelnlpuElement();
     }
 
     /**
+     * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROW }
+     *
+     */
+    public ru.ibs.fss.ln.ws.fileoperationsln.ROW createROW() {
+        return new ru.ibs.fss.ln.ws.fileoperationsln.ROW();
+    }
+
+    /**
      * Create an instance of {@link INFO }
-     * 
+     *
      */
     public INFO createINFO() {
         return new INFO();
@@ -88,7 +90,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link INFO.ROWSET }
-     * 
+     *
      */
     public INFO.ROWSET createINFOROWSET() {
         return new INFO.ROWSET();
@@ -96,7 +98,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link INFO.ROWSET.ROW }
-     * 
+     *
      */
     public INFO.ROWSET.ROW createINFOROWSETROW() {
         return new INFO.ROWSET.ROW();
@@ -104,7 +106,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link INFO.ROWSET.ROW.ERRORS }
-     * 
+     *
      */
     public INFO.ROWSET.ROW.ERRORS createINFOROWSETROWERRORS() {
         return new INFO.ROWSET.ROW.ERRORS();
@@ -112,7 +114,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROWSET }
-     * 
+     *
      */
     public ru.ibs.fss.ln.ws.fileoperationsln.ROWSET createROWSET() {
         return new ru.ibs.fss.ln.ws.fileoperationsln.ROWSET();
@@ -120,7 +122,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW }
-     * 
+     *
      */
     public ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW createROWSETROW() {
         return new ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW();
@@ -128,7 +130,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DisableLn }
-     * 
+     *
      */
     public DisableLn createDisableLn() {
         return new DisableLn();
@@ -136,7 +138,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PrParseFilelnlpuResponse }
-     * 
+     *
      */
     public PrParseFilelnlpuResponse createPrParseFilelnlpuResponse() {
         return new PrParseFilelnlpuResponse();
@@ -144,7 +146,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PrParseFilelnlpu }
-     * 
+     *
      */
     public PrParseFilelnlpu createPrParseFilelnlpu() {
         return new PrParseFilelnlpu();
@@ -152,7 +154,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link DisableLnResponse }
-     * 
+     *
      */
     public DisableLnResponse createDisableLnResponse() {
         return new DisableLnResponse();
@@ -160,7 +162,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetNewLNNumResponse }
-     * 
+     *
      */
     public GetNewLNNumResponse createGetNewLNNumResponse() {
         return new GetNewLNNumResponse();
@@ -168,7 +170,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetNewLNNumRangeResponse }
-     * 
+     *
      */
     public GetNewLNNumRangeResponse createGetNewLNNumRangeResponse() {
         return new GetNewLNNumRangeResponse();
@@ -176,15 +178,23 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetNewLNNum }
-     * 
+     *
      */
     public GetNewLNNum createGetNewLNNum() {
         return new GetNewLNNum();
     }
 
     /**
+     * Create an instance of {@link GetExistingLNNumRange }
+     *
+     */
+    public GetExistingLNNumRange createGetExistingLNNumRange() {
+        return new GetExistingLNNumRange();
+    }
+
+    /**
      * Create an instance of {@link OUTROWSET }
-     * 
+     *
      */
     public OUTROWSET createOUTROWSET() {
         return new OUTROWSET();
@@ -192,7 +202,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetNewLNNumRange }
-     * 
+     *
      */
     public GetNewLNNumRange createGetNewLNNumRange() {
         return new GetNewLNNumRange();
@@ -200,15 +210,23 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SOAPException }
-     * 
+     *
      */
     public SOAPException createSOAPException() {
         return new SOAPException();
     }
 
     /**
+     * Create an instance of {@link GetExistingLNNumRangeResponse }
+     *
+     */
+    public GetExistingLNNumRangeResponse createGetExistingLNNumRangeResponse() {
+        return new GetExistingLNNumRangeResponse();
+    }
+
+    /**
      * Create an instance of {@link ROWSETWRAPPER }
-     * 
+     *
      */
     public ROWSETWRAPPER createROWSETWRAPPER() {
         return new ROWSETWRAPPER();
@@ -216,7 +234,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetLNData }
-     * 
+     *
      */
     public GetLNData createGetLNData() {
         return new GetLNData();
@@ -224,7 +242,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link OUTROWSETWRAPPER }
-     * 
+     *
      */
     public OUTROWSETWRAPPER createOUTROWSETWRAPPER() {
         return new OUTROWSETWRAPPER();
@@ -232,7 +250,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetLNDataResponse }
-     * 
+     *
      */
     public GetLNDataResponse createGetLNDataResponse() {
         return new GetLNDataResponse();
@@ -240,23 +258,15 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link LnNumList }
-     * 
+     *
      */
     public LnNumList createLnNumList() {
         return new LnNumList();
     }
 
     /**
-     * Create an instance of {@link TREATPERIOD }
-     * 
-     */
-    public TREATPERIOD createTREATPERIOD() {
-        return new TREATPERIOD();
-    }
-
-    /**
      * Create an instance of {@link FileOperationsLnUserGetNewLNNumOut }
-     * 
+     *
      */
     public FileOperationsLnUserGetNewLNNumOut createFileOperationsLnUserGetNewLNNumOut() {
         return new FileOperationsLnUserGetNewLNNumOut();
@@ -264,31 +274,47 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link TREATFULLPERIOD }
-     * 
+     *
      */
     public TREATFULLPERIOD createTREATFULLPERIOD() {
         return new TREATFULLPERIOD();
     }
 
     /**
-     * Create an instance of {@link WSResult }
-     * 
-     */
-    public WSResult createWSResult() {
-        return new WSResult();
-    }
-
-    /**
      * Create an instance of {@link FileOperationsLnUserGetNewLNNumRangeOut }
-     * 
+     *
      */
     public FileOperationsLnUserGetNewLNNumRangeOut createFileOperationsLnUserGetNewLNNumRangeOut() {
         return new FileOperationsLnUserGetNewLNNumRangeOut();
     }
 
     /**
+     * Create an instance of {@link TREATPERIOD }
+     *
+     */
+    public TREATPERIOD createTREATPERIOD() {
+        return new TREATPERIOD();
+    }
+
+    /**
+     * Create an instance of {@link WSResult }
+     *
+     */
+    public WSResult createWSResult() {
+        return new WSResult();
+    }
+
+    /**
+     * Create an instance of {@link FileOperationsLnUserGetExistingLNNumRangeOut }
+     *
+     */
+    public FileOperationsLnUserGetExistingLNNumRangeOut createFileOperationsLnUserGetExistingLNNumRangeOut() {
+        return new FileOperationsLnUserGetExistingLNNumRangeOut();
+    }
+
+    /**
      * Create an instance of {@link FileOperationsLnUserGetLNDataOut.DATA }
-     * 
+     *
      */
     public FileOperationsLnUserGetLNDataOut.DATA createFileOperationsLnUserGetLNDataOutDATA() {
         return new FileOperationsLnUserGetLNDataOut.DATA();
@@ -296,15 +322,23 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link FileOperationsLnUserDisableLnOut.DATA }
-     * 
+     *
      */
     public FileOperationsLnUserDisableLnOut.DATA createFileOperationsLnUserDisableLnOutDATA() {
         return new FileOperationsLnUserDisableLnOut.DATA();
     }
 
     /**
+     * Create an instance of {@link PrParseFilelnlpuElement.PXmlFile }
+     *
+     */
+    public PrParseFilelnlpuElement.PXmlFile createPrParseFilelnlpuElementPXmlFile() {
+        return new PrParseFilelnlpuElement.PXmlFile();
+    }
+
+    /**
      * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROW.HOSPITALBREACH }
-     * 
+     *
      */
     public ru.ibs.fss.ln.ws.fileoperationsln.ROW.HOSPITALBREACH createROWHOSPITALBREACH() {
         return new ru.ibs.fss.ln.ws.fileoperationsln.ROW.HOSPITALBREACH();
@@ -312,7 +346,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROW.TREATPERIODS }
-     * 
+     *
      */
     public ru.ibs.fss.ln.ws.fileoperationsln.ROW.TREATPERIODS createROWTREATPERIODS() {
         return new ru.ibs.fss.ln.ws.fileoperationsln.ROW.TREATPERIODS();
@@ -320,23 +354,15 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROW.LNRESULT }
-     * 
+     *
      */
     public ru.ibs.fss.ln.ws.fileoperationsln.ROW.LNRESULT createROWLNRESULT() {
         return new ru.ibs.fss.ln.ws.fileoperationsln.ROW.LNRESULT();
     }
 
     /**
-     * Create an instance of {@link PrParseFilelnlpuElement.PXmlFile }
-     * 
-     */
-    public PrParseFilelnlpuElement.PXmlFile createPrParseFilelnlpuElementPXmlFile() {
-        return new PrParseFilelnlpuElement.PXmlFile();
-    }
-
-    /**
      * Create an instance of {@link INFO.ROWSET.ROW.ERRORS.ERROR }
-     * 
+     *
      */
     public INFO.ROWSET.ROW.ERRORS.ERROR createINFOROWSETROWERRORSERROR() {
         return new INFO.ROWSET.ROW.ERRORS.ERROR();
@@ -344,7 +370,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.HOSPITALBREACH }
-     * 
+     *
      */
     public ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.HOSPITALBREACH createROWSETROWHOSPITALBREACH() {
         return new ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.HOSPITALBREACH();
@@ -352,7 +378,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.TREATPERIODS }
-     * 
+     *
      */
     public ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.TREATPERIODS createROWSETROWTREATPERIODS() {
         return new ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.TREATPERIODS();
@@ -360,7 +386,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.LNRESULT }
-     * 
+     *
      */
     public ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.LNRESULT createROWSETROWLNRESULT() {
         return new ru.ibs.fss.ln.ws.fileoperationsln.ROWSET.ROW.LNRESULT();
@@ -368,7 +394,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DisableLnResponse }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "disableLnResponse")
     public JAXBElement<DisableLnResponse> createDisableLnResponse(DisableLnResponse value) {
@@ -377,7 +403,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PrParseFilelnlpuResponse }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "prParseFilelnlpuResponse")
     public JAXBElement<PrParseFilelnlpuResponse> createPrParseFilelnlpuResponse(PrParseFilelnlpuResponse value) {
@@ -386,7 +412,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PrParseFilelnlpu }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "prParseFilelnlpu")
     public JAXBElement<PrParseFilelnlpu> createPrParseFilelnlpu(PrParseFilelnlpu value) {
@@ -395,7 +421,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DisableLn }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "disableLn")
     public JAXBElement<DisableLn> createDisableLn(DisableLn value) {
@@ -404,7 +430,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link OUTROWSET }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "OUT_ROWSET")
     public JAXBElement<OUTROWSET> createOUTROWSET(OUTROWSET value) {
@@ -412,8 +438,17 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetExistingLNNumRange }{@code >}}
+     *
+     */
+    @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "getExistingLNNumRange")
+    public JAXBElement<GetExistingLNNumRange> createGetExistingLNNumRange(GetExistingLNNumRange value) {
+        return new JAXBElement<GetExistingLNNumRange>(_GetExistingLNNumRange_QNAME, GetExistingLNNumRange.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetNewLNNumRangeResponse }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "getNewLNNumRangeResponse")
     public JAXBElement<GetNewLNNumRangeResponse> createGetNewLNNumRangeResponse(GetNewLNNumRangeResponse value) {
@@ -422,7 +457,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetNewLNNum }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "getNewLNNum")
     public JAXBElement<GetNewLNNum> createGetNewLNNum(GetNewLNNum value) {
@@ -431,7 +466,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetNewLNNumResponse }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "getNewLNNumResponse")
     public JAXBElement<GetNewLNNumResponse> createGetNewLNNumResponse(GetNewLNNumResponse value) {
@@ -440,7 +475,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SOAPException }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "SOAPException")
     public JAXBElement<SOAPException> createSOAPException(SOAPException value) {
@@ -448,8 +483,17 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetExistingLNNumRangeResponse }{@code >}}
+     *
+     */
+    @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "getExistingLNNumRangeResponse")
+    public JAXBElement<GetExistingLNNumRangeResponse> createGetExistingLNNumRangeResponse(GetExistingLNNumRangeResponse value) {
+        return new JAXBElement<GetExistingLNNumRangeResponse>(_GetExistingLNNumRangeResponse_QNAME, GetExistingLNNumRangeResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetNewLNNumRange }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "getNewLNNumRange")
     public JAXBElement<GetNewLNNumRange> createGetNewLNNumRange(GetNewLNNumRange value) {
@@ -458,7 +502,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetLNDataResponse }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "getLNDataResponse")
     public JAXBElement<GetLNDataResponse> createGetLNDataResponse(GetLNDataResponse value) {
@@ -467,7 +511,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ru.ibs.fss.ln.ws.fileoperationsln.ROWSET }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "ROWSET")
     public JAXBElement<ru.ibs.fss.ln.ws.fileoperationsln.ROWSET> createROWSET(ru.ibs.fss.ln.ws.fileoperationsln.ROWSET value) {
@@ -476,7 +520,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link INFO }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "INFO")
     public JAXBElement<INFO> createINFO(INFO value) {
@@ -485,7 +529,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetLNData }{@code >}}
-     * 
+     *
      */
     @XmlElementDecl(namespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", name = "getLNData")
     public JAXBElement<GetLNData> createGetLNData(GetLNData value) {

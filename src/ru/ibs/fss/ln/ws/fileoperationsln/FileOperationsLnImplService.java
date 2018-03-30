@@ -1,11 +1,15 @@
 
 package ru.ibs.fss.ln.ws.fileoperationsln;
 
-import javax.jws.HandlerChain;
-import javax.xml.namespace.QName;
-import javax.xml.ws.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.jws.HandlerChain;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+import javax.xml.ws.WebEndpoint;
+import javax.xml.ws.WebServiceClient;
+import javax.xml.ws.WebServiceException;
+import javax.xml.ws.WebServiceFeature;
 
 
 /**
@@ -14,8 +18,7 @@ import java.net.URL;
  * Generated source version: 2.2
  *
  */
-@WebServiceClient(name = "FileOperationsLnImplService", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", wsdlLocation = "https://docs.fss.ru/WSLnCrypto/FileOperationsLnPort?WSDL")
-//@WebServiceClient(name = "FileOperationsLnImplService", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", wsdlLocation = "https://docs-test.fss.ru/WSLnCrypto/FileOperationsLnPort?WSDL")
+@WebServiceClient(name = "FileOperationsLnImplService", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", wsdlLocation = "https://docs.fss.ru//WSLnCryptoV11/FileOperationsLnPort?WSDL")
 @HandlerChain(file= "ru/my/interceptor/handler-chain.xml")
 public class FileOperationsLnImplService
         extends Service
@@ -29,8 +32,7 @@ public class FileOperationsLnImplService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("https://docs.fss.ru/WSLnCrypto/FileOperationsLnPort?WSDL");
-           // url = new URL("https://docs-test.fss.ru/WSLnCrypto/FileOperationsLnPort?WSDL");
+            url = new URL("https://docs.fss.ru//WSLnCryptoV11/FileOperationsLnPort?WSDL");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

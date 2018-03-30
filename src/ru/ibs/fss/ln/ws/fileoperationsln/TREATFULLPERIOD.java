@@ -14,9 +14,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * <p>Java class for TREAT_FULL_PERIOD complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="TREAT_FULL_PERIOD">
  *   &lt;complexContent>
@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TREAT_FULL_PERIOD", propOrder = {
@@ -54,11 +54,11 @@ public class TREATFULLPERIOD {
 
     /**
      * Gets the value of the treatchairmanrole property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getTREATCHAIRMANROLE() {
         return treatchairmanrole;
@@ -66,11 +66,11 @@ public class TREATFULLPERIOD {
 
     /**
      * Sets the value of the treatchairmanrole property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setTREATCHAIRMANROLE(String value) {
         this.treatchairmanrole = value;
@@ -78,11 +78,11 @@ public class TREATFULLPERIOD {
 
     /**
      * Gets the value of the treatchairman property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getTREATCHAIRMAN() {
         return treatchairman;
@@ -90,11 +90,11 @@ public class TREATFULLPERIOD {
 
     /**
      * Sets the value of the treatchairman property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setTREATCHAIRMAN(String value) {
         this.treatchairman = value;
@@ -102,11 +102,11 @@ public class TREATFULLPERIOD {
 
     /**
      * Gets the value of the treatperiod property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link TREATPERIOD }
-     *     
+     *
      */
     public TREATPERIOD getTREATPERIOD() {
         return treatperiod;
@@ -114,11 +114,11 @@ public class TREATFULLPERIOD {
 
     /**
      * Sets the value of the treatperiod property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link TREATPERIOD }
-     *     
+     *
      */
     public void setTREATPERIOD(TREATPERIOD value) {
         this.treatperiod = value;
@@ -126,11 +126,11 @@ public class TREATFULLPERIOD {
 
     /**
      * Gets the value of the id property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getId() {
         return id;
@@ -138,11 +138,11 @@ public class TREATFULLPERIOD {
 
     /**
      * Sets the value of the id property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setId(String value) {
         this.id = value;

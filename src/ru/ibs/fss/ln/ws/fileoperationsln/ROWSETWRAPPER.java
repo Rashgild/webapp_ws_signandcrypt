@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -24,12 +24,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "rowset"
+        "rowset"
 })
 @XmlRootElement(name = "ROWSET_WRAPPER")
 public class ROWSETWRAPPER {
@@ -39,11 +39,11 @@ public class ROWSETWRAPPER {
 
     /**
      * Gets the value of the rowset property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link ROWSET }
-     *     
+     *
      */
     public ROWSET getROWSET() {
         return rowset;
@@ -51,11 +51,11 @@ public class ROWSETWRAPPER {
 
     /**
      * Sets the value of the rowset property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link ROWSET }
-     *     
+     *
      */
     public void setROWSET(ROWSET value) {
         this.rowset = value;

@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for getNewLNNumResponse complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="getNewLNNumResponse">
  *   &lt;complexContent>
@@ -22,12 +22,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getNewLNNumResponse", propOrder = {
-    "fileOperationsLnUserGetNewLNNumOut"
+        "fileOperationsLnUserGetNewLNNumOut"
 })
 public class GetNewLNNumResponse {
 
@@ -35,11 +35,11 @@ public class GetNewLNNumResponse {
 
     /**
      * Gets the value of the fileOperationsLnUserGetNewLNNumOut property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link FileOperationsLnUserGetNewLNNumOut }
-     *     
+     *
      */
     public FileOperationsLnUserGetNewLNNumOut getFileOperationsLnUserGetNewLNNumOut() {
         return fileOperationsLnUserGetNewLNNumOut;
@@ -47,11 +47,11 @@ public class GetNewLNNumResponse {
 
     /**
      * Sets the value of the fileOperationsLnUserGetNewLNNumOut property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link FileOperationsLnUserGetNewLNNumOut }
-     *     
+     *
      */
     public void setFileOperationsLnUserGetNewLNNumOut(FileOperationsLnUserGetNewLNNumOut value) {
         this.fileOperationsLnUserGetNewLNNumOut = value;

@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for getNewLNNumRangeResponse complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="getNewLNNumRangeResponse">
  *   &lt;complexContent>
@@ -22,12 +22,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getNewLNNumRangeResponse", propOrder = {
-    "fileOperationsLnUserGetNewLNNumRangeOut"
+        "fileOperationsLnUserGetNewLNNumRangeOut"
 })
 public class GetNewLNNumRangeResponse {
 
@@ -35,11 +35,11 @@ public class GetNewLNNumRangeResponse {
 
     /**
      * Gets the value of the fileOperationsLnUserGetNewLNNumRangeOut property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link FileOperationsLnUserGetNewLNNumRangeOut }
-     *     
+     *
      */
     public FileOperationsLnUserGetNewLNNumRangeOut getFileOperationsLnUserGetNewLNNumRangeOut() {
         return fileOperationsLnUserGetNewLNNumRangeOut;
@@ -47,11 +47,11 @@ public class GetNewLNNumRangeResponse {
 
     /**
      * Sets the value of the fileOperationsLnUserGetNewLNNumRangeOut property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link FileOperationsLnUserGetNewLNNumRangeOut }
-     *     
+     *
      */
     public void setFileOperationsLnUserGetNewLNNumRangeOut(FileOperationsLnUserGetNewLNNumRangeOut value) {
         this.fileOperationsLnUserGetNewLNNumRangeOut = value;

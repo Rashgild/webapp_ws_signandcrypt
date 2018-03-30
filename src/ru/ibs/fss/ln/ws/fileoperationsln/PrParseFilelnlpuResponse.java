@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for prParseFilelnlpuResponse complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="prParseFilelnlpuResponse">
  *   &lt;complexContent>
@@ -23,12 +23,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "prParseFilelnlpuResponse", propOrder = {
-    "wsResult"
+        "wsResult"
 })
 public class PrParseFilelnlpuResponse {
 
@@ -37,11 +37,11 @@ public class PrParseFilelnlpuResponse {
 
     /**
      * Gets the value of the wsResult property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link WSResult }
-     *     
+     *
      */
     public WSResult getWSResult() {
         return wsResult;
@@ -49,11 +49,11 @@ public class PrParseFilelnlpuResponse {
 
     /**
      * Sets the value of the wsResult property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link WSResult }
-     *     
+     *
      */
     public void setWSResult(WSResult value) {
         this.wsResult = value;

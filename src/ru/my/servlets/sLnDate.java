@@ -65,7 +65,9 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> Имя: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getNAME()+"</H1>");
             out.print("<H1> Отчество: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPATRONIMIC()+"</H1>");
             out.print("<H1> Дата рождения: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getBIRTHDAY()+"</H1>");
-            out.print("<H1> Место работы: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUEMPLOYER()+"</H1>");
+            out.print("<H1> Место работы:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUEMPLOYER()+"</H1>");
+            out.print("<H1> Совместительство: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUEMPLFLAG()+"</H1>");
+            out.print("<H1> Номер: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPARENTCODE()+"</H1>");
             out.print("<H1> Диагноз: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getDIAGNOS()+"</H1>");
 
             out.print("<H1> ранние сроки беременности: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPREGN12WFLAG()+"</H1>");
@@ -82,6 +84,13 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> МСЭ2: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getMSEDT2()+"</H1>");
             out.print("<H1> МСЭ3: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getMSEDT3()+"</H1>");
             out.print("<H1> МСЭ группа: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getMSEINVALIDGROUP()+"</H1>");
+            out.print("<H1> ______________________</H1>");
+
+            out.print("<H1> ______________________</H1>");
+            out.print("<H1> Дата начала (пред.родов): "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getDATE1()+"</H1>");
+            out.print("<H1> Дата окончания: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getDATE2()+"</H1>");
+            out.print("<H1> Номер путевки: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getVOUCHERNO()+"</H1>");
+            out.print("<H1> ОГРН санатория или клиники НИИ: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getVOUCHEROGRN()+"</H1>");
             out.print("<H1> ______________________</H1>");
 
 

@@ -15,9 +15,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>Java class for TREAT_PERIOD complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="TREAT_PERIOD">
  *   &lt;complexContent>
@@ -33,8 +33,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TREAT_PERIOD", propOrder = {
@@ -60,11 +60,11 @@ public class TREATPERIOD {
 
     /**
      * Gets the value of the treatdt1 property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getTREATDT1() {
         return treatdt1;
@@ -72,11 +72,11 @@ public class TREATPERIOD {
 
     /**
      * Sets the value of the treatdt1 property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setTREATDT1(XMLGregorianCalendar value) {
         this.treatdt1 = value;
@@ -84,11 +84,11 @@ public class TREATPERIOD {
 
     /**
      * Gets the value of the treatdt2 property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getTREATDT2() {
         return treatdt2;
@@ -96,11 +96,11 @@ public class TREATPERIOD {
 
     /**
      * Sets the value of the treatdt2 property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setTREATDT2(XMLGregorianCalendar value) {
         this.treatdt2 = value;
@@ -108,11 +108,11 @@ public class TREATPERIOD {
 
     /**
      * Gets the value of the treatdoctorrole property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getTREATDOCTORROLE() {
         return treatdoctorrole;
@@ -120,11 +120,11 @@ public class TREATPERIOD {
 
     /**
      * Sets the value of the treatdoctorrole property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setTREATDOCTORROLE(String value) {
         this.treatdoctorrole = value;
@@ -132,11 +132,11 @@ public class TREATPERIOD {
 
     /**
      * Gets the value of the treatdoctor property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getTREATDOCTOR() {
         return treatdoctor;
@@ -144,11 +144,11 @@ public class TREATPERIOD {
 
     /**
      * Sets the value of the treatdoctor property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setTREATDOCTOR(String value) {
         this.treatdoctor = value;
@@ -156,11 +156,11 @@ public class TREATPERIOD {
 
     /**
      * Gets the value of the id property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getId() {
         return id;
@@ -168,11 +168,11 @@ public class TREATPERIOD {
 
     /**
      * Sets the value of the id property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setId(String value) {
         this.id = value;

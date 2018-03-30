@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for prParseFilelnlpu complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="prParseFilelnlpu">
  *   &lt;complexContent>
@@ -22,12 +22,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "prParseFilelnlpu", propOrder = {
-    "request"
+        "request"
 })
 public class PrParseFilelnlpu {
 
@@ -35,11 +35,11 @@ public class PrParseFilelnlpu {
 
     /**
      * Gets the value of the request property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link PrParseFilelnlpuElement }
-     *     
+     *
      */
     public PrParseFilelnlpuElement getRequest() {
         return request;
@@ -47,11 +47,11 @@ public class PrParseFilelnlpu {
 
     /**
      * Sets the value of the request property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link PrParseFilelnlpuElement }
-     *     
+     *
      */
     public void setRequest(PrParseFilelnlpuElement value) {
         this.request = value;

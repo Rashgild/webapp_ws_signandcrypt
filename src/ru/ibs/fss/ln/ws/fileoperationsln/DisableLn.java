@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for disableLn complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="disableLn">
  *   &lt;complexContent>
@@ -26,16 +26,16 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "disableLn", propOrder = {
-    "ogrn",
-    "lnCode",
-    "snils",
-    "reasonCode",
-    "reason"
+        "ogrn",
+        "lnCode",
+        "snils",
+        "reasonCode",
+        "reason"
 })
 public class DisableLn {
 
@@ -47,11 +47,11 @@ public class DisableLn {
 
     /**
      * Gets the value of the ogrn property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getOgrn() {
         return ogrn;
@@ -59,11 +59,11 @@ public class DisableLn {
 
     /**
      * Sets the value of the ogrn property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setOgrn(String value) {
         this.ogrn = value;
@@ -71,11 +71,11 @@ public class DisableLn {
 
     /**
      * Gets the value of the lnCode property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getLnCode() {
         return lnCode;
@@ -83,11 +83,11 @@ public class DisableLn {
 
     /**
      * Sets the value of the lnCode property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setLnCode(String value) {
         this.lnCode = value;
@@ -95,11 +95,11 @@ public class DisableLn {
 
     /**
      * Gets the value of the snils property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getSnils() {
         return snils;
@@ -107,11 +107,11 @@ public class DisableLn {
 
     /**
      * Sets the value of the snils property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setSnils(String value) {
         this.snils = value;
@@ -119,11 +119,11 @@ public class DisableLn {
 
     /**
      * Gets the value of the reasonCode property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getReasonCode() {
         return reasonCode;
@@ -131,11 +131,11 @@ public class DisableLn {
 
     /**
      * Sets the value of the reasonCode property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setReasonCode(String value) {
         this.reasonCode = value;
@@ -143,11 +143,11 @@ public class DisableLn {
 
     /**
      * Gets the value of the reason property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getReason() {
         return reason;
@@ -155,11 +155,11 @@ public class DisableLn {
 
     /**
      * Sets the value of the reason property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setReason(String value) {
         this.reason = value;

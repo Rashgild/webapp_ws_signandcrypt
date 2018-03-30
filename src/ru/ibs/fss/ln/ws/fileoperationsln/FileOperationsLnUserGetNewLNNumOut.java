@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for FileOperationsLnUser_getNewLNNum_Out complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="FileOperationsLnUser_getNewLNNum_Out">
  *   &lt;complexContent>
@@ -23,15 +23,15 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "FileOperationsLnUser_getNewLNNum_Out", propOrder = {
-    "data"
+        "data"
 })
 public class FileOperationsLnUserGetNewLNNumOut
-    extends WSResult
+        extends WSResult
 {
 
     @XmlElement(name = "DATA", required = true, nillable = true)
@@ -39,11 +39,11 @@ public class FileOperationsLnUserGetNewLNNumOut
 
     /**
      * Gets the value of the data property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getDATA() {
         return data;
@@ -51,11 +51,11 @@ public class FileOperationsLnUserGetNewLNNumOut
 
     /**
      * Sets the value of the data property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setDATA(String value) {
         this.data = value;

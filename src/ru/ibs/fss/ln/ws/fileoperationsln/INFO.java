@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for INFO complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="INFO">
  *   &lt;complexContent>
@@ -72,12 +72,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "INFO", propOrder = {
-    "rowset"
+        "rowset"
 })
 public class INFO {
 
@@ -86,11 +86,11 @@ public class INFO {
 
     /**
      * Gets the value of the rowset property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link INFO.ROWSET }
-     *     
+     *
      */
     public INFO.ROWSET getROWSET() {
         return rowset;
@@ -98,11 +98,11 @@ public class INFO {
 
     /**
      * Sets the value of the rowset property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link INFO.ROWSET }
-     *     
+     *
      */
     public void setROWSET(INFO.ROWSET value) {
         this.rowset = value;
@@ -111,9 +111,9 @@ public class INFO {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -161,12 +161,12 @@ public class INFO {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "row"
+            "row"
     })
     public static class ROWSET {
 
@@ -175,25 +175,25 @@ public class INFO {
 
         /**
          * Gets the value of the row property.
-         * 
+         *
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
          * This is why there is not a <CODE>set</CODE> method for the row property.
-         * 
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getROW().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link INFO.ROWSET.ROW }
-         * 
-         * 
+         *
+         *
          */
         public List<INFO.ROWSET.ROW> getROW() {
             if (row == null) {
@@ -205,9 +205,9 @@ public class INFO {
 
         /**
          * <p>Java class for anonymous complex type.
-         * 
+         *
          * <p>The following schema fragment specifies the expected content contained within this class.
-         * 
+         *
          * <pre>
          * &lt;complexType>
          *   &lt;complexContent>
@@ -245,8 +245,8 @@ public class INFO {
          *   &lt;/complexContent>
          * &lt;/complexType>
          * </pre>
-         * 
-         * 
+         *
+         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
@@ -269,11 +269,11 @@ public class INFO {
 
             /**
              * Gets the value of the rowno property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link BigInteger }
-             *     
+             *
              */
             public BigInteger getROWNO() {
                 return rowno;
@@ -281,11 +281,11 @@ public class INFO {
 
             /**
              * Sets the value of the rowno property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link BigInteger }
-             *     
+             *
              */
             public void setROWNO(BigInteger value) {
                 this.rowno = value;
@@ -293,11 +293,11 @@ public class INFO {
 
             /**
              * Gets the value of the lncode property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getLNCODE() {
                 return lncode;
@@ -305,11 +305,11 @@ public class INFO {
 
             /**
              * Sets the value of the lncode property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setLNCODE(String value) {
                 this.lncode = value;
@@ -317,11 +317,11 @@ public class INFO {
 
             /**
              * Gets the value of the lnhash property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getLNHASH() {
                 return lnhash;
@@ -329,11 +329,11 @@ public class INFO {
 
             /**
              * Sets the value of the lnhash property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setLNHASH(String value) {
                 this.lnhash = value;
@@ -341,11 +341,11 @@ public class INFO {
 
             /**
              * Gets the value of the lnstate property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getLNSTATE() {
                 return lnstate;
@@ -353,11 +353,11 @@ public class INFO {
 
             /**
              * Sets the value of the lnstate property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setLNSTATE(String value) {
                 this.lnstate = value;
@@ -365,7 +365,7 @@ public class INFO {
 
             /**
              * Gets the value of the status property.
-             * 
+             *
              */
             public int getSTATUS() {
                 return status;
@@ -373,7 +373,7 @@ public class INFO {
 
             /**
              * Sets the value of the status property.
-             * 
+             *
              */
             public void setSTATUS(int value) {
                 this.status = value;
@@ -381,11 +381,11 @@ public class INFO {
 
             /**
              * Gets the value of the errors property.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link INFO.ROWSET.ROW.ERRORS }
-             *     
+             *
              */
             public INFO.ROWSET.ROW.ERRORS getERRORS() {
                 return errors;
@@ -393,11 +393,11 @@ public class INFO {
 
             /**
              * Sets the value of the errors property.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link INFO.ROWSET.ROW.ERRORS }
-             *     
+             *
              */
             public void setERRORS(INFO.ROWSET.ROW.ERRORS value) {
                 this.errors = value;
@@ -406,9 +406,9 @@ public class INFO {
 
             /**
              * <p>Java class for anonymous complex type.
-             * 
+             *
              * <p>The following schema fragment specifies the expected content contained within this class.
-             * 
+             *
              * <pre>
              * &lt;complexType>
              *   &lt;complexContent>
@@ -431,12 +431,12 @@ public class INFO {
              *   &lt;/complexContent>
              * &lt;/complexType>
              * </pre>
-             * 
-             * 
+             *
+             *
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = {
-                "error"
+                    "error"
             })
             public static class ERRORS {
 
@@ -445,25 +445,25 @@ public class INFO {
 
                 /**
                  * Gets the value of the error property.
-                 * 
+                 *
                  * <p>
                  * This accessor method returns a reference to the live list,
                  * not a snapshot. Therefore any modification you make to the
                  * returned list will be present inside the JAXB object.
                  * This is why there is not a <CODE>set</CODE> method for the error property.
-                 * 
+                 *
                  * <p>
                  * For example, to add a new item, do as follows:
                  * <pre>
                  *    getERROR().add(newItem);
                  * </pre>
-                 * 
-                 * 
+                 *
+                 *
                  * <p>
                  * Objects of the following type(s) are allowed in the list
                  * {@link INFO.ROWSET.ROW.ERRORS.ERROR }
-                 * 
-                 * 
+                 *
+                 *
                  */
                 public List<INFO.ROWSET.ROW.ERRORS.ERROR> getERROR() {
                     if (error == null) {
@@ -475,9 +475,9 @@ public class INFO {
 
                 /**
                  * <p>Java class for anonymous complex type.
-                 * 
+                 *
                  * <p>The following schema fragment specifies the expected content contained within this class.
-                 * 
+                 *
                  * <pre>
                  * &lt;complexType>
                  *   &lt;complexContent>
@@ -490,8 +490,8 @@ public class INFO {
                  *   &lt;/complexContent>
                  * &lt;/complexType>
                  * </pre>
-                 * 
-                 * 
+                 *
+                 *
                  */
                 @XmlAccessorType(XmlAccessType.FIELD)
                 @XmlType(name = "", propOrder = {
@@ -506,11 +506,11 @@ public class INFO {
 
                     /**
                      * Gets the value of the errcode property.
-                     * 
+                     *
                      * @return
                      *     possible object is
                      *     {@link String }
-                     *     
+                     *
                      */
                     public String getERRCODE() {
                         return errcode;
@@ -518,11 +518,11 @@ public class INFO {
 
                     /**
                      * Sets the value of the errcode property.
-                     * 
+                     *
                      * @param value
                      *     allowed object is
                      *     {@link String }
-                     *     
+                     *
                      */
                     public void setERRCODE(String value) {
                         this.errcode = value;
@@ -530,11 +530,11 @@ public class INFO {
 
                     /**
                      * Gets the value of the errmess property.
-                     * 
+                     *
                      * @return
                      *     possible object is
                      *     {@link String }
-                     *     
+                     *
                      */
                     public String getERRMESS() {
                         return errmess;
@@ -542,11 +542,11 @@ public class INFO {
 
                     /**
                      * Sets the value of the errmess property.
-                     * 
+                     *
                      * @param value
                      *     allowed object is
                      *     {@link String }
-                     *     
+                     *
                      */
                     public void setERRMESS(String value) {
                         this.errmess = value;
