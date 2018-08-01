@@ -108,25 +108,40 @@ public class sImportLNN extends HttpServlet {
                     SQL.SQL_UpdIns("INSERT into disabilitycase (patient_id, createdate,createusername) values (" + pid + ", current_date, 'Importer')");
                     String idDisCase = SQL.Insert_returning("select max(id) as id from disabilitycase");
 
+                    System.out.println(idDisCase);
                     String lpuOGRN = row.getLPUOGRN();
                     String lpuAddress = row.getLPUADDRESS();
                     String lpuName = row.getLPUNAME();
                     String AnotherLPUid = "";
+
+                    //try{
                     if (ogrnMo.equals(lpuOGRN)) {
                         System.out.println("lpuOGRN>>>>" + lpuOGRN);
 
                     } else {
-                        AnotherLPUid = checkLPU(lpuOGRN,lpuName,lpuAddress);
+                        SQLrequest.put("anotherlpuaddress",con(row.getLPUADDRESS()));
+                        SQLrequest.put("anotherlpuogrn",con(row.getLPUOGRN()));
+                        SQLrequest.put("anotherlpuname",con(row.getLPUNAME()));
+                       /* AnotherLPUid = checkLPU(lpuOGRN,lpuName,lpuAddress);
                         if (!AnotherLPUid.equals("")) {
                             SQLrequest.put("anotherlpu_id",AnotherLPUid);
                         } else {
                             SQLrequest.put("anotherlpuaddress",con(row.getLPUADDRESS()));
                             SQLrequest.put("anotherlpuogrn",con(row.getLPUOGRN()));
                             SQLrequest.put("anotherlpuname",con(row.getLPUNAME()));
-                            //SQL.SQL_UpdIns("INSERT into mislpu (name, ogrn, printaddress) values ('" + row.getLPUNAME() + "','" + row.getLPUOGRN() + "', '" + row.getLPUADDRESS() + "')");
-                            //AnotherLPUid = SQL.Insert_returning("select max(id) as id from mislpu");
-                        }
+                        }*/
+                    }
+                   /* }catch (NullPointerException npe){
+                        System.out.println(">>here");
+                        npe.printStackTrace();
+                    }*/
 
+                    if(row.getPREVLNCODE()!=null && !row.getPREVLNCODE().equals("")){
+                        SQLrequest.put("pervelnnumber",con(row.getPREVLNCODE()));
+                    }
+
+                     if(row.getDUPLICATEFLAG()!=0) {
+                        SQLrequest.put("elnduplicate", con(String.valueOf(row.getDUPLICATEFLAG())));
                     }
                     SQLrequest.put("number",con(row.getLNCODE()));
                     SQLrequest.put("issuedate",con(row.getLNDATE().toString()));
@@ -162,14 +177,14 @@ public class sImportLNN extends HttpServlet {
                         System.out.println("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
 
                         String id10 = SQL.Insert_returning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
-                        System.out.println(id10);
+                        System.out.println(">>>"+id10);
                         if (id10!=null &&!id10.equals("")){
                             SQLrequest.put("idc10_id",id10);
                             SQLrequest.put("idc10final_id",id10);
                         }
 
                         else {
-                            SQLrequest.put("diagnos",row.getDIAGNOS());
+                            SQLrequest.put("diagnos","'"+row.getDIAGNOS()+"'");
                         }
                     }else {
                         SQLrequest.put("diagnos","'null'");
@@ -273,6 +288,8 @@ public class sImportLNN extends HttpServlet {
         body.append(")");
 
         String sql = (header.append(body)).toString();
+
+        System.out.println(sql);
         return sql;
     }
 }

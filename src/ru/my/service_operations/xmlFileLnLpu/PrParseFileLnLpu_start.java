@@ -211,7 +211,20 @@ public class PrParseFileLnLpu_start {
             row.setLpuogrn(resultSet.getString("LPU_OGRN"));
             row.setBirthday(resultSet.getString("BIRTHDAY"));
             row.setGender(resultSet.getInt("GENDER"));
-            row.setReason1(resultSet.getString("REASON1"));
+
+            String reason = resultSet.getString("REASON1");
+            if(reason.equals("1")) reason = "01";
+            if(reason.equals("2")) reason = "02";
+            if(reason.equals("3")) reason = "03";
+            if(reason.equals("4")) reason = "04";
+            if(reason.equals("5")) reason = "05";
+            if(reason.equals("6")) reason = "06";
+            if(reason.equals("7")) reason = "07";
+            if(reason.equals("8")) reason = "08";
+            if(reason.equals("9")) reason = "09";
+
+
+            row.setReason1(reason);
             row.setReason2(resultSet.getString("REASON2"));
             row.setReason3(resultSet.getString("REASON3"));
             row.setDiagnos(resultSet.getString("DIAGNOS"));
@@ -249,8 +262,13 @@ public class PrParseFileLnLpu_start {
                     Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
 
                     System.out.println(StartPeriod);
-                    row.setServ1AGE(calculateAge(date2,date1,0));
-                    row.setServ1MM(Integer.valueOf(calculateAge(date2,date1,2)));
+                    String years = calculateAge(date2,date1,0);
+                    row.setServ1AGE(years);
+
+                    if(Integer.parseInt(years)<1){
+
+                     row.setServ1MM(Integer.valueOf(calculateAge(date2,date1,2)));
+                    }
                     //row.setServ1DT1(StartPeriod);
                     //row.setServ1DT2(EndPeriod);
                 }
@@ -280,9 +298,9 @@ public class PrParseFileLnLpu_start {
         rowset.setAuthor("R.Kurbanov");
         rowset.setEmail("Rashgild@gmail.com");
         rowset.setPhone("89608634440");
-        rowset.setSoftware("SignAndcypt");
-        rowset.setVersion("1.0");
-        rowset.setVersionSoftware("2.0");
+        rowset.setSoftware("SignAndCrypt");
+        rowset.setVersion("1.1");
+        rowset.setVersionSoftware("1.1");
         rowset.setRow(rows);
         List<ROWSET> rowsets = new ArrayList<>();
         rowsets.add(rowset);

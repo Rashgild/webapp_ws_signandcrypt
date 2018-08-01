@@ -67,6 +67,7 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> Дата рождения: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getBIRTHDAY()+"</H1>");
             out.print("<H1> Место работы:"+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUEMPLOYER()+"</H1>");
             out.print("<H1> Совместительство: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUEMPLFLAG()+"</H1>");
+            out.print("<H1> Номер ЛН на основном: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPARENTCODE()+"</H1>");
             out.print("<H1> Номер: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getPARENTCODE()+"</H1>");
             out.print("<H1> Диагноз: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getDIAGNOS()+"</H1>");
 
@@ -78,6 +79,25 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> Адрес ЛПУ: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUADDRESS()+"</H1>");
 
             out.print("<H1> Причина: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getREASON1()+"</H1>");
+
+
+            out.print("<H1> ______________________</H1>");
+            out.print("<H1> Отношение: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSERV1RELATIONCODE()+"<H1>");
+            out.print("<H1> ФИО: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSERV1FIO()+"<H1>");
+            out.print("<H1> Кол-во лет: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSERV1AGE()+"<H1>");
+            out.print("<H1> Кол-во месяцев: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSERV1MM()+"<H1>");
+
+            out.print("<H1> Отношение: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSERV2RELATIONCODE()+"<H1>");
+            out.print("<H1> ФИО: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSERV2FIO()+"<H1>");
+            out.print("<H1> Кол-во лет: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSERV2AGE()+"<H1>");
+            out.print("<H1> Кол-во месяцев: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getSERV2MM()+"<H1>");
+            out.print("<H1> ______________________</H1>");
+
+
+
+            out.print("<H1> ______________________</H1>");
+            out.print("<H1> Госпитализация1: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getHOSPITALDT1()+"</H1>");
+            out.print("<H1> Госпитализация2: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getHOSPITALDT2()+"</H1>");
 
             out.print("<H1> ______________________</H1>");
             out.print("<H1> МСЭ1: "+fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getMSEDT1()+"</H1>");
