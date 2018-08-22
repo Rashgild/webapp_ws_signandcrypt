@@ -19,8 +19,9 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
-import java.io.IOException;
 import java.util.Set;
+
+import static ru.my.helpers_operations.WorkWithXML.stringToSoap;
 
 //Created by rashgild on 19.11.2016.
 
@@ -36,11 +37,8 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
 
          try {
         if (isRequest) {
-
             logger.info("2) Intercept request!");
             SOAPMessage soapMsg = context.getMessage();
-
-
 
             if(WhatTheFunc(soapMsg)==1){
                 logger.info("2.1) initialized PrParseFileLnLpu_start!");
@@ -68,8 +66,20 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
 
             if(WhatTheFunc(soapMsg)==6){
                 logger.info("2.1) initialized ExistingLNNumRange!");
+
                 soapMsg  = ExistingLNNumRange.Start(soapMsg);
             }
+
+            if(WhatTheFunc(soapMsg)==7){
+                logger.info("2.1) INITIALIZETED NEW SEND!");
+                soapMsg = stringToSoap(GlobalVariables.Request);
+            }
+
+            if(WhatTheFunc(soapMsg)==8){
+                logger.info("TEST");
+                //soapMsg = stringToSoap(GlobalVariables.Request);
+            }
+
             logger.info("Send Request!");
 
             context.setMessage(soapMsg);
@@ -119,6 +129,14 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
 
             if (strdoc.contains("prParseFilelnlpu")) {
                 GlobalVariables.Type = "prParseFilelnlpu";
+
+                if(strdoc.contains("ThisIsNewSender")){
+                    return 7;
+                }
+
+                if(strdoc.contains("TEST")){
+                    return 8;
+                }
                 return 1;
             }
             if (strdoc.contains("getNewLNNumRange")) {

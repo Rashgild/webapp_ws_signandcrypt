@@ -16,8 +16,7 @@ import static ru.my.helpers_operations.StoredQuery.SaveNumber;
 
 public class SQL {
 
-    public static ResultSet Query (String reqSQL) {
-
+    public static ResultSet select(String reqSQL) {
         Connection connection;
         ResultSet resultSet = null;
         try {

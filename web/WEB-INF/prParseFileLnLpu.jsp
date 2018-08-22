@@ -41,7 +41,7 @@ Id:${id} <br>
 #ЭЛН:${row.getLNCODE()} <br>
 Ответ: ${result.getMESS()} <br>
         <c:forEach items="${errors}" var="errors">
-Ошибка: ${errors.getERRMESS()} <br>
+            Ошибка: ${errors.getERRMESS()} <br>
         </c:forEach>
         </span>
             </p>

@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import ru.ibs.fss.ln.ws.fileoperationsln.*;
 import ru.my.helpers_operations.GlobalVariables;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +15,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import static ru.my.helpers_operations.SQL.Query;
-import static ru.my.helpers_operations.StoredQuery.SaveNumber;
-
 /**
  * Created by rkurbanov on 28.06.2017.
  */
 @WebServlet("/sLnDate")
 public class sLnDate extends HttpServlet {
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         try {

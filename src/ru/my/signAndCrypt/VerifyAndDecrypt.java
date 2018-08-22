@@ -37,7 +37,6 @@ public class VerifyAndDecrypt {
             org.w3c.dom.Document doc = StartDecrypt(Certificate.GetCertificateFromStorage(GlobalVariables.moAlias),
                     Certificate.GetPrivateKey(GlobalVariables.moPass,GlobalVariables.moAlias)); // расшифровываем на нашем открытом ключе
 
-            // writeDoc(doc,System.out);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             NodeList originalRoot = doc.getDocumentElement().getElementsByTagName("S:Envelope"); //Удаляем лишние теги(коируем исключая внешние <soap-env:envelope>
@@ -84,7 +83,7 @@ public class VerifyAndDecrypt {
         return doc2;
     }
     //проверка подписи
-    private static boolean Verify(SOAPMessage message,X509Certificate cert) throws Exception {
+    public static boolean Verify(SOAPMessage message, X509Certificate cert) throws Exception {
 
         SOAPHeader header = message.getSOAPHeader();
         Document doc = header.getOwnerDocument();

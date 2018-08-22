@@ -6,10 +6,8 @@ import org.w3c.dom.Document;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
@@ -84,6 +82,22 @@ public class WorkWithXML {
         return factory.createMessage(null, in);
     }
 
+    public static Document soapToDoc(SOAPMessage soapMsg)
+            throws TransformerException, SOAPException, IOException {
+      /*  MyByteArrayOutputStream baos = new MyByteArrayOutputStream();
+        soapMsg.writeTo(baos);
+        ByteArrayInputStream bais = baos.getByteArrayInputStream();
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(bais);
+        return(doc);*/
+
+        Document doc = null;
+      return doc;
+    }
+
     public static String SoapMessageToString(SOAPMessage soapMessage)
     {
         try {
@@ -96,5 +110,18 @@ public class WorkWithXML {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static SOAPMessage stringToSoap(String soap){
+
+        SOAPMessage soapMessage=null;
+
+        try {
+            InputStream is = new ByteArrayInputStream(soap.getBytes());
+            soapMessage = MessageFactory.newInstance().createMessage(null, is);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return soapMessage;
     }
 }

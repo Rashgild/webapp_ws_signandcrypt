@@ -44,10 +44,7 @@
                 $(".version").html(response);
             }
         });
-
-       //$.get("ConfigInit").done(function(response) {});
-        forwardbyClick("#config.button","/WEB-INF/configurator.jsp");
-        //forwardbyClick("#test.button","/WEB-INF/prParseFileLnLpu.jsp");
+        //forwardbyClick("#config.button","/WEB-INF/configurator.jsp");
     });
 </script>
 </html>

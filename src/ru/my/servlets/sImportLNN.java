@@ -38,7 +38,7 @@ public class sImportLNN extends HttpServlet {
     }
 
     private boolean isExistNumber(String ELN){
-        ResultSet rs =  SQL.Query("select id from disabilitydocument where number='"+ELN+"'");
+        ResultSet rs =  SQL.select("select id from disabilitydocument where number='"+ELN+"'");
         int idDoc=0;
         try {
             while (rs.next()){
@@ -52,8 +52,8 @@ public class sImportLNN extends HttpServlet {
     }
 
     private String checkLPU(String OGRN, String name,String address){
-        //ResultSet rs =  SQL.Query("Select id from mislpu where ogrn='"+OGRN+"'");
-        ResultSet rs =  SQL.Query("Select id from mislpu where ogrn='"+OGRN+"' and name='"+name+"' and printaddress='"+address+"'");
+        //ResultSet rs =  SQL.select("Select id from mislpu where ogrn='"+OGRN+"'");
+        ResultSet rs =  SQL.select("Select id from mislpu where ogrn='"+OGRN+"' and name='"+name+"' and printaddress='"+address+"'");
         String idLpu="";
         try {
             while (rs.next()){

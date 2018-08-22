@@ -87,7 +87,7 @@ public class ConfigInit implements ServletContextListener {
         passwordSSL= resource.getString("passwordSSL");
         HDImageStorePath=resource.getString("HDImageStorePath");
 
-        ResultSet resultSet = SQL.Query(StoredQuery.getDefultLPU());
+        ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
         try {
             while (resultSet.next()) {
                 GlobalVariables.DefaultLPU = resultSet.getString("keyvalue");

@@ -20,10 +20,9 @@ import java.io.FileInputStream;
 import java.security.cert.X509Certificate;
 
 import static ru.my.helpers_operations.GlobalVariables.*;
+import static ru.my.helpers_operations.WorkWithXML.*;
 
-/**
- * Created by rkurbanov on 10.11.16.
- */
+/** Created by rkurbanov on 10.11.16. */
 public class Encrypt {
 
     /**
@@ -35,20 +34,19 @@ public class Encrypt {
      */
     private static Document StartEncrypt(X509Certificate cert, String nameFile) throws Exception {
         XmlInit.init();
+
         MessageFactory mf = MessageFactory.newInstance();
         SOAPMessage message = mf.createMessage();
         SOAPPart soapPart = message.getSOAPPart();
 
-        //FileInputStream is = new FileInputStream("C:\\Documents and Settings\\rkurbanov\\IdeaProjects\\FSS_Client_test\\My.xml"); // ЕСЛИ берем из файла
         FileInputStream is = new FileInputStream(GlobalVariables.pathtosave + nameFile); // ЕСЛИ берем из файла
-
         soapPart.setContent(new StreamSource(is));
+
         Document doc = message.getSOAPPart().getEnvelope().getOwnerDocument();
 
         //Создание случайного сессионного ключа.
         final KeyGenerator kg = KeyGenerator.getInstance("GOST28147");
         final SecretKey sessionKey = kg.generateKey();
-        //SecretKey sessionKey = KeyGenerator.getInstance("GOST28147-89").generateKey();
 
         //Зашифрование сессионного ключа.
         EncryptedKey encryptedKey = wrapKey(doc, sessionKey, cert);
@@ -67,6 +65,7 @@ public class Encrypt {
         is.close();
         return doc;
     }
+
 
     /**
      * зашифрование сессионного ключа sessionKey и создание
@@ -103,6 +102,7 @@ public class Encrypt {
      */
     public static SOAPMessage CreateXMLAndEncrypt(SOAPMessage soapMessage, String nameFile)
             throws Exception {
+
         //Cоздание каркаса XML-Encrypt
         SOAPPart soapPart = soapMessage.getSOAPPart();
         SOAPEnvelope soapEnv2 = soapMessage.getSOAPPart().getEnvelope();
@@ -133,7 +133,6 @@ public class Encrypt {
                         passwordCertStor,
                         aliasCert,
                         pathToCert), nameFile);
-        //org.w3c.dom.Document doc = EncryptDecrypt.StartEncrypt2(Certificate.ExtractCertFromCertStore());
 
         //Передача данных в сформированный каркас
         NodeList nList = doc.getElementsByTagName("xenc:EncryptedData");
@@ -150,33 +149,100 @@ public class Encrypt {
 
         X509Certificate.addTextNode(Certificate.certToBase64(Certificate.GetCertificateFromStorage(GlobalVariables.moAlias)));
         //сохранение в файл
+        SaveSOAPToXML("Encrypted.xml", soapMessage);
 
-        //Doc.SaveSOAPToXML("tempEncrypted.xml", soapMessage);
         return soapMessage;
     }
-}
 
-/**
- * Зашифрование документа doc на sessionKey.
- *
- * @param doc документ, который будем шифровать
- * @param sessionKey сессионный ключ шифрования
- * @param encryptedKey зашифрованный sessionKey будет добавлен в документ
- * @return шифрованный документ
- * @throws Exception ошибки шифрования
- */
- /*
-public static Document encrypt2(Document doc, SecretKey sessionKey,
-                                EncryptedKey encryptedKey) throws Exception {
-    Element element = doc.getDocumentElement();
-    XMLCipher xmlCipher = XMLCipher.getInstance(Consts.URI_GOST_CIPHER);
-    xmlCipher.init(XMLCipher.ENCRYPT_MODE, sessionKey);
-    // добавляем шифрованный ключ.
-    EncryptedData encryptedData = xmlCipher.getEncryptedData();
-    KeyInfo keyInfo = new KeyInfo(doc);
-    keyInfo.add(encryptedKey);
-    encryptedData.setKeyInfo(keyInfo);
-    //зашифрование документа
-    xmlCipher.doFinal(doc, element, false);
-    return doc;
-}*/
+
+    //TODO Убрать Encrypt
+    /**
+     * Зашифрование документа doc на sessionKey.
+     *
+     * @param cert Сертификат, на котором проходит шифрование
+     * @return шифрованный документ
+     * @throws Exception ошибки шифрования
+     */
+    private static Document StartEncrypt2(X509Certificate cert, String strMess) throws Exception {
+        XmlInit.init();
+
+        SOAPMessage message = stringToSoap(strMess);
+        Document doc = message.getSOAPPart().getEnvelope().getOwnerDocument();
+
+        //Создание случайного сессионного ключа.
+        final KeyGenerator kg = KeyGenerator.getInstance("GOST28147");
+        final SecretKey sessionKey = kg.generateKey();
+        //Зашифрование сессионного ключа.
+        EncryptedKey encryptedKey = wrapKey(doc, sessionKey, cert);
+        //зашифрование документа
+        Element element = doc.getDocumentElement();
+        XMLCipher xmlCipher = XMLCipher.getInstance(Consts.URI_GOST_CIPHER);
+        xmlCipher.init(XMLCipher.ENCRYPT_MODE, sessionKey);
+        // добавляем шифрованный ключ.
+        EncryptedData encryptedData = xmlCipher.getEncryptedData();
+        KeyInfo keyInfo = new KeyInfo(doc);
+        keyInfo.add(encryptedKey);
+        encryptedData.setKeyInfo(keyInfo);
+        //зашифрование документа
+        xmlCipher.doFinal(doc, element, false);
+
+        return doc;
+    }
+
+
+    public static String CreateXMLAndEncrypt(String message)
+            throws Exception {
+
+        //Cоздание каркаса XML-Encrypt
+        MessageFactory mf = MessageFactory.newInstance();
+        SOAPMessage soapMessage = mf.createMessage();
+        SOAPEnvelope soapEnv = soapMessage.getSOAPPart().getEnvelope();
+        SOAPBody soapBody = soapEnv.getBody();
+        SOAPElement EncryptedData = soapBody.addChildElement("EncryptedData", null, "http://www.w3.org/2001/04/xmlenc#");
+        Name name = soapEnv.createName("Type");
+        EncryptedData.addAttribute(name, "http://www.w3.org/2001/04/xmlenc#Element");
+        SOAPElement EncryptionMethod = EncryptedData.addChildElement("EncryptionMethod");
+        name = soapEnv.createName("Algorithm");
+        EncryptionMethod.addAttribute(name, "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gost28147");
+        SOAPElement KeyInfo = EncryptedData.addChildElement("KeyInfo", null, "http://www.w3.org/2000/09/xmldsig#");
+        SOAPElement EncryptedKey = KeyInfo.addChildElement("EncryptedKey", null, "http://www.w3.org/2001/04/xmlenc#");
+        SOAPElement EncryptionMethod2 = EncryptedKey.addChildElement("EncryptionMethod");
+        name = soapEnv.createName("Algorithm");
+        EncryptionMethod2.addAttribute(name, "urn:ietf:params:xml:ns:cpxmlsec:algorithms:transport-gost2001");
+        SOAPElement X509Data = KeyInfo.addChildElement("X509Data");
+        SOAPElement X509Certificate = X509Data.addChildElement("X509Certificate");
+        SOAPElement CipherData = EncryptedKey.addChildElement("CipherData");
+        SOAPElement CipherValue = CipherData.addChildElement("CipherValue");
+        SOAPElement CipherData2 = EncryptedData.addChildElement("CipherData");
+        SOAPElement CipherValue2 = CipherData2.addChildElement("CipherValue");
+
+
+        org.w3c.dom.Document doc =
+                StartEncrypt2(Certificate.ExtractCertFromCertStore(
+                        passwordCertStor,
+                        aliasCert,
+                        pathToCert), message);
+
+        //Передача данных в сформированный каркас
+        NodeList nList = doc.getElementsByTagName("xenc:EncryptedData");
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            org.w3c.dom.Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                CipherValue.addTextNode(eElement.getElementsByTagName("xenc:CipherValue").item(0).getTextContent());
+                CipherValue2.addTextNode(eElement.getElementsByTagName("xenc:CipherValue").item(1).getTextContent());
+            }
+        }
+
+        //TODO delGlobal
+        X509Certificate.addTextNode(Certificate.certToBase64(Certificate.GetCertificateFromStorage(GlobalVariables.moAlias)));
+
+        return SoapMessageToString(soapMessage);
+    }
+
+
+
+
+
+
+}

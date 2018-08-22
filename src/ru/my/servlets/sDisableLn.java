@@ -11,9 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static ru.my.helpers_operations.SQL.Query;
-import static ru.my.helpers_operations.StoredQuery.SaveNumber;
-
 /**
  * Created by rkurbanov on 28.06.2017.
  */

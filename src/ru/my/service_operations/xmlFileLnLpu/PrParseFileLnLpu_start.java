@@ -23,7 +23,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static ru.my.helpers_operations.GlobalVariables.*;
@@ -78,11 +77,12 @@ public class PrParseFileLnLpu_start {
     private static PrParseFileLnLpu CreateSkeleton(String sql1, String sql2) throws SQLException, ParseException {
 
         Logger logger=Logger.getLogger("simple");
-        ResultSet resultSet = SQL.Query(sql1);
-        ResultSet resultSet2 = SQL.Query(sql2);
+        ResultSet resultSet = SQL.select(sql1);
+        ResultSet resultSet2 = SQL.select(sql2);
 
         String StartPeriod=null,EndPeriod="";
         List<ROW> rows = new ArrayList<>();
+
         while (resultSet.next()) {
             GlobalVariables.t_ELN = resultSet.getString("LN_CODE");
             logger.info("ELN="+t_ELN);
@@ -262,6 +262,8 @@ public class PrParseFileLnLpu_start {
                     Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
 
                     System.out.println(StartPeriod);
+                    //row.setServ1AGE(calculateAge(date2,date1,0));
+                    //row.setServ1MM(Integer.valueOf(calculateAge(date2,date1,2)));
                     String years = calculateAge(date2,date1,0);
                     row.setServ1AGE(years);
 
@@ -280,10 +282,6 @@ public class PrParseFileLnLpu_start {
 
                     row.setServ2AGE(calculateAge(date2,date1,0));
                     row.setServ2MM(Integer.valueOf(calculateAge(date2,date1,2)));
-                   /* row.setServ1AGE(String.valueOf(calcYear(date1, date2)));
-                    row.setServ2MM(calcMonth(date1, date2));*/
-                    //row.setServ2DT1(StartPeriod);
-                    //row.setServ2DT2(EndPeriod);
                 }
             }catch (Exception e){ e.printStackTrace();}
 
@@ -398,7 +396,7 @@ public class PrParseFileLnLpu_start {
                 .append(dd).toString() ;
     }
 
-    private static SOAPMessage CreateSoapMessage(PrParseFileLnLpu prParseFileLnLpu){
+    public static SOAPMessage CreateSoapMessage(PrParseFileLnLpu prParseFileLnLpu){
 
         SOAPMessage message = null;
         try {

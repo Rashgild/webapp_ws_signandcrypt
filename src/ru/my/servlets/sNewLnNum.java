@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
-import static ru.my.helpers_operations.SQL.Query;
 import static ru.my.helpers_operations.SQL.SQL_UpdIns;
 import static ru.my.helpers_operations.StoredQuery.SaveNumber;
 

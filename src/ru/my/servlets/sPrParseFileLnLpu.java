@@ -11,9 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -110,7 +108,7 @@ public class sPrParseFileLnLpu extends HttpServlet {
         Logger logger=Logger.getLogger("");
         logger.info("Get Hash");
         String snils="",eln="";
-        ResultSet resultSet = SQL.Query(StoredQuery.getLNandSnils(id));
+        ResultSet resultSet = SQL.select(StoredQuery.getLNandSnils(id));
         try {
             while (resultSet.next()) {
                 snils = resultSet.getString("snils");

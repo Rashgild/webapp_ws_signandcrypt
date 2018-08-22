@@ -26,7 +26,7 @@ public class Certificate {
      * @param PasswordCertStor ;
      * @param PathToCert       ;
      */
-    protected static X509Certificate ExtractCertFromCertStore(String PasswordCertStor, String AliasCert, String PathToCert)
+    public static X509Certificate ExtractCertFromCertStore(String PasswordCertStor, String AliasCert, String PathToCert)
             throws Exception {
 
         KeyStore allCertStore;
