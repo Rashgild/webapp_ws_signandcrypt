@@ -153,12 +153,12 @@
     }
 
     $(document).ready(function() {
-
+//TODO LINK
         $("#runbtn").click(function(){
             var temp = document.getElementById("SignatureTxtBox").value;
             $.ajax({
                 type: "POST",
-                url: "http://192.168.2.45:999/api/sign/getXML",
+                url: "http://192.168.10.20:999/api/sign/getXML",
                 crossDomain: true,
                 /*  xhrFields: {
                  withCredentials: true

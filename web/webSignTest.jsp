@@ -11,14 +11,15 @@
         <script type="text/javascript" src="${request.contextPath}/res/js/nmcades_plugin_api.js"></script>
         <script type="text/javascript" src="${request.contextPath}/res/js/initcode.js"></script>
         <script type="text/javascript">--%>
-
-    <script src="http://192.168.2.45:999/res/js/jquery-3.2.1.min.js"></script>
+<%--//TODO Link--%>
+  <%--  <script src="http://192.168.2.45:999/res/js/jquery-3.2.1.min.js"></script>--%>
+    <script src="http://192.168.7.208:8080/SignAndCryptNew/res/js/jquery-3.2.1.min.js"></script>
     <meta charset="UTF-8">
     <title>SignAndCrypt</title>
     <script language="javascript">window.allow_firefox_cadesplugin_async=1</script>
-    <script language="javascript" src="http://192.168.2.45:999/res/js/cadesplugin_api.js"></script>
-    <script type="text/javascript" src="http://192.168.2.45:999/res/js/nmcades_plugin_api.js"></script>
-    <script type="text/javascript" src="http://192.168.2.45:999/res/js/initcode.js"></script>
+    <script language="javascript" src="http://192.168.7.208:8080/SignAndCryptNew/res/js/cadesplugin_api.js"></script>
+    <script type="text/javascript" src="http://192.168.7.208:8080/SignAndCryptNew/res/js/nmcades_plugin_api.js"></script>
+    <script type="text/javascript" src="http://192.168.7.208:8080/SignAndCryptNew/res/js/initcode.js"></script>
     <script type="text/javascript">
 
     </script>
@@ -29,9 +30,15 @@
             border: 5px double #5a9251;
             padding: 10px;
             margin: 10px 0px 0px 0px;
+            height: 350px;
         }
         #item_border2 {
             border: 2px solid gray;
+            height: 350px;
+
+        }
+        option{
+            font-size: 16px;
         }
         #CertListBox {
             background: #d2fdc9;
@@ -174,11 +181,11 @@
             {
                 document.getElementById("SignatureTxtBox").innerHTML = err;
             }
-
+//TODO Server local http://192.168.2.45:999/SignAndCryptNew/api/sign/getXML",
             var temp = document.getElementById("SignatureTxtBox").value;
             $.ajax({
                 type: "POST",
-                url: "http://192.168.2.45:999/api/sign/getXML",
+                url: "http://192.168.7.208:8080/SignAndCryptNew/api/sign/getXML",
                 crossDomain: true,
                 /*  xhrFields: {
                  withCredentials: true

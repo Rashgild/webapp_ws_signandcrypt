@@ -130,6 +130,7 @@ public class SignAndCryptApi {
                         @Context HttpServletRequest req,
                         @Context HttpServletResponse response) throws Exception {
 
+        System.out.println("Start export");
         SOAPMessage message=createDisabilityXml(data);
         SaveSOAPToXML(signXMLFileName, message);
         try{
@@ -139,7 +140,6 @@ public class SignAndCryptApi {
         }catch (Exception e){
             e.printStackTrace();
         }
-
        return sedrequest(req,response);
     }
 
@@ -230,7 +230,9 @@ public class SignAndCryptApi {
         row.setMsedt1(get(jrow,"mse_dt1"));
         row.setMsedt2(get(jrow,"mse_dt2"));
         row.setMsedt3(get(jrow,"mse_dt3"));
-        row.setLnhash(get(jrow,"ln_hash"));
+        if(!get(jrow,"ln_hash").equals("null")){
+            row.setLnhash(get(jrow,"ln_hash"));
+        }
 
         String inv = get(jrow,"mse_invalid_group");
         if(inv!=null && !inv.equals("")){
@@ -398,30 +400,24 @@ public class SignAndCryptApi {
         prParseFilelnlpu.setRequests(reqests);
 
 
-
-
-
         String finalXml = createXml(prParseFilelnlpu).replace("[Head]",head);
         //String finalXml = createXml(prParseFilelnlpu).replace("[Head]","");
 
-        GlobalVariables.pathtosave="C:/SignAndCrypt/Temp/";
-        GlobalVariables.signXMLFileName="person.xml";
+        //*GlobalVariables.pathtosave="C:/SignAndCrypt/Temp/";
+        //*GlobalVariables.signXMLFileName="person.xml";
 
-
+        String encoding = System.getProperty("console.encoding", "utf-8");
         InputStream is = new ByteArrayInputStream(finalXml.getBytes());
         SOAPMessage message = MessageFactory.newInstance().createMessage(null, is);
 
+        SaveSOAPToXML("MyTempFile.xml",message);
 
         //SaveSOAPToXML(signXMLFileName, message);
-
-        message = Sign.SignationByParametrs(
-                message,
+        message = Sign.SignationByParametrs(message,
                 "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
-                "#" + row.getAttribId(),
-                moAlias, moPass, t_ELN);
+                "#" + row.getAttribId(), moAlias, moPass, t_ELN);
 
         //SaveSOAPToXML(signXMLFileName, message);
-
         /*SaveSOAPToXML(signXMLFileName, message);
         message = Sign.SignationByParametrs("http://eln.fss.ru/actor/doc/ELN_306742026285_4_vk",
                 "#ELN_306742026285_4_vk", vkAlias, vkPass, t_ELN);
@@ -429,9 +425,7 @@ public class SignAndCryptApi {
         message = Sign.SignationByParametrs("http://eln.fss.ru/actor/doc/ELN_306742026285_4_doc",
                 "#ELN_306742026285_4_doc", vkAlias, vkPass, t_ELN);
         SaveSOAPToXML(signXMLFileName, message);*/
-
       //message.writeTo(System.out);
-
       /*  if(!Verify(message, Certificate.ExtractCertFromCertStore(passwordCertStor,aliasCert,pathToCert))){
             System.out.println("!!!");
         }*/
@@ -543,10 +537,9 @@ public class SignAndCryptApi {
                 .put("DisabilityId",parseXML(xml,"<fil:DIAGNOS>"));
 
 
-        System.out.println(jsonObject.toString());
+        //System.out.println(jsonObject.toString());
 
-        //TODO meods endpoint
-        cretePostRequest("http://192.168.2.45:8800/riams","api/disabilitySign/getJson" ,jsonObject.toString());
+        cretePostRequest("http://192.168.10.20:8080/riams","api/disabilitySign/getJson" ,jsonObject.toString());
         return jsonObject.toString();
     }
 
