@@ -13,8 +13,6 @@ import java.util.Map;
  */
 public class ApiUtils {
 
-
-
     public static String creteGetRequest(String endpoint,String path, String mediaType){
 
         Client client = ClientBuilder.newClient();
@@ -27,7 +25,7 @@ public class ApiUtils {
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .get();
 
-        System.out.println(response);
+        //System.out.println(response);
         return  response.readEntity(String.class);
     }
 
@@ -40,7 +38,7 @@ public class ApiUtils {
             target = target.queryParam(entry.getKey().toString(),entry.getValue().toString());
         }
         Response response = target.request(MediaType.APPLICATION_JSON).get();
-        System.out.println(response);
+        //System.out.println(response);
         return  response.readEntity(String.class);
     }
 
@@ -50,11 +48,8 @@ public class ApiUtils {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(endpoint);
         target = target.path(path);
-        /*for (Map.Entry entry : params.entrySet()) {
-            target = target.queryParam(entry.getKey().toString(),entry.getValue().toString());
-        }*/
         Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(json));
-        System.out.println(response);
+        //System.out.println(response);
         return  response.readEntity(String.class);
     }
 }

@@ -134,7 +134,6 @@ public class SignAndCryptApi {
         SOAPMessage message=createDisabilityXml(data);
         SaveSOAPToXML(signXMLFileName, message);
         try{
-
             String mess = SoapMessageToString(message);
             GlobalVariables.Request = CreateXMLAndEncrypt(mess);
         }catch (Exception e){
@@ -485,7 +484,7 @@ public class SignAndCryptApi {
                         @Context HttpServletRequest req,
                         @Context HttpServletResponse response) throws IOException, ServletException, ParseException {
 
-        System.out.println(data);
+        //System.out.println(data);
         ROW row = parseJson(data);
         String xml = createXML(row);
 
@@ -499,8 +498,8 @@ public class SignAndCryptApi {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         req.setCharacterEncoding("UTF-8");
-        req.setAttribute("test", xml);
-        req.getServletContext().getRequestDispatcher("/webSignTest.jsp").forward(req, response);
+        req.setAttribute("xml", xml);
+        req.getServletContext().getRequestDispatcher("/webSignForm.jsp").forward(req, response);
     }
 
     @POST
@@ -539,7 +538,7 @@ public class SignAndCryptApi {
 
         //System.out.println(jsonObject.toString());
 
-        cretePostRequest("http://192.168.10.20:8080/riams","api/disabilitySign/getJson" ,jsonObject.toString());
+        cretePostRequest(urlApi+"riams","api/disabilitySign/getJson" ,jsonObject.toString());
         return jsonObject.toString();
     }
 
@@ -556,6 +555,7 @@ public class SignAndCryptApi {
     }
 
 
+    //Парс json -> возврат ROW (xml)
     private ROW parseJson(String json) throws ParseException {
 
         System.out.println(json);
@@ -563,6 +563,9 @@ public class SignAndCryptApi {
         JsonParser parser = new JsonParser();
         JsonObject jparse = parser.parse(json).getAsJsonObject();
         JsonArray treats = jparse.getAsJsonArray("data");
+
+        //String username = get(jparse,"username");
+        //System.out.println("USERNAME>>>>" + username);
         for (JsonElement el : treats) {
 
             JsonObject jtreat = el.getAsJsonObject();

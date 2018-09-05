@@ -11,6 +11,7 @@ import java.util.Set;
 
 @ApplicationPath("/api")
 public class App extends Application {
+
     @Override
     public Set<Class<?>> getClasses() {
         HashSet h = new HashSet<Class<?>>();

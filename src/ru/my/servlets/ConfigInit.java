@@ -43,11 +43,10 @@ public class ConfigInit implements ServletContextListener {
 
         InputStream input;
         ResourceBundle resource = null;
+
         if(!res.getString("configType").equals("default")){
 
             if (res.getString("configType").equals("tomcat")) {
-            /*    input = new FileInputStream(new File(res.getString("defaultPath1"))
-                        + System.getProperty("file.separator") + res.getString("defaultPath2"));*/
 
                 input = new FileInputStream(res.getString("defaultPath"));
             }else{
@@ -86,6 +85,8 @@ public class ConfigInit implements ServletContextListener {
         pathandnameSSL= resource.getString("pathandnameSSL");
         passwordSSL= resource.getString("passwordSSL");
         HDImageStorePath=resource.getString("HDImageStorePath");
+        urlApi=resource.getString("urlApi");
+        innerApi=resource.getString("innerApi");
 
         ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
         try {

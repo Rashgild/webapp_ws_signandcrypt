@@ -47,6 +47,11 @@
 
 
 <label>ОГРН МО: <input name="title" value="<%=GlobalVariables.country%>" class="input"  type="text"></label><br>
+
+<label>DEF_LPU: <input name="title" value="<%=GlobalVariables.DefaultLPU%>" class="input"  type="text"></label><br>
+<label>URL_API: <input name="title" value="<%=GlobalVariables.urlApi%>" class="input"  type="text"></label><br>
+<label>INNER_API МО: <input name="title" value="<%=GlobalVariables.innerApi%>" class="input"  type="text"></label><br>
+
 </body>
 
 <javascript>

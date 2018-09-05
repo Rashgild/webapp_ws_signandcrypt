@@ -11,11 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * Created by rkurbanov on 28.06.2017.
- */
-
-
+/** Created by rkurbanov on 28.06.2017. */
 
 @WebServlet("/sDisableLn")
 public class sDisableLn  extends  HttpServlet {

@@ -46,5 +46,7 @@
         });
         //forwardbyClick("#config.button","/WEB-INF/configurator.jsp");
     });
+
+    forwardbyClick("#config.button","/WEB-INF/configurator.jsp");
 </script>
 </html>

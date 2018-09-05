@@ -43,29 +43,8 @@ public class MedosApi {
     @Path("/gohtml")
     @Produces("text/html")
     public String test(@Context HttpServletRequest req, @Context HttpServletResponse resp) throws JSONException {
-
         String ht = creteGetRequest("http://localhost:999","api/jsongen/html","text/html");
-
-        //select period
-        //выбираем нужный период
-        //номер элн
-        //передаем в подписание
-        //
-
-        /*Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:999");
-        target = target.path("api/jsongen/html");
-
-        Response response = target.request("text/html")
-                .header("Access-Control-Allow-Headers","X-Requested-With, content-type")
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                .get();
-
-        System.out.println(response);
-        return  response.readEntity(String.class);*/
-
-       return ht;
+        return ht;
     }
 
 }
