@@ -40,9 +40,11 @@
         }
         option{
             font-size: 16px;
+
         }
         #CertListBox {
             background: #d2fdc9;
+            height: 100%
         }
         #info_msg {
             margin: 0px;
