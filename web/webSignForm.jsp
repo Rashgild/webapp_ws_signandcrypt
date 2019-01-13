@@ -14,13 +14,13 @@
         <script type="text/javascript">--%>
 <%--//TODO Link--%>
   <%--  <script src="http://192.168.2.45:999/res/js/jquery-3.2.1.min.js"></script>--%>
-    <script src="http://192.168.7.208:8080/SignAndCryptNew/res/js/jquery-3.2.1.min.js"></script>
+    <script src="http://192.168.7.208:8080/SignAndCrypt/res/js/jquery-3.2.1.min.js"></script>
     <meta charset="UTF-8">
     <title>SignAndCrypt</title>
     <script language="javascript">window.allow_firefox_cadesplugin_async=1</script>
-    <script language="javascript" src="http://192.168.7.208:8080/SignAndCryptNew/res/js/cadesplugin_api.js"></script>
-    <script type="text/javascript" src="http://192.168.7.208:8080/SignAndCryptNew/res/js/nmcades_plugin_api.js"></script>
-    <script type="text/javascript" src="http://192.168.7.208:8080/SignAndCryptNew/res/js/initcode.js"></script>
+    <script language="javascript" src="http://192.168.7.208:8080/SignAndCrypt/res/js/cadesplugin_api.js"></script>
+    <script type="text/javascript" src="http://192.168.7.208:8080/SignAndCrypt/res/js/nmcades_plugin_api.js"></script>
+    <script type="text/javascript" src="http://192.168.7.208:8080/SignAndCrypt/res/js/initcode.js"></script>
     <script type="text/javascript">
 
     </script>
@@ -189,7 +189,7 @@
             $.ajax({
                 type: "POST",
                 url: "<%=GlobalVariables.innerApi%>api/sign/getXML",
-                //url: "/SignAndCryptNew/api/sign/getXML",
+                //url: "/SignAndCrypt/api/sign/getXML",
                 crossDomain: true,
                 /*  xhrFields: {
                  withCredentials: true
