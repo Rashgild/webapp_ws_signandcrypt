@@ -34,7 +34,7 @@ public class StoredQuery {
                 "p.lastname as SURNAME,\n" +
                 "p.firstname as NAME,\n" +
                 "p.middlename as PATRONIMIC\n" +
-                ",case when (dc.placementservice is not null or dc.placementservice ='1') then '1' else '0' end as BOZ_FLAG\n" +
+                ",case when (dc.placementservice is null or dc.placementservice ='0') then '0' else '1' end as BOZ_FLAG\n" +
                 ",dd.job as LPU_EMPLOYER\n" +
                 ",case when (dd.workcombotype_id is null) then '1' else '0' end as LPU_EMPL_FLAG\n" +
                 ",dd.number as LN_CODE\n" +
@@ -62,8 +62,9 @@ public class StoredQuery {
                 ",case when p2.id is not null and p2.id!=p.id then to_char(p2.birthday,'yyyy-MM-dd') else to_char(p22.birthday,'yyyy-MM-dd') end as SERV2_AGE\n" +
                 ",case when p2.id is not null and p2.id!=p.id then vkr2.code else vkr2.oppositeRoleCode end as SERV2_RELATION_CODE\n" +
                 ",case when p2.id is not null and p2.id!=p.id then p2.lastname||' '||p2.firstname||' '||p2.middlename else p22.lastname||' '||p22.firstname||' '||p22.middlename end as SERV2_FIO\n" +
-               // ",case when (dc.earlypregnancyregistration is not null or dc.earlypregnancyregistration ='1') then '1' else 'null' end as PREGN12W_FLAG\n" +
-                ",case when dc.earlypregnancyregistration is null then 'null' else case when dc.earlypregnancyregistration = '0' then '0' else '1' end end as PREGN12W_FLAG\n" +
+                ",case when vdr.codef= '05'" +
+                " then case when dc.earlypregnancyregistration='1' then '1' else '0' end" +
+                " else 'null' end as PREGN12W_FLAG\n" +
                 ",dd.hospitalizedfrom as HOSPITAL_DT1\n" +
                 ",dd.hospitalizedto as HOSPITAL_DT2\n" +
                 ",vddcr.name as CLOSE_REASON\n" +
@@ -102,39 +103,39 @@ public class StoredQuery {
                 "left join medsoccommission mss on mss.disabilitydocument_id=dd.id\n" +
                 "left join vocinvalidity vi on vi.id=mss.invalidity_id\n" +
                 "left join mislpu lpu on lpu.id="+DefaultLPU+
-                "left join mislpu anlpu on anlpu.id = dd.anotherlpu_id\n" +
+                " left join mislpu anlpu on anlpu.id = dd.anotherlpu_id\n" +
                 "where\n" +
                 "p.snils is not null and p.snils != ''\n" +
                 "and dd.id ="+disabilityId;
     }
 
-  public static String PrParse_Query2(String disabilityId){
-      return "select\n" +
-              "dd.id as DDID,    \n" +
-              "p.lastname as SURNAME,\n" +
-              "p.firstname as NAME,  \n" +
-              "p.middlename as PATRONIMIC\n" +
-              ",disrec.datefrom as TREAT_DT1 \n" +
-              ",disrec.dateto as TREAT_DT2\n" +
-              ",case when disrec.docrole is null then vwf.name else disrec.docrole end as TREAT_DOCTOR_ROLE\n" +
-              ",case when disrec.docname is null then docname.lastname ||' '|| docname.firstname ||' '|| docname.middlename else disrec.docname end as TREAT_DOCTOR \n" +
-              ",case when disrec.vkrole is null then vwf2.name else disrec.vkrole end as TREAT_CHAIRMAN_ROLE\n" +
-              ",case when disrec.vkname is null then vkname.lastname ||' '|| vkname.firstname ||' '|| vkname.middlename else disrec.vkname end as TREAT_CHAIRMAN\n" +
-              ",disrec.isexport as isexport\n" +
-              "from disabilitydocument dd\n" +
-              "left join disabilitycase dc on dc.id=dd.disabilitycase_id \n" +
-              "left join patient p on p.id=dc.patient_id left join disabilityrecord disrec on disrec.disabilitydocument_id = dd.id\n" +
-              "left join workfunction wf on wf.id = disrec.workfunction_id \n" +
-              "left join worker w on w.id = wf.worker_id\n" +
-              "left join patient docname on docname.id = w.person_id \n" +
-              "left join VocWorkFunction vwf on vwf.id = wf.workFunction_id\n" +
-              "left join workfunction wf2 on wf2.id = disrec.workfunctionadd_id\n" +
-              "left join worker w2 on w2.id = wf2.worker_id\n" +
-              "left join patient vkname on vkname.id = w2.person_id\n" +
-              "left join VocWorkFunction vwf2 on vwf2.id = wf2.workFunction_id\n" +
-              "where dd.id = "+disabilityId+"\n" +
-              "order by treat_dt1 asc \n";
-  }
+    public static String PrParse_Query2(String disabilityId){
+        return "select\n" +
+                "dd.id as DDID    \n" +
+                ",p.lastname as SURNAME\n" +
+                ",p.firstname as NAME  \n" +
+                ",p.middlename as PATRONIMIC\n" +
+                ",disrec.datefrom as TREAT_DT1 \n" +
+                ",disrec.dateto as TREAT_DT2\n" +
+                ",case when disrec.docrole is null then vwf.name else disrec.docrole end as TREAT_DOCTOR_ROLE\n" +
+                ",case when disrec.docname is null then docname.lastname ||' '|| docname.firstname ||' '|| docname.middlename else disrec.docname end as TREAT_DOCTOR \n" +
+                ",case when disrec.vkrole is null then vwf2.name else disrec.vkrole end as TREAT_CHAIRMAN_ROLE\n" +
+                ",case when disrec.vkname is null then vkname.lastname ||' '|| vkname.firstname ||' '|| vkname.middlename else disrec.vkname end as TREAT_CHAIRMAN\n" +
+                ",disrec.isexport as isexport\n" +
+                "from disabilitydocument dd\n" +
+                "left join disabilitycase dc on dc.id=dd.disabilitycase_id \n" +
+                "left join patient p on p.id=dc.patient_id left join disabilityrecord disrec on disrec.disabilitydocument_id = dd.id\n" +
+                "left join workfunction wf on wf.id = disrec.workfunction_id \n" +
+                "left join worker w on w.id = wf.worker_id\n" +
+                "left join patient docname on docname.id = w.person_id \n" +
+                "left join VocWorkFunction vwf on vwf.id = wf.workFunction_id\n" +
+                "left join workfunction wf2 on wf2.id = disrec.workfunctionadd_id\n" +
+                "left join worker w2 on w2.id = wf2.worker_id\n" +
+                "left join patient vkname on vkname.id = w2.person_id\n" +
+                "left join VocWorkFunction vwf2 on vwf2.id = wf2.workFunction_id\n" +
+                "where dd.id = "+disabilityId+"\n" +
+                "order by treat_dt1 asc \n";
+    }
 
     protected static String QueryToSave(String result, Integer status)
     {
