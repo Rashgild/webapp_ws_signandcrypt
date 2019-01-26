@@ -66,7 +66,7 @@ public class Export {
         return sendRequest();
     }
 
-    public String sendRequest() throws Exception {
+    private String sendRequest() throws Exception {
 
         System.setProperty("javax.net.ssl.trustStore",pathandnameSSL);
         System.setProperty("javax.net.ssl.trustStorePassword", passwordSSL);
@@ -79,14 +79,12 @@ public class Export {
         PrParseFilelnlpuElement.PXmlFile pXmlFile= new PrParseFilelnlpuElement.PXmlFile();
         pXmlFile.setROWSET(rowset);
         prParseFilelnlpuElement.setPXmlFile(pXmlFile);
-        WSResult result =null;
+        WSResult result;
 
         JSONObject resultJson = new JSONObject();
 
         try {
             result = start.prParseFilelnlpu(prParseFilelnlpuElement);
-            System.out.println("result>>>"+result);
-
 
             resultJson.put("message",result.getMESS());
             resultJson.put("status",result.getSTATUS());
@@ -99,12 +97,10 @@ public class Export {
 
                     if(row.getLNCODE()!=null &&!row.getLNCODE().equals("")){
                         resultJson.put("hash",row.getLNHASH());
-                        System.out.println("hash>>>"+row.getLNHASH());
                     }
 
                     if(row.getLNSTATE()!=null && !row.getLNSTATE().equals("")){
                         resultJson.put("lnstate",row.getLNSTATE());
-                        System.out.println("lnstate>>>"+row.getLNSTATE());
                     }
                     resultJson.put("lncode",row.getLNCODE());
                     JSONArray jsonArray= new JSONArray();
@@ -115,8 +111,6 @@ public class Export {
                                 JSONObject arrjs = new JSONObject();
                                 arrjs.put("errmess",errs.getERRMESS()).put("errcode",errs.getERRCODE());
                                 jsonArray.put(arrjs);
-                                System.out.println("errmess:>>>>"+errs.getERRMESS());
-                                System.out.println("errcode:>>>>"+errs.getERRCODE());
                             }
                             resultJson.put("errors",jsonArray);
                         }
@@ -195,13 +189,7 @@ public class Export {
         row.setServ2AGE(get(jrow,"serv2_age"));
         row.setServ2RELATIONCODE(get(jrow,"serv2_relation_code"));
         row.setServ2FIO(get(jrow,"serv2_fio"));
-
-
         row.setPregn12WFLAG(get(jrow,"pregn12w_flag"));
-        System.out.println("PREGW>>>>>>>>>>>>");
-        System.out.println(jrow.get("pregn12w_flag"));
-        System.out.println("PREGW>>>>>>>>>>>>");
-        System.out.println(row.getPregn12WFLAG());
         row.setHospitaldt1(get(jrow,"hospital_dt1"));
         row.setHospitaldt2(get(jrow,"hospital_dt2"));
         row.setMsedt1(get(jrow,"mse_dt1"));
@@ -265,10 +253,8 @@ public class Export {
 
                 if (treat_full_period.getTreatchairmanrole() != null && !treat_full_period.getTreatchairmanrole().equals("")) {
                     treat_full_period.setAttribIdVk("ELN_" + t_ELN + "_" + per + "_vk");
-
                 }
 
-                //System.out.println("ISEXPORT>>>>>>>"+isexport);
                 if(isexport!=null && !isexport.equals("") && (isexport.equals("true") || isexport.equals("t"))){
                     // treat_full_period.setExport("true");
                 }else {
@@ -383,7 +369,7 @@ public class Export {
 
         String finalXml = createXml(prParseFilelnlpu).replace("[Head]",head);
 
-        String encoding = System.getProperty("console.encoding", "utf-8");
+        System.getProperty("console.encoding", "utf-8");
         InputStream is = new ByteArrayInputStream(finalXml.getBytes());
         SOAPMessage message = MessageFactory.newInstance().createMessage(null, is);
 
@@ -396,7 +382,25 @@ public class Export {
     }
 
     private String createHead(String cert, String dig,String sig, String eln, String ogrn,String counter,String type){
-        String head = "<wsse:Security soapenv:actor=\"http://eln.fss.ru/actor/doc/[ELN]_[COUNTER]_[TYPE]\" xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><SignedInfo><CanonicalizationMethod Algorithm=\"http://www.w3.org/2001/10/xml-exc-c14n#\"/><SignatureMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411\"/><Reference URI=\"#[ELN]_[COUNTER]_[TYPE]\"><Transforms><Transform Algorithm=\"http://www.w3.org/2001/10/xml-exc-c14n#\"/></Transforms><DigestMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#gostr3411\"/><DigestValue>[digest]</DigestValue></Reference></SignedInfo><SignatureValue>[signature]</SignatureValue><KeyInfo><wsse:SecurityTokenReference><wsse:Reference URI=\"#http://eln.fss.ru/actor/mo/[OGRN]/[ELN]\" ValueType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3\"/></wsse:SecurityTokenReference></KeyInfo></Signature><wse:BinarySecurityToken xmlns:wse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\" EncodingType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary\" ValueType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3\" wsu:Id=\"http://eln.fss.ru/actor/mo/[OGRN]/[ELN]\">[cert]</wse:BinarySecurityToken></wsse:Security>";
+        String head = "<wsse:Security soapenv:actor=\"http://eln.fss.ru/actor/doc/[ELN]_[COUNTER]_[TYPE]\" " +
+                "xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">" +
+                "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\">" +
+                "<SignedInfo>" +
+                "<CanonicalizationMethod Algorithm=\"http://www.w3.org/2001/10/xml-exc-c14n#\"/>" +
+                "<SignatureMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411\"/><Reference URI=\"#[ELN]_[COUNTER]_[TYPE]\">" +
+                "<Transforms>" +
+                "<Transform Algorithm=\"http://www.w3.org/2001/10/xml-exc-c14n#\"/>" +
+                "</Transforms>" +
+                "<DigestMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#gostr3411\"/>" +
+                "<DigestValue>[digest]</DigestValue></Reference></SignedInfo>" +
+                "<SignatureValue>[signature]</SignatureValue>" +
+                "<KeyInfo><wsse:SecurityTokenReference><wsse:Reference URI=\"#http://eln.fss.ru/actor/mo/[OGRN]/[ELN]\" ValueType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3\"/>" +
+                "</wsse:SecurityTokenReference></KeyInfo>" +
+                "</Signature>" +
+                "<wse:BinarySecurityToken xmlns:wse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\" " +
+                "EncodingType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary\" " +
+                "ValueType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3\" " +
+                "wsu:Id=\"http://eln.fss.ru/actor/mo/[OGRN]/[ELN]\">[cert]</wse:BinarySecurityToken></wsse:Security>";
         return head
                 .replace("[cert]",cert)
                 .replace("[digest]",dig)
