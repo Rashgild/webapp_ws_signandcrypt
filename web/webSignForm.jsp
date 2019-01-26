@@ -154,11 +154,28 @@
 
                 var pubKey = yield certificate.PublicKey();
                 var algo = yield pubKey.Algorithm;
-                //var algoOid = yield algo.Value;
+                var algoOid = yield algo.Value;
 
-                var signMethod = "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
-                var digestMethod = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
+                var signMethod = "";
+                var digestMethod = "";
 
+                if (algoOid == "1.2.643.7.1.1.1.1") {
+                    signMethod = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256";
+                    digestMethod = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256";
+
+                    dataToSign = dataToSign.replace('SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411"',
+                        'SignatureMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256"');
+                    dataToSign = dataToSign.replace('DigestMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#gostr3411"',
+                        'DigestMethod Algorithm="urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256"');
+                }
+                else if (algoOid == "1.2.643.7.1.1.1.2") {
+                    signMethod = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-512";
+                    digestMethod = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-512";
+                }
+                else if (algoOid == "1.2.643.2.2.19") {
+                    signMethod = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102001-gostr3411";
+                    digestMethod = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr3411";
+                }
 
                 var CADESCOM_XML_SIGNATURE_TYPE_ENVELOPED = 2;
 
