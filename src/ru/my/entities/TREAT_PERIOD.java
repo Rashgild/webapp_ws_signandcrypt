@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "TREAT_FULL_PERIOD")
 @XmlType(propOrder = {"treatdt1", "treatdt2", "treatdoctorrole", "treatdoctor"})
 public class TREAT_PERIOD {
+
     protected String AttribId;
     protected String treatdt1;
     protected String treatdt2;

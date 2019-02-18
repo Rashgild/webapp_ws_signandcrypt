@@ -227,7 +227,6 @@ public class Security {
             }
         }
 
-
         @XmlRootElement(name = "SignedInfo")
         @XmlAccessorType(XmlAccessType.FIELD)
         public static class SignedInfo {

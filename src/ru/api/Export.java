@@ -101,7 +101,6 @@ public class Export {
             resultJson.put("message", result.getMESS());
             resultJson.put("status", result.getSTATUS());
             resultJson.put("requestId", result.getREQUESTID());
-            System.out.println("mssL>>>" + result.getMESS());
 
             List<INFO.ROWSET.ROW> rows = result.getINFO().getROWSET().getROW();
             if (rows != null && rows.size() > 0) {
@@ -138,7 +137,6 @@ public class Export {
     }
 
     private SOAPMessage createDisabilityXml(String json) throws Exception {
-        System.out.println(json);
         int per = 3;
         String head = "";
         JsonParser parser = new JsonParser();
@@ -265,11 +263,11 @@ public class Export {
                     treat_full_period.setAttribIdVk("ELN_" + t_ELN + "_" + per + "_vk");
                 }
 
-                if (isexport != null && !isexport.equals("") && (isexport.equals("true") || isexport.equals("t"))) {
-                    // treat_full_period.setExport("true");
-                } else {
-                    //  treat_full_period.setExport("false");
+                //if (isexport != null && !isexport.equals("") && (isexport.equals("true") || isexport.equals("t")))
 
+                if (isexport == null || isexport.equals("") || (!isexport.equals("true") && !isexport.equals("t"))) {
+
+                    //TODO CHECK OGRN!!!!
                     if (treat_full_period.getTreatchairmanrole() != null && !treat_full_period.getTreatchairmanrole().equals("")) {
                         head += createHead(
                                 get(jtreat, "certvk"),

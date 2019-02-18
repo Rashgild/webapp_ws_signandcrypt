@@ -65,7 +65,6 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ROW {
 
-
     private String AttribId;
     private String snils;
     private String surname;
