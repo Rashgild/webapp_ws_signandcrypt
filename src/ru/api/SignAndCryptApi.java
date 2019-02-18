@@ -94,12 +94,15 @@ public class SignAndCryptApi {
         }
 
         jsonObject
-                .put("Certificate", parseXML(xml,"<X509Certificate>"))
-                .put("SignatureValue",parseXML(xml,"<SignatureValue>"))
-                .put("DigestValue",parseXML(xml,"<DigestValue>"))
-                .put("ELN",parseXML(xml,"<fil:LN_CODE>"))
-                .put("Counter",parseXML(xml,"<fil:BIRTHDAY>"))
-                .put("DisabilityId",parseXML(xml,"<fil:DIAGNOS>"));
+                .put("Certificate", parseXML(xml, "<X509Certificate>"))
+                .put("SignatureValue", parseXML(xml, "<SignatureValue>"))
+                .put("DigestValue", parseXML(xml, "<DigestValue>"))
+                .put("ELN", parseXML(xml, "<fil:LN_CODE>"))
+                .put("Counter", parseXML(xml, "<fil:BIRTHDAY>"))
+                .put("DisabilityId", parseXML(xml, "<fil:DIAGNOS>"))
+                .put("SignatureType", parseXML(xml, "SignatureMethod Algorithm=").contains("gostr34102012")
+                        ? "gostr34102012"
+                        : "gostr34102001");
 
         cretePostRequest(urlApi+"riams","api/disabilitySign/getJson" ,jsonObject.toString());
         return jsonObject.toString();

@@ -186,8 +186,6 @@ public class sImportLNN extends HttpServlet {
                         else {
                             SQLrequest.put("diagnos","'"+row.getDIAGNOS()+"'");
                         }
-                    }else {
-                        SQLrequest.put("diagnos","'null'");
                     }
 
                     ROW.LNRESULT lnresult = row.getLNRESULT();

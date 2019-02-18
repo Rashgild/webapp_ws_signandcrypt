@@ -262,16 +262,24 @@ public class Export {
 
                     if (treat_full_period.getTreatchairmanrole() != null && !treat_full_period.getTreatchairmanrole().equals("")) {
                         head += createHead(
-                                get(jtreat,"certvk"),
-                                get(jtreat,"digvk"),
-                                get(jtreat,"signvk"),"ELN_"+t_ELN,"1053000627690",
-                                get(jtreat,"countervk"),"vk");
+                                get(jtreat, "certvk"),
+                                get(jtreat, "digvk"),
+                                get(jtreat, "signvk"),
+                                "ELN_" + t_ELN,
+                                "1053000627690",
+                                get(jtreat, "countervk"),
+                                "vk",
+                                get(jtreat, "typesignvk"));
                     }
                     head += createHead(
-                            get(jtreat,"certdoc"),
-                            get(jtreat,"digdoc"),
-                            get(jtreat,"signdoc"),"ELN_"+t_ELN,"1053000627690",
-                            get(jtreat,"counterdoc"),"doc");
+                            get(jtreat, "certdoc"),
+                            get(jtreat, "digdoc"),
+                            get(jtreat, "signdoc"),
+                            "ELN_" + t_ELN,
+                            "1053000627690",
+                            get(jtreat, "counterdoc"),
+                            "doc",
+                            get(jtreat,"typesigndoc"));
                 }
 
                 treat_full_period.setTreat_period(treat_periods);
@@ -320,8 +328,12 @@ public class Export {
                 head += createHead(
                         get(jtreat, "certclose"),
                         get(jtreat, "digclose"),
-                        get(jtreat, "signclose"), "ELN_" + t_ELN, "1053000627690",
-                        get(jtreat, "counterclose"), "doc");
+                        get(jtreat, "signclose"),
+                        "ELN_" + t_ELN,
+                        "1053000627690",
+                        get(jtreat, "counterclose"),
+                        "doc",
+                        get(jtreat,"typesignclose"));
             }
         }
         System.out.println("getReturndatelpu>>>>>>>>>>"+ln_result.getReturndatelpu());
@@ -381,17 +393,26 @@ public class Export {
         return message;
     }
 
-    private String createHead(String cert, String dig,String sig, String eln, String ogrn,String counter,String type){
+    private String createHead(String cert, String dig,String sig, String eln, String ogrn,String counter,String type, String signatureType){
         String head = "<wsse:Security soapenv:actor=\"http://eln.fss.ru/actor/doc/[ELN]_[COUNTER]_[TYPE]\" " +
                 "xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">" +
                 "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\">" +
                 "<SignedInfo>" +
                 "<CanonicalizationMethod Algorithm=\"http://www.w3.org/2001/10/xml-exc-c14n#\"/>" +
-                "<SignatureMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411\"/><Reference URI=\"#[ELN]_[COUNTER]_[TYPE]\">" +
+
+                //"<SignatureMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411\"/>" +
+                //"<SignatureMethod Algorithm=\"urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256\"/>" +
+                "<SignatureMethod Algorithm=\"[SIGNATURE_TYPE]\"/>" +
+
+                "<Reference URI=\"#[ELN]_[COUNTER]_[TYPE]\">" +
                 "<Transforms>" +
                 "<Transform Algorithm=\"http://www.w3.org/2001/10/xml-exc-c14n#\"/>" +
                 "</Transforms>" +
-                "<DigestMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#gostr3411\"/>" +
+
+                //"<DigestMethod Algorithm=\"http://www.w3.org/2001/04/xmldsig-more#gostr3411\"/>" +
+                //"<DigestMethod Algorithm=\"urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256\"/>" +
+                "<DigestMethod Algorithm=\"[DIGEST_TYPE]\"/>" +
+
                 "<DigestValue>[digest]</DigestValue></Reference></SignedInfo>" +
                 "<SignatureValue>[signature]</SignatureValue>" +
                 "<KeyInfo><wsse:SecurityTokenReference><wsse:Reference URI=\"#http://eln.fss.ru/actor/mo/[OGRN]/[ELN]\" ValueType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3\"/>" +
@@ -401,6 +422,7 @@ public class Export {
                 "EncodingType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary\" " +
                 "ValueType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3\" " +
                 "wsu:Id=\"http://eln.fss.ru/actor/mo/[OGRN]/[ELN]\">[cert]</wse:BinarySecurityToken></wsse:Security>";
+
         return head
                 .replace("[cert]",cert)
                 .replace("[digest]",dig)
@@ -408,7 +430,15 @@ public class Export {
                 .replace("[OGRN]",ogrn)
                 .replace("[ELN]",eln)
                 .replace("[COUNTER]",counter)
-                .replace("[TYPE]",type);
+                .replace("[TYPE]",type)
+                .replace("[SIGNATURE_TYPE]",
+                        signatureType.equals("gostr34102001")
+                                ?"http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411"
+                                :"urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256")
+                .replace("[DIGEST_TYPE]",
+                        signatureType.equals("gostr34102001")
+                                ?"http://www.w3.org/2001/04/xmldsig-more#gostr3411"
+                                :"urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256");
     }
 
     private String createXml(PrParseFileLnLpu prParseFilelnlpu){

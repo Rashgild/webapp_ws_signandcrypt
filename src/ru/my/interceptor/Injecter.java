@@ -92,6 +92,7 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
                     SOAPMessage msg = context.getMessage();
                     msg = VerifyAndDecrypt.Start(msg);
                     GlobalVariables.Response = WorkWithXML.SoapMessageToString(msg);
+                    GlobalVariables.returningXml = WorkWithXML.SoapMessageToString(msg);
                     context.setMessage(msg);
                 }catch (Exception e){e.printStackTrace();}
 
