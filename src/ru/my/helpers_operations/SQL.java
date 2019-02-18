@@ -1,18 +1,14 @@
 package ru.my.helpers_operations;
 
-import com.sun.org.apache.regexp.internal.RE;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ResourceBundle;
 
-import static ru.my.helpers_operations.GlobalVariables.*;
-import static ru.my.helpers_operations.StoredQuery.SaveNumber;
-
-
-//Created by rkurbanov on 19.05.2017.
+import static ru.my.helpers_operations.GlobalVariables.dbdriver;
+import static ru.my.helpers_operations.GlobalVariables.dbhost;
+import static ru.my.helpers_operations.GlobalVariables.dblogin;
+import static ru.my.helpers_operations.GlobalVariables.dbpassword;
 
 public class SQL {
 
@@ -22,7 +18,7 @@ public class SQL {
         try {
             //Class.forName("org.postgresql.Driver");
             Class.forName(dbdriver);
-            connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
+            connection = DriverManager.getConnection(dbhost, dblogin, dbpassword);
             //System.out.println("Соединение установлено");
             Statement statement;
 
@@ -30,8 +26,8 @@ public class SQL {
                     ResultSet.CONCUR_READ_ONLY);
 
             resultSet = statement.executeQuery(reqSQL);
-            if(!dbdriver.equals("com.intersys.jdbc.CacheDriver")){
-            connection.close();
+            if (!dbdriver.equals("com.intersys.jdbc.CacheDriver")) {
+                connection.close();
             }
             return resultSet;
 
@@ -41,16 +37,15 @@ public class SQL {
         return resultSet;
     }
 
-    public static int SQL_UpdIns (String sql)
-    {
+    public static int SQL_UpdIns(String sql) {
         Connection connection = null;
-        int res=0;
+        int res = 0;
         try {
             Class.forName(dbdriver);
-            connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
+            connection = DriverManager.getConnection(dbhost, dblogin, dbpassword);
             Statement statement = null;
             statement = connection.createStatement();
-            res =  statement.executeUpdate(sql);
+            res = statement.executeUpdate(sql);
             connection.close();
             return res;
         } catch (Exception ex) {
@@ -59,21 +54,20 @@ public class SQL {
         return res;
     }
 
-    public static String Insert_returning (String sql)
-    {
+    public static String Insert_returning(String sql) {
         Connection connection = null;
         ResultSet rs = null;
-        String id="";
+        String id = "";
         try {
             Class.forName(dbdriver);
-            connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
+            connection = DriverManager.getConnection(dbhost, dblogin, dbpassword);
             Statement statement = null;
             statement = connection.createStatement();
-            rs =  statement.executeQuery(sql);
+            rs = statement.executeQuery(sql);
             connection.close();
 
-            while (rs.next()){
-              id=  rs.getString("id");
+            while (rs.next()) {
+                id = rs.getString("id");
             }
             return id;
         } catch (Exception ex) {
@@ -82,23 +76,20 @@ public class SQL {
         return id;
     }
 
-    public static void SaveInBD(String result, Integer status)
-    {
+    public static void SaveInBD(String result, Integer status) {
         result = Split(result);
-        if(GlobalVariables.Response!=null&& !GlobalVariables.Response.equals("")) {
+        if (GlobalVariables.Response != null && !GlobalVariables.Response.equals("")) {
             GlobalVariables.Response = Split(GlobalVariables.Response);
         }
-        SQL_UpdIns(StoredQuery.QueryToSave(result,status));
+        SQL_UpdIns(StoredQuery.QueryToSave(result, status));
     }
 
 
-    private static String Split(String str)
-    {
+    private static String Split(String str) {
         String[] arrstr;
         arrstr = str.split("'");
-        str="";
-        for(String ar: arrstr)str+=ar;
+        str = "";
+        for (String ar : arrstr) str += ar;
         return str;
     }
-
 }

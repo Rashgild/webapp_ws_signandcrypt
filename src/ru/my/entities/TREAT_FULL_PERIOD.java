@@ -1,36 +1,32 @@
-package ru.my.entities;/*
-@XmlSchema(
-        namespace = "d",
-        xmlns = {
-                //@XmlNs(prefix = "", namespaceURI = com.mycompany.foo.ATOM_NAMESPACE),
-                //@XmlNs(prefix = "123",namespaceURI = "")
-        },
-        elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)*/
+package ru.my.entities;
 
-
-
-import javax.xml.bind.annotation.*;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.List;
 
-/**
- * Created by rkurbanov on 05.12.2016.
- */
 @XmlRootElement(name = "ROW")
-@XmlType(propOrder = {"treatchairmanrole","treatchairman","treat_period","export"})
+@XmlType(propOrder = {"treatchairmanrole", "treatchairman", "treat_period", "export"})
 public class TREAT_FULL_PERIOD {
 
     protected String AttribIdVk;
-
     protected String treatchairmanrole;
     protected String treatchairman;
     protected String export;
 
-    public String getExport() {return export;}
+    public String getExport() {
+        return export;
+    }
 
     @XmlElement(name = "Export", required = true)
-    public void setExport(String export) {this.export = export;}
+    public void setExport(String export) {
+        this.export = export;
+    }
 
     protected List<TREAT_PERIOD> treat_period;
 
@@ -47,7 +43,6 @@ public class TREAT_FULL_PERIOD {
         return AttribIdVk;
     }
 
-    //@XmlAttribute(name = "Id", namespace = "wasdasd")
     @XmlAttribute(name = "Id", namespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID

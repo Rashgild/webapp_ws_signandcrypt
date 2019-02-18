@@ -1,13 +1,15 @@
 package ru.my.servlets;
 
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.SQL;
-import ru.my.helpers_operations.StoredQuery;
-import ru.my.helpers_operations.UTF8Control;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -15,48 +17,49 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+import ru.my.helpers_operations.GlobalVariables;
+import ru.my.helpers_operations.SQL;
+import ru.my.helpers_operations.StoredQuery;
+import ru.my.helpers_operations.UTF8Control;
 
 import static ru.my.helpers_operations.GlobalVariables.*;
-
-//Created by rashgild on 19.05.2017.
 
 public class ConfigInit implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
         try {
             Configure();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void contextDestroyed(ServletContextEvent event) {}
-
+    public void contextDestroyed(ServletContextEvent event) {
+    }
 
     public static void Configure() throws IOException {
 
-        ResourceBundle res = ResourceBundle.getBundle("update",new UTF8Control());
+        ResourceBundle res = ResourceBundle.getBundle("update", new UTF8Control());
 
         InputStream input;
         ResourceBundle resource = null;
 
-        if(!res.getString("configType").equals("default")){
+        if (!res.getString("configType").equals("default")) {
 
             if (res.getString("configType").equals("tomcat")) {
 
                 input = new FileInputStream(res.getString("defaultPath"));
-            }else{
+            } else {
                 input = new FileInputStream(new File(res.getString("absPath")));
             }
             Reader reader = new InputStreamReader(input, "UTF-8");
-            resource  = new PropertyResourceBundle(reader);
+            resource = new PropertyResourceBundle(reader);
 
-        }else {
-            resource = ResourceBundle.getBundle("config",new UTF8Control());
+        } else {
+            resource = ResourceBundle.getBundle("config", new UTF8Control());
         }
 
         dbhost = resource.getString("dbhost");
@@ -82,11 +85,11 @@ public class ConfigInit implements ServletContextListener {
 
         cryptXMLFileName = resource.getString("cryptXMLFileName");
 
-        pathandnameSSL= resource.getString("pathandnameSSL");
-        passwordSSL= resource.getString("passwordSSL");
-        HDImageStorePath=resource.getString("HDImageStorePath");
-        urlApi=resource.getString("urlApi");
-        innerApi=resource.getString("innerApi");
+        pathandnameSSL = resource.getString("pathandnameSSL");
+        passwordSSL = resource.getString("passwordSSL");
+        HDImageStorePath = resource.getString("HDImageStorePath");
+        urlApi = resource.getString("urlApi");
+        innerApi = resource.getString("innerApi");
 
         ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
         try {
@@ -97,32 +100,34 @@ public class ConfigInit implements ServletContextListener {
             e.printStackTrace();
         }
     }
-    private static void downloadFile(String URL, String savePath)   {
+
+    private static void downloadFile(String URL, String savePath) {
         try {
             java.net.URL url = new URL(URL);
             BufferedInputStream bis = new BufferedInputStream(url.openStream());
             FileOutputStream fis = new FileOutputStream(savePath);
             byte[] buffer = new byte[1024];
-            int count=0;
-            while((count = bis.read(buffer,0,1024)) != -1)
-            {
+            int count = 0;
+            while ((count = bis.read(buffer, 0, 1024)) != -1) {
                 fis.write(buffer, 0, count);
             }
             fis.close();
             bis.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private static int getUnixTime(){
+
+    private static int getUnixTime() {
         Date now = new Date();
-        Long longTime = new Long(now.getTime()/1000);
+        Long longTime = new Long(now.getTime() / 1000);
         return longTime.intValue();
     }
-    private static void create(){
+
+    private static void create() {
         File file = new File("version.txt");
         try {
-            if(!file.exists()){
+            if (!file.exists()) {
                 file.createNewFile();
             }
             PrintWriter out = new PrintWriter(file.getAbsoluteFile());
@@ -131,10 +136,11 @@ public class ConfigInit implements ServletContextListener {
             } finally {
                 out.close();
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     public static void main(String[] args) {
         create();
     }

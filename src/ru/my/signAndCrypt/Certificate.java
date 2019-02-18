@@ -1,21 +1,23 @@
 package ru.my.signAndCrypt;
 
-import org.apache.log4j.Logger;
-import ru.CryptoPro.JCP.KeyStore.HDImage.HDImageStore;
-import ru.CryptoPro.JCPxml.xmldsig.JCPXMLDSigInit;
-import ru.my.helpers_operations.GlobalVariables;
-
-import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.security.*;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import javax.xml.bind.DatatypeConverter;
 
-//Created by rashgild on 19.05.2017.
+import org.apache.log4j.Logger;
+
+import ru.CryptoPro.JCP.KeyStore.HDImage.HDImageStore;
+import ru.CryptoPro.JCPxml.xmldsig.JCPXMLDSigInit;
+import ru.my.helpers_operations.GlobalVariables;
 
 public class Certificate {
 
@@ -50,14 +52,13 @@ public class Certificate {
      */
     public static PrivateKey GetPrivateKey(String Password, String Alias) throws Exception {
 
-        Logger logger=Logger.getLogger("");
+        Logger logger = Logger.getLogger("");
         logger.info(GlobalVariables.HDImageStorePath);
         JCPXMLDSigInit.init();
         HDImageStore.setDir(GlobalVariables.HDImageStorePath);
         KeyStore keystore = KeyStore.getInstance("HDImageStore");
         keystore.load(null, null);
         PrivateKey privateKey = (PrivateKey) keystore.getKey(Alias, Password.toCharArray());
-
 
         return privateKey;
     }
@@ -69,7 +70,7 @@ public class Certificate {
      * @param Alias String with alias in storage.
      */
     public static X509Certificate GetCertificateFromStorage(String Alias)
-            throws NoSuchProviderException, KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
+            throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
 
         JCPXMLDSigInit.init();
         HDImageStore.setDir(GlobalVariables.HDImageStorePath);

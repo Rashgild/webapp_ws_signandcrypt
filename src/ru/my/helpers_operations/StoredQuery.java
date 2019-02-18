@@ -7,24 +7,24 @@ import static ru.my.helpers_operations.GlobalVariables.DefaultLPU;
 
 public class StoredQuery {
 
-    public static String getDefultLPU(){
+    public static String getDefultLPU() {
         return "select s.keyvalue from softconfig s where s.key='DEFAULT_LPU'";
     }
 
-    public static String getLNandSnils(String disabilityId){
+    public static String getLNandSnils(String disabilityId) {
         return "select\n" +
                 "p.snils as SNILS,\n" +
                 "dd.number as LN_CODE \n" +
                 "from disabilitydocument dd\n" +
                 "left join disabilitycase dc on dc.id=dd.disabilitycase_id \n" +
                 "left join patient p on p.id=dc.patient_id \n" +
-                "left join mislpu lpu on lpu.id= "+DefaultLPU+
+                "left join mislpu lpu on lpu.id= " + DefaultLPU +
                 " where \n" +
                 "p.snils is not null and p.snils != '' \n" +
-                "and dd.id ="+disabilityId;
+                "and dd.id =" + disabilityId;
     }
 
-    public static String PrParse_Query1(String disabilityId){
+    public static String PrParse_Query1(String disabilityId) {
         return "select\n" +
                 "dd.issuedate,\n" +
                 "dd.id as DDID,\n" +
@@ -102,14 +102,14 @@ public class StoredQuery {
                 "left join patient p22 on p22.id=k2.person_id\n" +
                 "left join medsoccommission mss on mss.disabilitydocument_id=dd.id\n" +
                 "left join vocinvalidity vi on vi.id=mss.invalidity_id\n" +
-                "left join mislpu lpu on lpu.id="+DefaultLPU+
+                "left join mislpu lpu on lpu.id=" + DefaultLPU +
                 " left join mislpu anlpu on anlpu.id = dd.anotherlpu_id\n" +
                 "where\n" +
                 "p.snils is not null and p.snils != ''\n" +
-                "and dd.id ="+disabilityId;
+                "and dd.id =" + disabilityId;
     }
 
-    public static String PrParse_Query2(String disabilityId){
+    public static String PrParse_Query2(String disabilityId) {
         return "select\n" +
                 "dd.id as DDID    \n" +
                 ",p.lastname as SURNAME\n" +
@@ -133,55 +133,48 @@ public class StoredQuery {
                 "left join worker w2 on w2.id = wf2.worker_id\n" +
                 "left join patient vkname on vkname.id = w2.person_id\n" +
                 "left join VocWorkFunction vwf2 on vwf2.id = wf2.workFunction_id\n" +
-                "where dd.id = "+disabilityId+"\n" +
+                "where dd.id = " + disabilityId + "\n" +
                 "order by treat_dt1 asc \n";
     }
 
-    protected static String QueryToSave(String result, Integer status)
-    {
-        return "INSERT INTO exportfsslog"+
+    protected static String QueryToSave(String result, Integer status) {
+        return "INSERT INTO exportfsslog" +
                 "(result, responsecode, status, disabilitydocument, disabilitynumber, requestcode, requestdate, requesttime, requesttype)" +
-                "VALUES"+
-                "('"+result+"','"+GlobalVariables.Response+"','"
-                +status+"', "+GlobalVariables.DisabilityDocument_id+", '"
-                +GlobalVariables.t_ELN+"','"+GlobalVariables.Request+"', current_date, current_time, '"
-                +GlobalVariables.Type+"')";
+                "VALUES" +
+                "('" + result + "','" + GlobalVariables.Response + "','"
+                + status + "', " + GlobalVariables.DisabilityDocument_id + ", '"
+                + GlobalVariables.t_ELN + "','" + GlobalVariables.Request + "', current_date, current_time, '"
+                + GlobalVariables.Type + "')";
     }
 
-    public static String SaveStatusAndHash(String status, String hash,String ELN)
-    {
+    public static String SaveStatusAndHash(String status, String hash, String ELN) {
         java.sql.Date curDate = new java.sql.Date(System.currentTimeMillis());
         return "update ElectronicDisabilityDocumentNumber " +
-                "set status_id=(select id from VocDisabilityDocumentExportStatus where code='"+status+"')," +
-                " lasthash='"+hash+"'," +
-                " exportdate='"+curDate+"'" +
-                " where number='"+ELN+"'";
+                "set status_id=(select id from VocDisabilityDocumentExportStatus where code='" + status + "')," +
+                " lasthash='" + hash + "'," +
+                " exportdate='" + curDate + "'" +
+                " where number='" + ELN + "'";
     }
-    public static String updateDisRecord(String id)
-    {
+
+    public static String updateDisRecord(String id) {
         return "update disabilityrecord " +
                 "set isexport=true" +
-                " where disabilitydocument_id="+id;
+                " where disabilitydocument_id=" + id;
     }
-    public static String SaveNumber(String number){
+
+    public static String SaveNumber(String number) {
         Date curTime = new Date();
         DateFormat dtfrm = DateFormat.getDateInstance();
         String dateTime = dtfrm.format(curTime);
         return "INSERT INTO electronicdisabilitydocumentnumber\n" +
-                "(number, createdate) values ('"+number+"',to_date('"+dateTime+"','dd.MM.yyyy'))";
+                "(number, createdate) values ('" + number + "',to_date('" + dateTime + "','dd.MM.yyyy'))";
     }
 
-    public static String GetVoc(String code){
-        return "select id from vocdisabilitydocumentexportstatus where code='"+code+"'";
+    public static String GetVoc(String code) {
+        return "select id from vocdisabilitydocumentexportstatus where code='" + code + "'";
     }
 
-
-    //--------------Importer
-
-    public static String setDisabilityCase(String patientId){
-        return "INSERT into disabilitycase (patient_id, createdate,createusername) values ("+patientId+", current_date, 'Importer') returning id;";
+    public static String setDisabilityCase(String patientId) {
+        return "INSERT into disabilitycase (patient_id, createdate,createusername) values (" + patientId + ", current_date, 'Importer') returning id;";
     }
-
-
-
 }

@@ -1,5 +1,19 @@
 package ru.my.signAndCrypt;
 
+import java.io.FileInputStream;
+import java.security.cert.X509Certificate;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.xml.soap.MessageFactory;
+import javax.xml.soap.Name;
+import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPElement;
+import javax.xml.soap.SOAPEnvelope;
+import javax.xml.soap.SOAPHeader;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.SOAPPart;
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.xml.security.encryption.EncryptedData;
 import org.apache.xml.security.encryption.EncryptedKey;
 import org.apache.xml.security.encryption.XMLCipher;
@@ -8,21 +22,18 @@ import org.apache.xml.security.keys.content.X509Data;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
 import ru.CryptoPro.JCPxml.Consts;
 import ru.CryptoPro.JCPxml.XmlInit;
 import ru.my.helpers_operations.GlobalVariables;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.xml.soap.*;
-import javax.xml.transform.stream.StreamSource;
-import java.io.FileInputStream;
-import java.security.cert.X509Certificate;
+import static ru.my.helpers_operations.GlobalVariables.aliasCert;
+import static ru.my.helpers_operations.GlobalVariables.passwordCertStor;
+import static ru.my.helpers_operations.GlobalVariables.pathToCert;
+import static ru.my.helpers_operations.WorkWithXML.saveSoapToXml;
+import static ru.my.helpers_operations.WorkWithXML.soapMessageToString;
+import static ru.my.helpers_operations.WorkWithXML.stringToSoap;
 
-import static ru.my.helpers_operations.GlobalVariables.*;
-import static ru.my.helpers_operations.WorkWithXML.*;
-
-/** Created by rkurbanov on 10.11.16. */
 public class Encrypt {
 
     /**
@@ -32,14 +43,14 @@ public class Encrypt {
      * @return шифрованный документ
      * @throws Exception ошибки шифрования
      */
-    private static Document StartEncrypt(X509Certificate cert, String nameFile) throws Exception {
+    private static Document startEncrypt(X509Certificate cert, String nameFile) throws Exception {
         XmlInit.init();
 
         MessageFactory mf = MessageFactory.newInstance();
         SOAPMessage message = mf.createMessage();
         SOAPPart soapPart = message.getSOAPPart();
 
-        FileInputStream is = new FileInputStream(GlobalVariables.pathtosave + nameFile); // ЕСЛИ берем из файла
+        FileInputStream is = new FileInputStream(GlobalVariables.pathtosave + nameFile);
         soapPart.setContent(new StreamSource(is));
 
         Document doc = message.getSOAPPart().getEnvelope().getOwnerDocument();
@@ -129,7 +140,7 @@ public class Encrypt {
 
         //Шифрование подписанного документа
         org.w3c.dom.Document doc =
-                StartEncrypt(Certificate.ExtractCertFromCertStore(
+                startEncrypt(Certificate.ExtractCertFromCertStore(
                         passwordCertStor,
                         aliasCert,
                         pathToCert), nameFile);
@@ -149,13 +160,14 @@ public class Encrypt {
 
         X509Certificate.addTextNode(Certificate.certToBase64(Certificate.GetCertificateFromStorage(GlobalVariables.moAlias)));
         //сохранение в файл
-        SaveSOAPToXML("Encrypted.xml", soapMessage);
+        saveSoapToXml("Encrypted.xml", soapMessage);
 
         return soapMessage;
     }
 
 
     //TODO Убрать Encrypt
+
     /**
      * Зашифрование документа doc на sessionKey.
      *
@@ -216,7 +228,6 @@ public class Encrypt {
         SOAPElement CipherData2 = EncryptedData.addChildElement("CipherData");
         SOAPElement CipherValue2 = CipherData2.addChildElement("CipherValue");
 
-
         org.w3c.dom.Document doc =
                 StartEncrypt2(Certificate.ExtractCertFromCertStore(
                         passwordCertStor,
@@ -237,12 +248,6 @@ public class Encrypt {
         //TODO delGlobal
         X509Certificate.addTextNode(Certificate.certToBase64(Certificate.GetCertificateFromStorage(GlobalVariables.moAlias)));
 
-        return SoapMessageToString(soapMessage);
+        return soapMessageToString(soapMessage);
     }
-
-
-
-
-
-
 }

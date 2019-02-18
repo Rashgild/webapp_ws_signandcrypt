@@ -5,11 +5,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-/**
- * Created by rkurbanov on 05.12.2016.
- */
 @XmlRootElement(name = "TREAT_FULL_PERIOD")
-@XmlType(propOrder = {"treatdt1","treatdt2","treatdoctorrole","treatdoctor"})
+@XmlType(propOrder = {"treatdt1", "treatdt2", "treatdoctorrole", "treatdoctor"})
 public class TREAT_PERIOD {
     protected String AttribId;
     protected String treatdt1;
@@ -47,6 +44,7 @@ public class TREAT_PERIOD {
     public String getTreatdoctorrole() {
         return treatdoctorrole;
     }
+
     @XmlElement(name = "TREAT_DOCTOR_ROLE", required = true)
     public void setTreatdoctorrole(String treatdoctorrole) {
         this.treatdoctorrole = treatdoctorrole;

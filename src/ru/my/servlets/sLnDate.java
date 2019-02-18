@@ -1,28 +1,26 @@
 package ru.my.servlets;
 
-import org.apache.log4j.Logger;
-import ru.ibs.fss.ln.ws.fileoperationsln.*;
-import ru.my.helpers_operations.GlobalVariables;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
-/**
- * Created by rkurbanov on 28.06.2017.
- */
+import org.apache.log4j.Logger;
+
+import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
+import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
+import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetLNDataOut;
+import ru.ibs.fss.ln.ws.fileoperationsln.ROW;
+import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
+import ru.ibs.fss.ln.ws.fileoperationsln.TREATFULLPERIOD;
+import ru.my.helpers_operations.GlobalVariables;
+
 @WebServlet("/sLnDate")
 public class sLnDate extends HttpServlet {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             Logger logger = Logger.getLogger("simple");
             logger.info("1) NewLnNum");
@@ -41,15 +39,12 @@ public class sLnDate extends HttpServlet {
                     "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"> </head>");
 
             out.println("<body>");
-            System.out.println(">>>" + ogrn);
-            System.out.println(">>>" + eln);
-            System.out.println(">>>" + snils);
             out.print("<H1> ogrn=" + ogrn + "</H1>");
             out.print("<H1> eln=" + eln + "</H1>");
             out.print("<H1> snils=" + snils + "</H1>");
 
 
-            System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
+            System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
             System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
             FileOperationsLnImplService service = new FileOperationsLnImplService();
             FileOperationsLn start = service.getFileOperationsLnPort();
@@ -133,11 +128,10 @@ public class sLnDate extends HttpServlet {
                     out.print("<H1>Роль врача: " + treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE() + "</H1>");
                     out.print("<H1> ______________________</H1>");
                 }
-
             } catch (SOAPException_Exception e) {
                 e.printStackTrace();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -33,7 +33,7 @@ public class VerifyAndDecrypt {
     public static SOAPMessage Start(SOAPMessage soapMessage)
     {
         try {
-            WorkWithXML.SaveSOAPToXML("CryptedResponse.xml",soapMessage); // сохраняем в файл
+            WorkWithXML.saveSoapToXml("CryptedResponse.xml",soapMessage); // сохраняем в файл
             org.w3c.dom.Document doc = StartDecrypt(Certificate.GetCertificateFromStorage(GlobalVariables.moAlias),
                     Certificate.GetPrivateKey(GlobalVariables.moPass,GlobalVariables.moAlias)); // расшифровываем на нашем открытом ключе
 
@@ -45,10 +45,9 @@ public class VerifyAndDecrypt {
             org.w3c.dom.Node copiedRoot = copiedDocument.importNode(element, true);
             copiedDocument.appendChild(copiedRoot);
 
-            soapMessage = WorkWithXML.DocToSOAP(copiedDocument); //конвертируем Документ в Месседж
+            soapMessage = WorkWithXML.docToSoap(copiedDocument); //конвертируем Документ в Месседж
 
-            //soapMessage.writeTo(System.out);
-            if(!Verify(soapMessage, Certificate.ExtractCertFromCertStore(passwordCertStor,aliasCert,pathToCert))) // Verify
+            if(!verify(soapMessage, Certificate.ExtractCertFromCertStore(passwordCertStor,aliasCert,pathToCert))) // verify
             {System.out.println("Сообщение не прошло проверку подписи!");}
 
             return soapMessage;
@@ -82,8 +81,9 @@ public class VerifyAndDecrypt {
         is2.close();
         return doc2;
     }
+
     //проверка подписи
-    public static boolean Verify(SOAPMessage message, X509Certificate cert) throws Exception {
+    public static boolean verify(SOAPMessage message, X509Certificate cert) throws Exception {
 
         SOAPHeader header = message.getSOAPHeader();
         Document doc = header.getOwnerDocument();
@@ -122,9 +122,7 @@ public class VerifyAndDecrypt {
         Provider xmlDSigProvider = new ru.CryptoPro.JCPxml.dsig.internal.dom.XMLDSigRI();
         XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM", xmlDSigProvider);
 
-        //XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
         XMLSignature signature = fac.unmarshalXMLSignature(valContext);
         return signature.validate(valContext);
-        //return true;
     }
 }

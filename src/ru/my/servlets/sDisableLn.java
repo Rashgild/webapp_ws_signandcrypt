@@ -1,23 +1,26 @@
 package ru.my.servlets;
 
-import org.apache.log4j.Logger;
-import ru.ibs.fss.ln.ws.fileoperationsln.*;
-import ru.my.helpers_operations.GlobalVariables;
-
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 
-/** Created by rkurbanov on 28.06.2017. */
+import org.apache.log4j.Logger;
+
+import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
+import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
+import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserDisableLnOut;
+import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
+import ru.my.helpers_operations.GlobalVariables;
 
 @WebServlet("/sDisableLn")
-public class sDisableLn  extends  HttpServlet {
+public class sDisableLn extends HttpServlet {
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        Logger logger=Logger.getLogger("simple");
+        Logger logger = Logger.getLogger("simple");
         logger.info("1) NewLnNum");
         response.setContentType("text/html ;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -29,7 +32,7 @@ public class sDisableLn  extends  HttpServlet {
         String reasonCode = request.getParameter("reasonCode");
         String reason = request.getParameter("reason");
 
-        System.out.println("Ogrn:"+ogrn+",lncode:"+lnCode+",snils:"+snils+",reasonCode:"+reasonCode+",reason:"+reason);
+        System.out.println("Ogrn:" + ogrn + ",lncode:" + lnCode + ",snils:" + snils + ",reasonCode:" + reasonCode + ",reason:" + reason);
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>" +
@@ -41,16 +44,14 @@ public class sDisableLn  extends  HttpServlet {
         System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
         System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
 
-        FileOperationsLnImplService service = new  FileOperationsLnImplService();
+        FileOperationsLnImplService service = new FileOperationsLnImplService();
         FileOperationsLn start = service.getFileOperationsLnPort();
         try {
-            FileOperationsLnUserDisableLnOut fileOperationsLnUserDisableLnOut =  start.disableLn(ogrn,lnCode,snils,reasonCode,reason);
-            out.println("<H1>Статус:"+fileOperationsLnUserDisableLnOut.getMESS()+"</H1>");
-            //out.println("<H1>Status:"+fileOperationsLnUserDisableLnOut.getSTATUS()+"</H1>");
+            FileOperationsLnUserDisableLnOut fileOperationsLnUserDisableLnOut = start.disableLn(ogrn, lnCode, snils, reasonCode, reason);
+            out.println("<H1>Статус:" + fileOperationsLnUserDisableLnOut.getMESS() + "</H1>");
         } catch (SOAPException_Exception e) {
             e.printStackTrace();
         }
-
         out.println("</body></html>");
     }
 }

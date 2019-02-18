@@ -1,55 +1,35 @@
 package ru.my.entities;
 
-import com.sun.xml.internal.txw2.annotation.*;
-
-import javax.ws.rs.DefaultValue;
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-/**
- * Created by rkurbanov on 25.05.2018.
- */
 
 @XmlRootElement(name = "Security")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Security {
 
-
-    //@XmlElement(name ="binarySecurityToken",defaultValue="321")
-    //private String binarySecurityToken1="12333";
-
-    @XmlElement(name = "binarySecurityToken",defaultValue = "123123123")
+    @XmlElement(name = "binarySecurityToken", defaultValue = "123123123")
     private BinarySecurityToken binarySecurityToken;
-
 
 
     public BinarySecurityToken getBinarySecurityToken() {
         return binarySecurityToken;
     }
+
     public void setBinarySecurityToken(BinarySecurityToken binarySecurityToken) {
         this.binarySecurityToken = binarySecurityToken;
     }
 
-
-
-
     @XmlRootElement(name = "BinarySecurityToken")
     @XmlAccessorType(XmlAccessType.FIELD)
-    //@XmlElement(name = "TREAT_DOCTOR", required = true)
-    public static class BinarySecurityToken{
-
-      /* public BinarySecurityToken(){
-           wse = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
-           encodingType = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary";
-           valueType = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
-           id = "http://eln.fss.ru/actor/mo/1053000627690/ELN_306742021938";
-       }*/
-
-        //BinarySecurityToken BinarySecurityToken = "123";
+    public static class BinarySecurityToken {
 
         @XmlAttribute(name = "wse")
         private String wse;
@@ -67,6 +47,7 @@ public class Security {
         public String getWse() {
             return wse;
         }
+
         public void setWse(String wse) {
             this.wse = wse;
         }
@@ -74,6 +55,7 @@ public class Security {
         public String getEncodingType() {
             return encodingType;
         }
+
         public void setEncodingType(String encodingType) {
             this.encodingType = encodingType;
         }
@@ -81,6 +63,7 @@ public class Security {
         public String getValueType() {
             return valueType;
         }
+
         public void setValueType(String valueType) {
             this.valueType = valueType;
         }
@@ -88,11 +71,11 @@ public class Security {
         public String getId() {
             return id;
         }
+
         public void setId(String id) {
             this.id = id;
         }
     }
-
 
     @XmlAttribute(name = "wsse", namespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")
     private String wsse;
@@ -104,6 +87,7 @@ public class Security {
     public String getActor() {
         return actor;
     }
+
     public void setActor(String actor) {
         this.actor = actor;
     }
@@ -111,6 +95,7 @@ public class Security {
     public String getWsse() {
         return wsse;
     }
+
     public void setWsse(String wsse) {
         this.wsse = wsse;
     }
@@ -118,13 +103,14 @@ public class Security {
     public Signature getSignature() {
         return signature;
     }
+
     public void setSignature(Signature signature) {
         this.signature = signature;
     }
 
     @XmlRootElement(name = "Signature")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Signature{
+    public static class Signature {
 
         @XmlElement(name = "SignedInfo")
         private SignedInfo signedInfo;
@@ -135,15 +121,18 @@ public class Security {
         @XmlElement(name = "KeyInfo")
         private KeyInfo keyInfo;
 
-
         public SignedInfo getSignedInfo() {
             return signedInfo;
         }
-        public void setSignedInfo(SignedInfo signedInfo) {this.signedInfo = signedInfo; }
+
+        public void setSignedInfo(SignedInfo signedInfo) {
+            this.signedInfo = signedInfo;
+        }
 
         public String getSignatureValue() {
             return signatureValue;
         }
+
         public void setSignatureValue(String signatureValue) {
             this.signatureValue = signatureValue;
         }
@@ -151,13 +140,14 @@ public class Security {
         public KeyInfo getKeyInfo() {
             return keyInfo;
         }
+
         public void setKeyInfo(KeyInfo keyInfo) {
             this.keyInfo = keyInfo;
         }
 
         @XmlRootElement(name = "KeyInfo")
         @XmlAccessorType(XmlAccessType.FIELD)
-        public static class KeyInfo{
+        public static class KeyInfo {
 
             @XmlElement(name = "SecurityTokenReference")
             private SecurityTokenReference securityTokenReference;
@@ -165,40 +155,45 @@ public class Security {
             public SecurityTokenReference getSecurityTokenReference() {
                 return securityTokenReference;
             }
+
             public void setSecurityTokenReference(SecurityTokenReference securityTokenReference) {
                 this.securityTokenReference = securityTokenReference;
             }
 
-            public KeyInfo(String ogrn,String eln){
-                securityTokenReference = new SecurityTokenReference(ogrn,eln);
+            public KeyInfo(String ogrn, String eln) {
+                securityTokenReference = new SecurityTokenReference(ogrn, eln);
             }
 
-            public KeyInfo(){}
+            public KeyInfo() {
+            }
 
-            @XmlRootElement(name = "SecurityTokenReference",namespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")
+            @XmlRootElement(name = "SecurityTokenReference", namespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")
             @XmlAccessorType(XmlAccessType.FIELD)
-            public static class SecurityTokenReference{
+            public static class SecurityTokenReference {
 
                 private Reference reference;
 
                 public Reference getReference() {
                     return reference;
                 }
+
                 public void setReference(Reference reference) {
                     this.reference = reference;
                 }
 
-                public SecurityTokenReference(String ogrn,String eln){
-                    reference = new Reference(ogrn,eln);
+                public SecurityTokenReference(String ogrn, String eln) {
+                    reference = new Reference(ogrn, eln);
                 }
-                public SecurityTokenReference(){}
 
-                @XmlRootElement(name = "Reference",namespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")
+                public SecurityTokenReference() {
+                }
+
+                @XmlRootElement(name = "Reference", namespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")
                 @XmlAccessorType(XmlAccessType.FIELD)
                 @XmlType(name = "Reference", propOrder = {
-                        "URI","ValueType"
+                        "URI", "ValueType"
                 })
-                public static class Reference{
+                public static class Reference {
                     @XmlAttribute(name = "URI")
                     private String URI;
                     @XmlAttribute(name = "ValueType")
@@ -207,6 +202,7 @@ public class Security {
                     public String getURI() {
                         return URI;
                     }
+
                     public void setURI(String URI) {
                         this.URI = URI;
                     }
@@ -214,71 +210,27 @@ public class Security {
                     public String getValueType() {
                         return ValueType;
                     }
+
                     public void setValueType(String valueType) {
                         ValueType = valueType;
                     }
 
-                    public Reference(){
-                        ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
+                    public Reference() {
+                        ValueType = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
                     }
 
-                    public Reference(String ogrn,String eln){
-                        URI ="#http://eln.fss.ru/actor/mo/"+ogrn+"/ELN_"+eln;
-                        ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
+                    public Reference(String ogrn, String eln) {
+                        URI = "#http://eln.fss.ru/actor/mo/" + ogrn + "/ELN_" + eln;
+                        ValueType = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
                     }
                 }
-                /*@XmlElement(name = "wsse:Reference",namespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")
-                private Reference reference;
-                public Reference getReference() {
-                    return reference;
-                }
-                public void setReference(Reference reference) {
-                    this.reference = reference;
-                }
-                public SecurityTokenReference(String ogrn,String eln){
-                    reference = new Reference(ogrn,eln);
-                }*/
-                //public SecurityTokenReference(){}
-
-                /*@XmlRootElement(name = "wsse:Reference",namespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd")
-                @XmlAccessorType(XmlAccessType.FIELD)
-                public static class Reference{
-                    @XmlAttribute(name = "URI")
-                    private String URI;
-
-                    @XmlAttribute(name = "ValueType")
-                    private String ValueType;
-
-                    public String getURI() {
-                        return URI;
-                    }
-                    public void setURI(String URI) {
-                        this.URI = URI;
-                    }
-
-                    public String getValueType() {
-                        return ValueType;
-                    }
-                    public void setValueType(String valueType) {
-                        ValueType = valueType;
-                    }
-
-                    Reference(){
-                        ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
-                    }
-
-                    Reference(String ogrn,String eln){
-                        URI ="#http://eln.fss.ru/actor/mo/"+ogrn+"/ELN_"+eln;
-                        ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
-                    }
-                }*/
             }
         }
 
 
         @XmlRootElement(name = "SignedInfo")
         @XmlAccessorType(XmlAccessType.FIELD)
-        public static class SignedInfo{
+        public static class SignedInfo {
 
             @XmlElement(name = "CanonicalizationMethod")
             private CanonicalizationMethod canonicalizationMethods;
@@ -290,6 +242,7 @@ public class Security {
             public CanonicalizationMethod getCanonicalizationMethods() {
                 return canonicalizationMethods;
             }
+
             public void setCanonicalizationMethods(CanonicalizationMethod canonicalizationMethods) {
                 this.canonicalizationMethods = canonicalizationMethods;
             }
@@ -297,6 +250,7 @@ public class Security {
             public SignatureMethod getSignatureMethod() {
                 return signatureMethod;
             }
+
             public void setSignatureMethod(SignatureMethod signatureMethod) {
                 this.signatureMethod = signatureMethod;
             }
@@ -304,33 +258,38 @@ public class Security {
             public Reference getReference() {
                 return reference;
             }
+
             public void setReference(Reference reference) {
                 this.reference = reference;
             }
 
-            public SignedInfo(){
+            public SignedInfo() {
                 signatureMethod = new SignatureMethod();
                 canonicalizationMethods = new CanonicalizationMethod();
             }
+
             @XmlRootElement(name = "CanonicalizationMethod")
             @XmlAccessorType(XmlAccessType.FIELD)
-            public static class CanonicalizationMethod{
+            public static class CanonicalizationMethod {
                 @XmlAttribute(name = "Algorithm")
                 private String Algorithm;
+
                 public String getAlgorithm() {
                     return Algorithm;
                 }
+
                 public void setAlgorithm(String algorithm) {
                     Algorithm = algorithm;
                 }
-                public CanonicalizationMethod(){
-                    Algorithm  = "http://www.w3.org/2001/10/xml-exc-c14n#";
+
+                public CanonicalizationMethod() {
+                    Algorithm = "http://www.w3.org/2001/10/xml-exc-c14n#";
                 }
             }
 
             @XmlRootElement(name = "Reference")
             @XmlAccessorType(XmlAccessType.FIELD)
-            public static class Reference{
+            public static class Reference {
                 @XmlAttribute(name = "URI")
                 private String URI;
 
@@ -344,6 +303,7 @@ public class Security {
                 public String getURI() {
                     return URI;
                 }
+
                 public void setURI(String URI) {
                     this.URI = URI;
                 }
@@ -351,6 +311,7 @@ public class Security {
                 public DigestMethod getDigestMethod() {
                     return digestMethod;
                 }
+
                 public void setDigestMethod(DigestMethod digestMethod) {
                     this.digestMethod = digestMethod;
                 }
@@ -358,6 +319,7 @@ public class Security {
                 public String getDigestValue() {
                     return digestValue;
                 }
+
                 public void setDigestValue(String digestValue) {
                     this.digestValue = digestValue;
                 }
@@ -365,26 +327,30 @@ public class Security {
                 public Transforms getTransforms() {
                     return transforms;
                 }
+
                 public void setTransforms(Transforms transforms) {
                     this.transforms = transforms;
                 }
 
-                public Reference(){
+                public Reference() {
                     digestMethod = new DigestMethod();
                     transforms = new Transforms();
                 }
 
                 @XmlRootElement(name = "DigestMethod")
                 @XmlAccessorType(XmlAccessType.FIELD)
-                public static class DigestMethod{
+                public static class DigestMethod {
                     @XmlAttribute(name = "Algorithm")
                     private String Algorithm;
-                    public DigestMethod(){
+
+                    public DigestMethod() {
                         Algorithm = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
                     }
+
                     public String getAlgorithm() {
                         return Algorithm;
                     }
+
                     public void setAlgorithm(String algorithm) {
                         Algorithm = algorithm;
                     }
@@ -392,29 +358,35 @@ public class Security {
 
                 @XmlRootElement(name = "Transforms")
                 @XmlAccessorType(XmlAccessType.FIELD)
-                public static class Transforms{
-                   private Transform transform;
+                public static class Transforms {
+                    private Transform transform;
 
                     public Transform getTransform() {
                         return transform;
                     }
+
                     public void setTransform(Transform transform) {
                         this.transform = transform;
                     }
-                    public Transforms(){
+
+                    public Transforms() {
                         transform = new Transform();
                     }
+
                     @XmlRootElement(name = "Transform")
                     @XmlAccessorType(XmlAccessType.FIELD)
-                    public static class Transform{
+                    public static class Transform {
                         @XmlAttribute(name = "Algorithm")
                         private String Algorithm;
-                        public Transform(){
+
+                        public Transform() {
                             Algorithm = "http://www.w3.org/2001/10/xml-exc-c14n#";
                         }
+
                         public String getAlgorithm() {
                             return Algorithm;
                         }
+
                         public void setAlgorithm(String algorithm) {
                             Algorithm = algorithm;
                         }
@@ -424,22 +396,22 @@ public class Security {
 
             @XmlRootElement(name = "SignatureMethod")
             @XmlAccessorType(XmlAccessType.FIELD)
-            public static class SignatureMethod{
+            public static class SignatureMethod {
                 @XmlAttribute(name = "Algorithm")
                 private String Algorithm;
+
                 public String getAlgorithm() {
                     return Algorithm;
                 }
+
                 public void setAlgorithm(String algorithm) {
                     Algorithm = algorithm;
                 }
-                public SignatureMethod(){
+
+                public SignatureMethod() {
                     Algorithm = "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
                 }
             }
-
-
         }
     }
-
 }

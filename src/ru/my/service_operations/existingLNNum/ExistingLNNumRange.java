@@ -22,9 +22,9 @@ public class ExistingLNNumRange {
     {
         try {
             NewLnNumRange_start.Create(soapMsg);
-            soapMsg= Sign.Signation();
-            WorkWithXML.SaveSOAPToXML("ExistingLNNumRange.xml", soapMsg);
-            GlobalVariables.Request = WorkWithXML.SoapMessageToString(soapMsg);
+            soapMsg= Sign.signation();
+            WorkWithXML.saveSoapToXml("ExistingLNNumRange.xml", soapMsg);
+            GlobalVariables.Request = WorkWithXML.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();
