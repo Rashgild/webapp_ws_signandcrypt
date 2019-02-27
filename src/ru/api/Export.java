@@ -44,19 +44,19 @@ import ru.ibs.fss.ln.ws.fileoperationsln.WSResult;
 import ru.my.entities.PrParseFileLnLpu;
 import ru.my.entities.TREAT_FULL_PERIOD;
 import ru.my.entities.TREAT_PERIOD;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 import ru.my.signAndCrypt.Sign;
 
 import static ru.api.ApiUtils.get;
-import static ru.my.helpers_operations.GlobalVariables.moAlias;
-import static ru.my.helpers_operations.GlobalVariables.moPass;
-import static ru.my.helpers_operations.GlobalVariables.ogrnMo;
-import static ru.my.helpers_operations.GlobalVariables.passwordSSL;
-import static ru.my.helpers_operations.GlobalVariables.pathandnameSSL;
-import static ru.my.helpers_operations.GlobalVariables.setUp;
-import static ru.my.helpers_operations.GlobalVariables.t_ELN;
-import static ru.my.helpers_operations.WorkWithXML.saveSoapToXml;
-import static ru.my.helpers_operations.WorkWithXML.soapMessageToString;
+import static ru.my.utils.GlobalVariables.moAlias;
+import static ru.my.utils.GlobalVariables.moPass;
+import static ru.my.utils.GlobalVariables.ogrnMo;
+import static ru.my.utils.GlobalVariables.passwordSSL;
+import static ru.my.utils.GlobalVariables.pathandnameSSL;
+import static ru.my.utils.GlobalVariables.setUp;
+import static ru.my.utils.GlobalVariables.t_ELN;
+import static ru.my.utils.XmlUtils.saveSoapToXml;
+import static ru.my.utils.XmlUtils.soapMessageToString;
 import static ru.my.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start.calculateAge;
 import static ru.my.signAndCrypt.Encrypt.CreateXMLAndEncrypt;
 
@@ -449,7 +449,7 @@ public class Export {
                 "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
                 "<soapenv:Header>[Head]</soapenv:Header><soapenv:Body>[Body]</soapenv:Body></soapenv:Envelope>";
         try {
-            Document document = GlobalVariables.parser.ObjToSoap(prParseFilelnlpu);
+            Document document = GlobalVariables.parser.objToSoap(prParseFilelnlpu);
             DOMSource domSource = new DOMSource(document);
             StringWriter writer = new StringWriter();
             StreamResult result = new StreamResult(writer);

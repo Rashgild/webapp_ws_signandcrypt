@@ -3,29 +3,22 @@ package ru.my.servlets;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.SQL;
-import ru.my.helpers_operations.StoredQuery;
-import ru.my.helpers_operations.UTF8Control;
+import ru.my.utils.UTF8Control;
 
-import static ru.my.helpers_operations.GlobalVariables.*;
+import static ru.my.utils.GlobalVariables.*;
 
 public class ConfigInit implements ServletContextListener {
 
@@ -91,14 +84,14 @@ public class ConfigInit implements ServletContextListener {
         urlApi = resource.getString("urlApi");
         innerApi = resource.getString("innerApi");
 
-        ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
-        try {
+ //       ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
+  /*      try {
             while (resultSet.next()) {
                 GlobalVariables.DefaultLPU = resultSet.getString("keyvalue");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private static void downloadFile(String URL, String savePath) {

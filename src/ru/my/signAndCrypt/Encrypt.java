@@ -25,14 +25,14 @@ import org.w3c.dom.NodeList;
 
 import ru.CryptoPro.JCPxml.Consts;
 import ru.CryptoPro.JCPxml.XmlInit;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 
-import static ru.my.helpers_operations.GlobalVariables.aliasCert;
-import static ru.my.helpers_operations.GlobalVariables.passwordCertStor;
-import static ru.my.helpers_operations.GlobalVariables.pathToCert;
-import static ru.my.helpers_operations.WorkWithXML.saveSoapToXml;
-import static ru.my.helpers_operations.WorkWithXML.soapMessageToString;
-import static ru.my.helpers_operations.WorkWithXML.stringToSoap;
+import static ru.my.utils.GlobalVariables.aliasCert;
+import static ru.my.utils.GlobalVariables.passwordCertStor;
+import static ru.my.utils.GlobalVariables.pathToCert;
+import static ru.my.utils.XmlUtils.saveSoapToXml;
+import static ru.my.utils.XmlUtils.soapMessageToString;
+import static ru.my.utils.XmlUtils.stringToSoap;
 
 public class Encrypt {
 

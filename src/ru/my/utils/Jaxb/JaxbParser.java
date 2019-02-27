@@ -1,4 +1,4 @@
-package ru.my.helpers_operations.Jaxb;
+package ru.my.utils.Jaxb;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -36,7 +36,7 @@ public class JaxbParser implements Parser {
     }
 
     @Override
-    public Document ObjToSoap(Object o) throws JAXBException, ParserConfigurationException {
+    public Document objToSoap(Object o) throws JAXBException, ParserConfigurationException {
         JAXBContext context = JAXBContext.newInstance(o.getClass());
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

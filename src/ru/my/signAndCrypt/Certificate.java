@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 import ru.CryptoPro.JCP.KeyStore.HDImage.HDImageStore;
 import ru.CryptoPro.JCPxml.xmldsig.JCPXMLDSigInit;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 
 public class Certificate {
 

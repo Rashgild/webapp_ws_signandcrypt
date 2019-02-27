@@ -1,9 +1,9 @@
-package ru.my.helpers_operations;
+package ru.my.utils;
 
 import java.text.DateFormat;
 import java.util.Date;
 
-import static ru.my.helpers_operations.GlobalVariables.DefaultLPU;
+import static ru.my.utils.GlobalVariables.DefaultLPU;
 
 public class StoredQuery {
 

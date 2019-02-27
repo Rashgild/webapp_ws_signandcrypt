@@ -1,10 +1,8 @@
 package ru.my.servlets;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +18,12 @@ import ru.ibs.fss.ln.ws.fileoperationsln.PrParseFilelnlpuElement;
 import ru.ibs.fss.ln.ws.fileoperationsln.ROWSET;
 import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
 import ru.ibs.fss.ln.ws.fileoperationsln.WSResult;
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.SQL;
-import ru.my.helpers_operations.StoredQuery;
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.SQL;
+import ru.my.utils.StoredQuery;
 
-import static ru.my.helpers_operations.GlobalVariables.passwordSSL;
-import static ru.my.helpers_operations.GlobalVariables.pathandnameSSL;
+import static ru.my.utils.GlobalVariables.passwordSSL;
+import static ru.my.utils.GlobalVariables.pathandnameSSL;
 
 @WebServlet("/SetLnData")
 public class sPrParseFileLnLpu extends HttpServlet {
@@ -79,12 +77,12 @@ public class sPrParseFileLnLpu extends HttpServlet {
 
                 request.setAttribute("time", ((System.currentTimeMillis() - start) / 1000));
                 if (state != null && !state.equals("") || hash != null && !hash.equals("")) {
-                    SQL.SQL_UpdIns(StoredQuery.SaveStatusAndHash(state, hash, GlobalVariables.t_ELN));
+                    SQL.sqlUpdIns(StoredQuery.SaveStatusAndHash(state, hash, GlobalVariables.t_ELN));
                     if (status.equals("1")) {
-                        SQL.SQL_UpdIns(StoredQuery.updateDisRecord(id));
+                        SQL.sqlUpdIns(StoredQuery.updateDisRecord(id));
                     }
                 }
-                SQL.SaveInBD(saveResult.toString(), result.getSTATUS());
+                SQL.saveInBaseDate(saveResult.toString(), result.getSTATUS());
             }
             request.getRequestDispatcher("/WEB-INF/prParseFileLnLpu.jsp").forward(request, response);
 

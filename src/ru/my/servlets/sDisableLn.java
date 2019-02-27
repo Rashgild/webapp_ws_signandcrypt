@@ -13,7 +13,7 @@ import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserDisableLnOut;
 import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 
 @WebServlet("/sDisableLn")
 public class sDisableLn extends HttpServlet {

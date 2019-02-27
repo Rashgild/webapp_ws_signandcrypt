@@ -1,14 +1,14 @@
-package ru.my.helpers_operations;
+package ru.my.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import static ru.my.helpers_operations.GlobalVariables.dbdriver;
-import static ru.my.helpers_operations.GlobalVariables.dbhost;
-import static ru.my.helpers_operations.GlobalVariables.dblogin;
-import static ru.my.helpers_operations.GlobalVariables.dbpassword;
+import static ru.my.utils.GlobalVariables.dbdriver;
+import static ru.my.utils.GlobalVariables.dbhost;
+import static ru.my.utils.GlobalVariables.dblogin;
+import static ru.my.utils.GlobalVariables.dbpassword;
 
 public class SQL {
 
@@ -37,13 +37,13 @@ public class SQL {
         return resultSet;
     }
 
-    public static int SQL_UpdIns(String sql) {
-        Connection connection = null;
+    public static int sqlUpdIns(String sql) {
+        Connection connection;
         int res = 0;
         try {
             Class.forName(dbdriver);
             connection = DriverManager.getConnection(dbhost, dblogin, dbpassword);
-            Statement statement = null;
+            Statement statement;
             statement = connection.createStatement();
             res = statement.executeUpdate(sql);
             connection.close();
@@ -54,9 +54,9 @@ public class SQL {
         return res;
     }
 
-    public static String Insert_returning(String sql) {
-        Connection connection = null;
-        ResultSet rs = null;
+    public static String insertReturning(String sql) {
+        Connection connection;
+        ResultSet rs;
         String id = "";
         try {
             Class.forName(dbdriver);
@@ -76,16 +76,16 @@ public class SQL {
         return id;
     }
 
-    public static void SaveInBD(String result, Integer status) {
-        result = Split(result);
+    public static void saveInBaseDate(String result, Integer status) {
+        result = split(result);
         if (GlobalVariables.Response != null && !GlobalVariables.Response.equals("")) {
-            GlobalVariables.Response = Split(GlobalVariables.Response);
+            GlobalVariables.Response = split(GlobalVariables.Response);
         }
-        SQL_UpdIns(StoredQuery.QueryToSave(result, status));
+        sqlUpdIns(StoredQuery.QueryToSave(result, status));
     }
 
 
-    private static String Split(String str) {
+    private static String split(String str) {
         String[] arrstr;
         arrstr = str.split("'");
         str = "";

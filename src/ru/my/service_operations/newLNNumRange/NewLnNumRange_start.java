@@ -1,6 +1,5 @@
 package ru.my.service_operations.newLNNumRange;
 
-import java.io.IOException;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.Name;
 import javax.xml.soap.SOAPBody;
@@ -11,8 +10,8 @@ import javax.xml.soap.SOAPMessage;
 
 import org.apache.log4j.Logger;
 
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.WorkWithXML;
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.XmlUtils;
 import ru.my.signAndCrypt.Encrypt;
 import ru.my.signAndCrypt.Sign;
 
@@ -31,8 +30,8 @@ public class NewLnNumRange_start {
             Create(soapMsg);
             logger.info("SigningMessage");
             soapMsg = Sign.signation();
-            WorkWithXML.saveSoapToXml("GetNumSigned.xml", soapMsg);
-            GlobalVariables.Request = WorkWithXML.soapMessageToString(soapMsg);
+            XmlUtils.saveSoapToXml("GetNumSigned.xml", soapMsg);
+            GlobalVariables.Request = XmlUtils.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();
@@ -53,12 +52,17 @@ public class NewLnNumRange_start {
      * @param soapMessage перехваченное сообщение
      */
     public static void Create(SOAPMessage soapMessage)
-            throws SOAPException, IOException {
+            throws SOAPException {
 
         SOAPEnvelope soapEnv = soapMessage.getSOAPPart().getEnvelope();
-        SOAPHeader soapHeader = soapEnv.getHeader();
-        soapEnv.addHeader();
+        //SOAPHeader soapHeader = soapEnv.getHeader();
+        //soapEnv.addHeader();
         //soapMessage
+
+        if (soapEnv.getHeader() != null) {
+            soapEnv.getHeader().detachNode();
+        }
+        SOAPHeader header = soapEnv.addHeader();
         soapEnv.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema");
         soapEnv.addNamespaceDeclaration("xsd", "http://www.w3.org/2001/XMLSchema-instance");
         soapEnv.addNamespaceDeclaration("wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
@@ -69,8 +73,6 @@ public class NewLnNumRange_start {
         soapBody.addAttribute(name, "OGRN_" + GlobalVariables.ogrnMo);
         soapMessage.saveChanges();
 
-        WorkWithXML.saveSoapToXml("tempSkeleton.xml", soapMessage);
+        XmlUtils.saveSoapToXml("tempSkeleton.xml", soapMessage);
     }
-
-
 }

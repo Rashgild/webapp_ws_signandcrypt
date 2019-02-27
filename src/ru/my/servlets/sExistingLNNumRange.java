@@ -14,7 +14,7 @@ import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetExistingLNNumRangeOut;
 import ru.ibs.fss.ln.ws.fileoperationsln.LnNumList;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 
 @WebServlet("/sExistingLNNumRange")
 public class sExistingLNNumRange extends HttpServlet {

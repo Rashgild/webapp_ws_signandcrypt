@@ -1,4 +1,4 @@
-package ru.my.helpers_operations.Jaxb;
+package ru.my.utils.Jaxb;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,5 +14,5 @@ public interface Parser {
 
     void saveObject(File file, Object o) throws JAXBException;
 
-    Document ObjToSoap(Object o) throws JAXBException, IOException, ParserConfigurationException, TransformerException;
+    Document objToSoap(Object o) throws JAXBException, IOException, ParserConfigurationException, TransformerException;
 }

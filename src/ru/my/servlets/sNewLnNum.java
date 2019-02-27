@@ -11,10 +11,10 @@ import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetNewLNNumOut;
 import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 
-import static ru.my.helpers_operations.SQL.SQL_UpdIns;
-import static ru.my.helpers_operations.StoredQuery.SaveNumber;
+import static ru.my.utils.SQL.sqlUpdIns;
+import static ru.my.utils.StoredQuery.SaveNumber;
 
 @WebServlet("/sNewLnNum")
 public class sNewLnNum extends HttpServlet {
@@ -51,7 +51,7 @@ public class sNewLnNum extends HttpServlet {
             out.println("<H1>" + Num.getMESS() + "</H1>");
             out.println("<H1> Получен номер: </H1>");
             out.println("<H1>1)" + Num.getDATA() + "</H1>");
-            SQL_UpdIns(SaveNumber(Num.getDATA()));
+            sqlUpdIns(SaveNumber(Num.getDATA()));
 
         } catch (SOAPException_Exception e) {
             e.printStackTrace();

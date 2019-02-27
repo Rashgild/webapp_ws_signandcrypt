@@ -1,4 +1,4 @@
-package ru.my.helpers_operations;
+package ru.my.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,9 +22,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.w3c.dom.Document;
 
-public class WorkWithXML {
+public class XmlUtils {
 
-    public static String DocToString(Document doc) {
+    public static String docToString(Document doc) {
         try {
             StringWriter sw = new StringWriter();
             TransformerFactory tf = TransformerFactory.newInstance();

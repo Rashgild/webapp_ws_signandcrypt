@@ -32,12 +32,12 @@ import org.w3c.dom.Document;
 import ru.my.entities.ROW;
 import ru.my.entities.TREAT_FULL_PERIOD;
 import ru.my.entities.TREAT_PERIOD;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 
 import static ru.api.ApiUtils.cretePostRequest;
 import static ru.api.ApiUtils.get;
-import static ru.my.helpers_operations.GlobalVariables.setUp;
-import static ru.my.helpers_operations.GlobalVariables.urlApi;
+import static ru.my.utils.GlobalVariables.setUp;
+import static ru.my.utils.GlobalVariables.urlApi;
 
 @Path("/sign")
 public class SignAndCryptApi {
@@ -223,7 +223,7 @@ public class SignAndCryptApi {
         String type = row.getLnhash();
 
         try {
-            Document document = GlobalVariables.parser.ObjToSoap(row);
+            Document document = GlobalVariables.parser.objToSoap(row);
             DOMSource domSource = new DOMSource(document);
             StringWriter writer = new StringWriter();
             StreamResult result = new StreamResult(writer);

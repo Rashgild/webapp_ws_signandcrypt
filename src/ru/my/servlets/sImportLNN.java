@@ -20,10 +20,10 @@ import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetLNDataOut;
 import ru.ibs.fss.ln.ws.fileoperationsln.ROW;
 import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
 import ru.ibs.fss.ln.ws.fileoperationsln.TREATFULLPERIOD;
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.SQL;
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.SQL;
 
-import static ru.my.helpers_operations.GlobalVariables.ogrnMo;
+import static ru.my.utils.GlobalVariables.ogrnMo;
 
 @WebServlet("/sImportLNN")
 public class sImportLNN extends HttpServlet {
@@ -107,8 +107,8 @@ public class sImportLNN extends HttpServlet {
                 if (!isExistNumber(eln)) {
                     Map<String, String> SQLrequest = new HashMap<String, String>();
 
-                    SQL.SQL_UpdIns("INSERT into disabilitycase (patient_id, createdate,createusername) values (" + pid + ", current_date, 'Importer')");
-                    String idDisCase = SQL.Insert_returning("select max(id) as id from disabilitycase");
+                    SQL.sqlUpdIns("INSERT into disabilitycase (patient_id, createdate,createusername) values (" + pid + ", current_date, 'Importer')");
+                    String idDisCase = SQL.insertReturning("select max(id) as id from disabilitycase");
                     String lpuOGRN = row.getLPUOGRN();
 
                     if (ogrnMo.equals(lpuOGRN)) {
@@ -156,7 +156,7 @@ public class sImportLNN extends HttpServlet {
                     }
 
                     if (row.getDIAGNOS() != null && !row.getDIAGNOS().equals("")) {
-                        String id10 = SQL.Insert_returning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
+                        String id10 = SQL.insertReturning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
                         if (id10 != null && !id10.equals("")) {
                             SQLrequest.put("idc10_id", id10);
                             SQLrequest.put("idc10final_id", id10);
@@ -169,7 +169,7 @@ public class sImportLNN extends HttpServlet {
                     if (lnresult != null) {
                         SQLrequest.put("isclose", "true");
                         if (lnresult.getMSERESULT() != null && !lnresult.getMSERESULT().equals("")) {
-                            String reasonId = SQL.Insert_returning("select id from vocdisabilitydocumentclosereason where codef = '" + lnresult.getMSERESULT() + "'");
+                            String reasonId = SQL.insertReturning("select id from vocdisabilitydocumentclosereason where codef = '" + lnresult.getMSERESULT() + "'");
                             SQLrequest.put("closereason_id", reasonId);
                         } else {
                             SQLrequest.put("closereason_id", "1");
@@ -187,8 +187,8 @@ public class sImportLNN extends HttpServlet {
 
                     SQLrequest.put("status_id", "1");
                     String req = buildRequest(SQLrequest, "disabilitydocument");
-                    SQL.SQL_UpdIns(req);
-                    String DisabilityDocumentId = SQL.Insert_returning("Select max(id) as id from disabilitydocument");
+                    SQL.sqlUpdIns(req);
+                    String DisabilityDocumentId = SQL.insertReturning("Select max(id) as id from disabilitydocument");
                     List<TREATFULLPERIOD> treatfullperiods = row.getTREATPERIODS().getTREATFULLPERIOD();
                     for (TREATFULLPERIOD treatfullperiod : treatfullperiods) {
 
@@ -217,7 +217,7 @@ public class sImportLNN extends HttpServlet {
                         SQLrequest.put("disabilitydocument_id", DisabilityDocumentId.toString());
                         SQLrequest.put("isexport", "true");
                         req = buildRequest(SQLrequest, "disabilityrecord");
-                        SQL.SQL_UpdIns(req);
+                        SQL.sqlUpdIns(req);
                     }
 
                     out.print("<br>");

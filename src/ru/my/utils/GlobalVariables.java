@@ -1,15 +1,16 @@
-package ru.my.helpers_operations;
+package ru.my.utils;
 
 import java.io.File;
 
 import ru.my.entities.PrParseFileLnLpu;
-import ru.my.helpers_operations.Jaxb.JaxbParser;
-import ru.my.helpers_operations.Jaxb.Parser;
+import ru.my.utils.Jaxb.JaxbParser;
+import ru.my.utils.Jaxb.Parser;
 
 public class GlobalVariables {
 
     public static String returningXml = "";
     public static String DefaultLPU = "";
+
     //config GlobalVariables
     public static String dbhost = "";
     public static String dblogin = "";
@@ -59,6 +60,4 @@ public class GlobalVariables {
         parser = new JaxbParser();
         file = new File(pathtosave + "person.xml");
     }
-
-
 }

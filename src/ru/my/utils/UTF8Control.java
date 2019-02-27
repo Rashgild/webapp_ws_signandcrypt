@@ -1,10 +1,11 @@
-package ru.my.helpers_operations;
+package ru.my.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -30,7 +31,7 @@ public class UTF8Control extends ResourceBundle.Control {
         }
         if (stream != null) {
             try {
-                bundle = new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
+                bundle = new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
             } finally {
                 stream.close();
             }

@@ -25,26 +25,26 @@ import ru.my.entities.ROW;
 import ru.my.entities.ROWSET;
 import ru.my.entities.TREAT_FULL_PERIOD;
 import ru.my.entities.TREAT_PERIOD;
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.SQL;
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.SQL;
 import ru.my.signAndCrypt.Encrypt;
 import ru.my.signAndCrypt.Sign;
 
-import static ru.my.helpers_operations.GlobalVariables.DisabilityDocument_id;
-import static ru.my.helpers_operations.GlobalVariables.cryptXMLFileName;
-import static ru.my.helpers_operations.GlobalVariables.docAlias;
-import static ru.my.helpers_operations.GlobalVariables.docPass;
-import static ru.my.helpers_operations.GlobalVariables.moAlias;
-import static ru.my.helpers_operations.GlobalVariables.moPass;
-import static ru.my.helpers_operations.GlobalVariables.ogrnMo;
-import static ru.my.helpers_operations.GlobalVariables.signXMLFileName;
-import static ru.my.helpers_operations.GlobalVariables.t_ELN;
-import static ru.my.helpers_operations.GlobalVariables.vkAlias;
-import static ru.my.helpers_operations.GlobalVariables.vkPass;
-import static ru.my.helpers_operations.StoredQuery.PrParse_Query1;
-import static ru.my.helpers_operations.StoredQuery.PrParse_Query2;
-import static ru.my.helpers_operations.WorkWithXML.saveSoapToXml;
-import static ru.my.helpers_operations.WorkWithXML.soapMessageToString;
+import static ru.my.utils.GlobalVariables.DisabilityDocument_id;
+import static ru.my.utils.GlobalVariables.cryptXMLFileName;
+import static ru.my.utils.GlobalVariables.docAlias;
+import static ru.my.utils.GlobalVariables.docPass;
+import static ru.my.utils.GlobalVariables.moAlias;
+import static ru.my.utils.GlobalVariables.moPass;
+import static ru.my.utils.GlobalVariables.ogrnMo;
+import static ru.my.utils.GlobalVariables.signXMLFileName;
+import static ru.my.utils.GlobalVariables.t_ELN;
+import static ru.my.utils.GlobalVariables.vkAlias;
+import static ru.my.utils.GlobalVariables.vkPass;
+import static ru.my.utils.StoredQuery.PrParse_Query1;
+import static ru.my.utils.StoredQuery.PrParse_Query2;
+import static ru.my.utils.XmlUtils.saveSoapToXml;
+import static ru.my.utils.XmlUtils.soapMessageToString;
 
 public class PrParseFileLnLpu_start {
 
@@ -418,7 +418,7 @@ public class PrParseFileLnLpu_start {
         SOAPMessage message = null;
         try {
 
-            Document document = GlobalVariables.parser.ObjToSoap(prParseFileLnLpu);
+            Document document = GlobalVariables.parser.objToSoap(prParseFileLnLpu);
             MessageFactory mf = MessageFactory.newInstance();
             message = mf.createMessage();
 

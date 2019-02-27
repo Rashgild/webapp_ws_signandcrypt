@@ -14,10 +14,10 @@ import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetNewLNNumRangeOut;
 import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 
-import static ru.my.helpers_operations.SQL.SQL_UpdIns;
-import static ru.my.helpers_operations.StoredQuery.SaveNumber;
+import static ru.my.utils.SQL.sqlUpdIns;
+import static ru.my.utils.StoredQuery.SaveNumber;
 
 @WebServlet("/sNewLnNumRange")
 public class sNewLnNumRange extends HttpServlet {
@@ -58,7 +58,7 @@ public class sNewLnNumRange extends HttpServlet {
             out.println("<H1> Получены номера: </H1>");
             for (int i = 0; i < data.size(); i++) {
                 out.println("<H1>" + i + ") " + data.get(i) + "</H1>");
-                SQL_UpdIns(SaveNumber(data.get(i)));
+                sqlUpdIns(SaveNumber(data.get(i)));
             }
 
         } catch (SOAPException_Exception e) {

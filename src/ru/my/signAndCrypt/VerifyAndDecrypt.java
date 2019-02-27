@@ -7,8 +7,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import ru.CryptoPro.JCPxml.xmldsig.JCPXMLDSigInit;
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.WorkWithXML;
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.XmlUtils;
 
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.dsig.XMLSignature;
@@ -24,17 +24,17 @@ import java.security.Provider;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
-import static ru.my.helpers_operations.GlobalVariables.aliasCert;
-import static ru.my.helpers_operations.GlobalVariables.passwordCertStor;
-import static ru.my.helpers_operations.GlobalVariables.pathToCert;
+import static ru.my.utils.GlobalVariables.aliasCert;
+import static ru.my.utils.GlobalVariables.passwordCertStor;
+import static ru.my.utils.GlobalVariables.pathToCert;
 
 public class VerifyAndDecrypt {
 
     public static SOAPMessage Start(SOAPMessage soapMessage)
     {
         try {
-            WorkWithXML.saveSoapToXml("CryptedResponse.xml",soapMessage); // сохраняем в файл
-            org.w3c.dom.Document doc = StartDecrypt(Certificate.GetCertificateFromStorage(GlobalVariables.moAlias),
+            XmlUtils.saveSoapToXml("CryptedResponse.xml",soapMessage); // сохраняем в файл
+            org.w3c.dom.Document doc = startDecrypt(Certificate.GetCertificateFromStorage(GlobalVariables.moAlias),
                     Certificate.GetPrivateKey(GlobalVariables.moPass,GlobalVariables.moAlias)); // расшифровываем на нашем открытом ключе
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -45,7 +45,7 @@ public class VerifyAndDecrypt {
             org.w3c.dom.Node copiedRoot = copiedDocument.importNode(element, true);
             copiedDocument.appendChild(copiedRoot);
 
-            soapMessage = WorkWithXML.docToSoap(copiedDocument); //конвертируем Документ в Месседж
+            soapMessage = XmlUtils.docToSoap(copiedDocument); //конвертируем Документ в Месседж
 
             if(!verify(soapMessage, Certificate.ExtractCertFromCertStore(passwordCertStor,aliasCert,pathToCert))) // verify
             {System.out.println("Сообщение не прошло проверку подписи!");}
@@ -57,7 +57,7 @@ public class VerifyAndDecrypt {
         return soapMessage;
     }
 
-    private static Document StartDecrypt(X509Certificate cert, PrivateKey key) throws Exception
+    private static Document startDecrypt(X509Certificate cert, PrivateKey key) throws Exception
     {
         JCPXMLDSigInit.init();
         MessageFactory mf = MessageFactory.newInstance();

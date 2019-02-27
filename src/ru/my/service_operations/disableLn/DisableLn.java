@@ -3,8 +3,8 @@ package ru.my.service_operations.disableLn;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPMessage;
 
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.WorkWithXML;
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.XmlUtils;
 import ru.my.service_operations.newLNNumRange.NewLnNumRange_start;
 import ru.my.signAndCrypt.Encrypt;
 import ru.my.signAndCrypt.Sign;
@@ -20,8 +20,8 @@ public class DisableLn {
         try {
             NewLnNumRange_start.Create(soapMsg);
             soapMsg = Sign.signation();
-            WorkWithXML.saveSoapToXml("DisableLn.xml", soapMsg);
-            GlobalVariables.Request = WorkWithXML.soapMessageToString(soapMsg);
+            XmlUtils.saveSoapToXml("DisableLn.xml", soapMsg);
+            GlobalVariables.Request = XmlUtils.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();

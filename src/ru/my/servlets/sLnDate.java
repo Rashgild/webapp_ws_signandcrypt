@@ -15,7 +15,7 @@ import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetLNDataOut;
 import ru.ibs.fss.ln.ws.fileoperationsln.ROW;
 import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
 import ru.ibs.fss.ln.ws.fileoperationsln.TREATFULLPERIOD;
-import ru.my.helpers_operations.GlobalVariables;
+import ru.my.utils.GlobalVariables;
 
 @WebServlet("/sLnDate")
 public class sLnDate extends HttpServlet {
@@ -23,7 +23,7 @@ public class sLnDate extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             Logger logger = Logger.getLogger("simple");
-            logger.info("1) NewLnNum");
+            logger.info("1) sLnDate");
             response.setContentType("text/html ;charset=UTF-8");
 
             String ogrn = request.getParameter("ogrn");
@@ -44,7 +44,7 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> snils=" + snils + "</H1>");
 
 
-            System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
+           System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
             System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
             FileOperationsLnImplService service = new FileOperationsLnImplService();
             FileOperationsLn start = service.getFileOperationsLnPort();

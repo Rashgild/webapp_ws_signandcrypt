@@ -1,10 +1,10 @@
 package ru.my.interceptor;
 
-
 import org.apache.log4j.Logger;
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.SQL;
-import ru.my.helpers_operations.WorkWithXML;
+
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.SQL;
+import ru.my.utils.XmlUtils;
 import ru.my.service_operations.LNDate.LnDate_start;
 import ru.my.service_operations.disableLn.DisableLn;
 import ru.my.service_operations.existingLNNum.ExistingLNNumRange;
@@ -21,17 +21,14 @@ import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.Set;
 
-import static ru.my.helpers_operations.WorkWithXML.stringToSoap;
-
-//Created by rashgild on 19.11.2016.
-
+import static ru.my.utils.XmlUtils.stringToSoap;
 
 public class Injecter implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public boolean handleMessage(SOAPMessageContext context) {
 
-        Logger logger=Logger.getLogger("simple");
+        Logger logger = Logger.getLogger(Injecter.class);
         Boolean isRequest = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
         try {
@@ -39,128 +36,117 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
                 logger.info("2) Intercept request!");
                 SOAPMessage soapMsg = context.getMessage();
 
-                if(WhatTheFunc(soapMsg)==1){
+                if (whatTheFunc(soapMsg) == 1) {
                     logger.info("2.1) initialized PrParseFileLnLpu_start!");
-                    soapMsg  = PrParseFileLnLpu_start.Start(GlobalVariables.requestParam);
+                    soapMsg = PrParseFileLnLpu_start.Start(GlobalVariables.requestParam);
                 }
-                if(WhatTheFunc(soapMsg)==2){
+                if (whatTheFunc(soapMsg) == 2) {
                     logger.info("2.1) initialized NewLNNumRange_start!");
-                    soapMsg  = NewLnNumRange_start.Start(soapMsg);
+                    soapMsg = NewLnNumRange_start.Start(soapMsg);
                 }
 
-                if(WhatTheFunc(soapMsg)==3){
+                if (whatTheFunc(soapMsg) == 3) {
                     logger.info("2.1) initialized NewLNNum_start!");
-                    soapMsg  = NewLNNum.Start(soapMsg);
+                    soapMsg = NewLNNum.Start(soapMsg);
                 }
 
-                if(WhatTheFunc(soapMsg)==4){
+                if (whatTheFunc(soapMsg) == 4) {
                     logger.info("2.1) initialized getLNDate!");
-                    soapMsg  = LnDate_start.Start(soapMsg);
+                    soapMsg = LnDate_start.Start(soapMsg);
                 }
 
-                if(WhatTheFunc(soapMsg)==5){
+                if (whatTheFunc(soapMsg) == 5) {
                     logger.info("2.1) initialized disableLn!");
-                    soapMsg  = DisableLn.Start(soapMsg);
+                    soapMsg = DisableLn.Start(soapMsg);
                 }
 
-                if(WhatTheFunc(soapMsg)==6){
+                if (whatTheFunc(soapMsg) == 6) {
                     logger.info("2.1) initialized ExistingLNNumRange!");
-
-                    soapMsg  = ExistingLNNumRange.Start(soapMsg);
+                    soapMsg = ExistingLNNumRange.Start(soapMsg);
                 }
 
-                if(WhatTheFunc(soapMsg)==7){
+                if (whatTheFunc(soapMsg) == 7) {
                     logger.info("2.1) INITIALIZETED NEW SEND!");
                     soapMsg = stringToSoap(GlobalVariables.Request);
                 }
 
-                if(WhatTheFunc(soapMsg)==8){
-                    logger.info("TEST");
-                    //soapMsg = stringToSoap(GlobalVariables.Request);
-                }
-
                 logger.info("Send Request!");
-
                 context.setMessage(soapMsg);
             }
 
-            if(!isRequest)
-            {
+            if (!isRequest) {
                 logger.info("Get Response");
-
                 try {
                     SOAPMessage msg = context.getMessage();
                     msg = VerifyAndDecrypt.Start(msg);
-                    GlobalVariables.Response = WorkWithXML.soapMessageToString(msg);
-                    GlobalVariables.returningXml = WorkWithXML.soapMessageToString(msg);
+                    GlobalVariables.Response = XmlUtils.soapMessageToString(msg);
+                    GlobalVariables.returningXml = XmlUtils.soapMessageToString(msg);
                     context.setMessage(msg);
-                }catch (Exception e){e.printStackTrace();}
-
-
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             return true;
         } catch (Exception e) {
-            SQL.SaveInBD("ErrorInSending",0);
+            SQL.saveInBaseDate("ErrorInSending", 0);
             e.printStackTrace();
             return false;
         }
     }
 
     @Override
-    public boolean handleFault(SOAPMessageContext context)
-    {
+    public boolean handleFault(SOAPMessageContext context) {
         SOAPMessage msg = context.getMessage();
-        Logger logger=Logger.getLogger("simple");
-        logger.info(WorkWithXML.soapMessageToString(msg));
+        Logger logger = Logger.getLogger("simple");
+        logger.info(XmlUtils.soapMessageToString(msg));
         return false;
     }
 
     @Override
-    public void close(MessageContext context) {    }
+    public void close(MessageContext context) {
+    }
 
     @Override
     public Set<QName> getHeaders() {
         return null;
     }
 
-    private static int WhatTheFunc(SOAPMessage msg) {
-        try {
-            String strdoc = WorkWithXML.DocToString(msg.getSOAPPart().getEnvelope().getOwnerDocument());
+    private static int whatTheFunc(SOAPMessage msg) {
 
-            if (strdoc.contains("prParseFilelnlpu")) {
+        try {
+            String strDoc = XmlUtils.docToString(msg.getSOAPPart().getEnvelope().getOwnerDocument());
+            if (strDoc.contains("prParseFilelnlpu")) {
                 GlobalVariables.Type = "prParseFilelnlpu";
 
-                if(strdoc.contains("ThisIsNewSender")){
+                if (strDoc.contains("ThisIsNewSender")) {
                     return 7;
-                }
-
-                if(strdoc.contains("TEST")){
-                    return 8;
                 }
                 return 1;
             }
-            if (strdoc.contains("getNewLNNumRange")) {
+            if (strDoc.contains("getNewLNNumRange")) {
                 GlobalVariables.Type = "getNewLNNumRange";
                 return 2;
             }
-            if (strdoc.contains("getNewLNNum")) {
+            if (strDoc.contains("getNewLNNum")) {
                 GlobalVariables.Type = "getNewLNNum";
                 return 3;
             }
-            if (strdoc.contains("getLNData")) {
+            if (strDoc.contains("getLNData")) {
                 GlobalVariables.Type = "getLNData";
                 return 4;
             }
-            if (strdoc.contains("disableLn")) {
+            if (strDoc.contains("disableLn")) {
                 GlobalVariables.Type = "disableLn";
                 return 5;
             }
-            if (strdoc.contains("ExistingLNNumRange")) {
+            if (strDoc.contains("ExistingLNNumRange")) {
                 GlobalVariables.Type = "ExistingLNNumRange";
                 return 6;
             }
 
-        }catch (SOAPException e) {e.printStackTrace(); }
+        } catch (SOAPException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 }
