@@ -239,8 +239,7 @@ public class sImportLNN extends HttpServlet {
     }
 
     private static Boolean isNotNull(Object obj) {
-        if (obj != null && !obj.equals("")) return true;
-        else return false;
+        return obj != null && !obj.equals("");
     }
 
     private static String buildRequest(Map<String, String> SQLrequest, String tablename) {
@@ -261,7 +260,6 @@ public class sImportLNN extends HttpServlet {
         header.append(")");
         body.append(")");
 
-        String sql = (header.append(body)).toString();
-        return sql;
+        return (header.append(body)).toString();
     }
 }

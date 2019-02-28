@@ -43,9 +43,6 @@ public class sLnDate extends HttpServlet {
             out.print("<H1> eln=" + eln + "</H1>");
             out.print("<H1> snils=" + snils + "</H1>");
 
-
-           System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
-            System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
             FileOperationsLnImplService service = new FileOperationsLnImplService();
             FileOperationsLn start = service.getFileOperationsLnPort();
             try {

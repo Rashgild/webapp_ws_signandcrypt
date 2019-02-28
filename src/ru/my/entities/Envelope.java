@@ -14,12 +14,11 @@ public class Envelope {
     @XmlAttribute(name = "xmlns", namespace = "http://schemas.xmlsoap.org/soap/envelope/")
     private String soapenv;
 
-
     @XmlElement(name = "Header")
     private Header header;
+
     @XmlElement(name = "Body")
     private Body body;
-
 
     public Header getHeader() {
         return header;
@@ -40,6 +39,7 @@ public class Envelope {
     @XmlRootElement(name = "Body")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Body {
+
         @XmlElement(name = "PrParseFileLnLpu")
         private List<PrParseFileLnLpu> prParseFileLnLpus;
 
@@ -55,6 +55,7 @@ public class Envelope {
     @XmlRootElement(name = "Header")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Header {
+
         @XmlElement(name = "Security")
         private List<Security> securities;
 

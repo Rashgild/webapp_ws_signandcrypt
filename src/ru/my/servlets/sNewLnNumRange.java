@@ -48,6 +48,7 @@ public class sNewLnNumRange extends HttpServlet {
 
         System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
         System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
+
         FileOperationsLnImplService service = new FileOperationsLnImplService();
         FileOperationsLn start = service.getFileOperationsLnPort();
         try {

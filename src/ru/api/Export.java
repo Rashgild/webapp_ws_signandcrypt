@@ -11,10 +11,9 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.sql.Date;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,10 +43,12 @@ import ru.ibs.fss.ln.ws.fileoperationsln.WSResult;
 import ru.my.entities.PrParseFileLnLpu;
 import ru.my.entities.TREAT_FULL_PERIOD;
 import ru.my.entities.TREAT_PERIOD;
-import ru.my.utils.GlobalVariables;
 import ru.my.signAndCrypt.Sign;
+import ru.my.utils.GlobalVariables;
 
 import static ru.api.ApiUtils.get;
+import static ru.my.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start.calculateAge;
+import static ru.my.signAndCrypt.Encrypt.CreateXMLAndEncrypt;
 import static ru.my.utils.GlobalVariables.moAlias;
 import static ru.my.utils.GlobalVariables.moPass;
 import static ru.my.utils.GlobalVariables.ogrnMo;
@@ -57,8 +58,6 @@ import static ru.my.utils.GlobalVariables.setUp;
 import static ru.my.utils.GlobalVariables.t_ELN;
 import static ru.my.utils.XmlUtils.saveSoapToXml;
 import static ru.my.utils.XmlUtils.soapMessageToString;
-import static ru.my.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start.calculateAge;
-import static ru.my.signAndCrypt.Encrypt.CreateXMLAndEncrypt;
 
 @Path("/export")
 public class Export {
@@ -66,7 +65,7 @@ public class Export {
     @POST
     @Path("/exportDisabilityDocument")
     public String getJsonDisabilityDoc(String data,
-                                       @Context HttpServletRequest req,
+                                       @Context HttpServletRequest request,
                                        @Context HttpServletResponse response) throws Exception {
 
         SOAPMessage message = createDisabilityXml(data);
@@ -249,8 +248,8 @@ public class Export {
                 treat_period.setTreatdt2(get(jtreat, "treat_dt2"));
                 treat_period.setTreatdoctorrole(get(jtreat, "treat_doctor_role"));
                 treat_period.setTreatdoctor(get(jtreat, "treat_doctor"));
-                String counterdoc = get(jtreat, "counterdoc");
-                String countervk = get(jtreat, "countervk");
+                /*String counterdoc = get(jtreat, "counterdoc");
+                String countervk = get(jtreat, "countervk");*/
                 treat_period.setAttribId("ELN_" + t_ELN + "_" + per + "_doc");
 
                 List<TREAT_PERIOD> treat_periods = new ArrayList<>();
@@ -263,18 +262,15 @@ public class Export {
                     treat_full_period.setAttribIdVk("ELN_" + t_ELN + "_" + per + "_vk");
                 }
 
-                //if (isexport != null && !isexport.equals("") && (isexport.equals("true") || isexport.equals("t")))
-
                 if (isexport == null || isexport.equals("") || (!isexport.equals("true") && !isexport.equals("t"))) {
 
-                    //TODO CHECK OGRN!!!!
                     if (treat_full_period.getTreatchairmanrole() != null && !treat_full_period.getTreatchairmanrole().equals("")) {
                         head += createHead(
                                 get(jtreat, "certvk"),
                                 get(jtreat, "digvk"),
                                 get(jtreat, "signvk"),
                                 "ELN_" + t_ELN,
-                                "1053000627690",
+                                GlobalVariables.ogrnMo,
                                 get(jtreat, "countervk"),
                                 "vk",
                                 get(jtreat, "typesignvk"));
@@ -284,7 +280,7 @@ public class Export {
                             get(jtreat, "digdoc"),
                             get(jtreat, "signdoc"),
                             "ELN_" + t_ELN,
-                            "1053000627690",
+                            GlobalVariables.ogrnMo,
                             get(jtreat, "counterdoc"),
                             "doc",
                             get(jtreat, "typesigndoc"));
@@ -399,7 +395,7 @@ public class Export {
         return message;
     }
 
-    private String createHead(String cert, String dig,String sig, String eln, String ogrn,String counter,String type, String signatureType){
+    private String createHead(String cert, String dig, String sig, String eln, String ogrn, String counter, String type, String signatureType) {
         String head = "<wsse:Security soapenv:actor=\"http://eln.fss.ru/actor/doc/[ELN]_[COUNTER]_[TYPE]\" " +
                 "xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">" +
                 "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\">" +
@@ -449,6 +445,7 @@ public class Export {
                 "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
                 "<soapenv:Header>[Head]</soapenv:Header><soapenv:Body>[Body]</soapenv:Body></soapenv:Envelope>";
         try {
+
             Document document = GlobalVariables.parser.objToSoap(prParseFilelnlpu);
             DOMSource domSource = new DOMSource(document);
             StringWriter writer = new StringWriter();
@@ -467,16 +464,7 @@ public class Export {
         return signThis;
     }
 
-    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
     private String getReturnWorkDate(String date) {
-        Calendar cal = Calendar.getInstance();
-        try {
-            cal.setTime(format.parse(date));
-            cal.add(Calendar.DAY_OF_MONTH, 1);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return new java.sql.Date(cal.getTime().getTime()).toString();
+        return String.valueOf(LocalDate.parse(date).plusDays(1));
     }
 }

@@ -34,7 +34,6 @@ public class GlobalVariables {
     public static String pathandnameSSL = "";
     public static String passwordSSL = "";
     public static String country = "-";
-    public static String ServiceFSS = "";
     public static String urlApi = "";
     public static String innerApi = "";
 

@@ -28,9 +28,7 @@ import static ru.my.utils.GlobalVariables.pathandnameSSL;
 @WebServlet("/SetLnData")
 public class sPrParseFileLnLpu extends HttpServlet {
 
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
-
         try {
             long start = System.currentTimeMillis();
             response.setContentType("text/html ;charset=UTF-8");

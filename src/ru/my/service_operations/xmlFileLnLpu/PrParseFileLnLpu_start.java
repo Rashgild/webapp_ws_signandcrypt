@@ -2,12 +2,12 @@ package ru.my.service_operations.xmlFileLnLpu;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,10 +25,10 @@ import ru.my.entities.ROW;
 import ru.my.entities.ROWSET;
 import ru.my.entities.TREAT_FULL_PERIOD;
 import ru.my.entities.TREAT_PERIOD;
-import ru.my.utils.GlobalVariables;
-import ru.my.utils.SQL;
 import ru.my.signAndCrypt.Encrypt;
 import ru.my.signAndCrypt.Sign;
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.SQL;
 
 import static ru.my.utils.GlobalVariables.DisabilityDocument_id;
 import static ru.my.utils.GlobalVariables.cryptXMLFileName;
@@ -99,7 +99,7 @@ public class PrParseFileLnLpu_start {
         ResultSet resultSet = SQL.select(sql1);
         ResultSet resultSet2 = SQL.select(sql2);
 
-        String StartPeriod = null, EndPeriod = "";
+        String StartPeriod = null;
         List<ROW> rows = new ArrayList<>();
 
         while (resultSet.next()) {
@@ -109,7 +109,7 @@ public class PrParseFileLnLpu_start {
             int DDID_1 = resultSet.getInt("DDID");
 
             ROW.LN_RESULT ln_result = new ROW.LN_RESULT();
-            Boolean isClose = resultSet.getString("IS_CLOSE").equals("1") ? true : false;
+            boolean isClose = resultSet.getString("IS_CLOSE").equals("1");
             ln_result.setMseresult(resultSet.getString("MSE_RESULT"));
             ln_result.setOtherstatedt(resultSet.getString("other_state_dt"));
 
@@ -150,12 +150,12 @@ public class PrParseFileLnLpu_start {
                         treat_full_period.setExport("false");
                     }
 
-
                     treat_full_period.setTreat_period(treat_periods);
                     treat_full_periods.add(treat_full_period);
                     per++;
                 }
             }
+
             resultSet2.beforeFirst(); // возврат курсора в начало
             ROW.HOSPITAL_BREACH hospital_breach = new ROW.HOSPITAL_BREACH();
             hospital_breach.setHospitalbreachcode(resultSet.getString("HOSPITAL_BREACH_CODE"));
@@ -166,18 +166,15 @@ public class PrParseFileLnLpu_start {
             List<ROW.HOSPITAL_BREACH> hospital_breaches = new ArrayList<>();
             hospital_breaches.add(hospital_breach);
 
-            //32|33
-
             //Если документ не закрыт, то даты нет
             if (isClose && ln_result.getMseresult() != null) {
                 if (!ln_result.getMseresult().equals("31") && !ln_result.getMseresult().equals("37")) {
 
                     if (ln_result.getOtherstatedt() != null && !ln_result.getOtherstatedt().equals("")) {
-                        //    ln_result.setReturndatelpu(ln_result.getOtherstatedt());
                         ln_result.setReturndatelpu(null);
                     } else {
                         Calendar cal = Calendar.getInstance();
-                        cal.setTime(format.parse(ln_result.getReturndatelpu()));  //.parse(returnDate));
+                        cal.setTime(format.parse(ln_result.getReturndatelpu()));
                         cal.add(Calendar.DAY_OF_MONTH, 1);
                         ln_result.setReturndatelpu(new java.sql.Date(cal.getTime().getTime()).toString());
                     }
@@ -187,7 +184,6 @@ public class PrParseFileLnLpu_start {
                 }
                 ln_result.setAttribId("ELN_" + t_ELN + "_2_doc");
             } else if (!isClose) ln_result.setReturndatelpu(null);
-
 
             logger.info("Закрыт: " + isClose + "" +
                     " Дата выхода на работу:" + ln_result.getReturndatelpu() + "");
@@ -218,7 +214,6 @@ public class PrParseFileLnLpu_start {
             row.setPrevlncode(resultSet.getString("PREV_LN"));
 
             row.setPrimaryflag(resultSet.getInt("PRIMARY_FLAG"));
-            //int primaryFlag =  row.getPrimaryflag();
             row.setDuplicateflag(resultSet.getInt("DUPLICATE_FLAG"));
             row.setLndate(resultSet.getString("LN_DATE"));
             row.setLpuname(resultSet.getString("LPU_NAME"));
@@ -267,29 +262,27 @@ public class PrParseFileLnLpu_start {
             }
             row.setLnstate(resultSet.getString("LN_STATE"));
 
-
             try {
                 if (row.getServ1AGE() != null && !row.getServ1AGE().equals("")) {
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date1 = new java.sql.Date(format.parse(row.getServ1AGE()).getTime());
-                    Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
-
-                    String years = calculateAge(date2, date1, 0);
-                    row.setServ1AGE(years);
-
-                    if (Integer.parseInt(years) < 1) {
-
-                        row.setServ1MM(Integer.valueOf(calculateAge(date2, date1, 2)));
+                    LocalDate dateFrom = LocalDate.parse(row.getServ1AGE());
+                    LocalDate dateTo = LocalDate.parse(StartPeriod);
+                    int years = calculateCurrentYears(dateFrom,dateTo);
+                    if (years<1) {
+                        row.setServ1MM(calculateCurrentMonths(dateFrom, dateTo));
+                    }else {
+                        row.setServ1AGE(String.valueOf(years));
                     }
                 }
 
                 if (row.getServ2AGE() != null && !row.getServ2AGE().equals("")) {
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date1 = new java.sql.Date(format.parse(row.getServ2AGE()).getTime());
-                    Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
-
-                    row.setServ2AGE(calculateAge(date2, date1, 0));
-                    row.setServ2MM(Integer.valueOf(calculateAge(date2, date1, 2)));
+                    LocalDate dateFrom = LocalDate.parse(row.getServ2AGE());
+                    LocalDate dateTo = LocalDate.parse(StartPeriod);
+                    int years = calculateCurrentYears(dateFrom,dateTo);
+                    if (years<1) {
+                        row.setServ2MM(calculateCurrentMonths(dateFrom, dateTo));
+                    }else {
+                        row.setServ2AGE(String.valueOf(years));
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -336,26 +329,12 @@ public class PrParseFileLnLpu_start {
         return prParseFilelnlpu;
     }
 
-    private static int calcMonth(Date aBirthDate, Date aFromDate) {
-        Calendar birth = Calendar.getInstance();
-        birth.setTime(aBirthDate);
-        Calendar from = Calendar.getInstance();
-        from.setTime(aFromDate);
-
-        int month = from.get(Calendar.MONTH) - birth.get(Calendar.MONTH);
-        if (month < 0) month = (month * -1);
-        return month;
+    private static int calculateCurrentYears(LocalDate dateFrom, LocalDate dateTo){
+        return (int) ChronoUnit.YEARS.between(dateFrom, dateTo);
     }
 
-    private static int calcYear(Date aBirthDate, Date aFromDate) {
-        Calendar birth = Calendar.getInstance();
-        birth.setTime(aBirthDate);
-        Calendar from = Calendar.getInstance();
-        from.setTime(aFromDate);
-
-        int year = from.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
-        if (year < 0) year = (year * -1);
-        return year;
+    private static int calculateCurrentMonths(LocalDate dateFrom, LocalDate dateTo){
+        return (int) ChronoUnit.MONTHS.between(dateFrom, dateTo);
     }
 
     public static String calculateAge(java.util.Date aDateFrom, java.util.Date aDateTo, int aFormat) {
@@ -394,11 +373,17 @@ public class PrParseFileLnLpu_start {
             tst = 1;
         }
         int year = year1 - year2 - tst;
-        if (aFormat == 0) return new StringBuilder().append(year).toString();
-        if (aFormat == 2) return new StringBuilder().append(month).toString();
-        if (aFormat == 1) return new StringBuilder().append(year)
-                .append(".").append(month)
-                .append(".").append(day).toString();
+        if (aFormat == 0) {
+            return String.valueOf(year);
+        }
+        if (aFormat == 2) {
+            return String.valueOf(month);
+        }
+        if (aFormat == 1) {
+            return String.valueOf(year) +
+                    "." + month +
+                    "." + day;
+        }
         String dy = (year == 1) ? " год " :
                 ((year == 0 || year > 4) ? " лет " : " года ");
         String dm = (month == 1) ? " месяц " :
@@ -407,13 +392,13 @@ public class PrParseFileLnLpu_start {
                 ((day == 0 || (day > 10 && (day < 15))) ? " дней " : ((day == 1) ? " день " : " дня ")));
 
 
-        return new StringBuilder().append(year)
-                .append(dy).append(month)
-                .append(dm).append(day)
-                .append(dd).toString();
+        return String.valueOf(year) +
+                dy + month +
+                dm + day +
+                dd;
     }
 
-    public static SOAPMessage createSoapMessage(PrParseFileLnLpu prParseFileLnLpu) {
+    private static SOAPMessage createSoapMessage(PrParseFileLnLpu prParseFileLnLpu) {
 
         SOAPMessage message = null;
         try {
@@ -501,8 +486,11 @@ public class PrParseFileLnLpu_start {
     }
 
     /**
-     * распаковщик объекта
-     **/
+     * распаковщик объекта.
+     *
+     * @param prParseFileLnLpu prParseFileLnLpu
+     * @return List<ROW>
+     */
     private static List<ROW> unPack(PrParseFileLnLpu prParseFileLnLpu) {
         List<PrParseFileLnLpu.Reqest> reqests = prParseFileLnLpu.getRequests();
         List<PrParseFileLnLpu.Reqest.pXmlFile> pXmlFiles = reqests.get(0).getpXmlFiles();
