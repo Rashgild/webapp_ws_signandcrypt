@@ -24,6 +24,12 @@ import org.w3c.dom.Document;
 
 public class XmlUtils {
 
+    /**
+     * w3c.dom.document to string.
+     *
+     * @param doc converting
+     * @return String
+     */
     public static String docToString(Document doc) {
         try {
             StringWriter sw = new StringWriter();
@@ -52,17 +58,15 @@ public class XmlUtils {
     }
 
     /**
-     * Сохранение Soap-сообщения в файл
+     * Save Soap-message to file.
      *
-     * @param FileName    Имя сохраняемого файла
+     * @param fileName    Имя сохраняемого файла
      * @param soapMessage Сообщение, которое требуется сохранить
-     * @throws Exception   e,
-     * @throws IOException e
      */
-    public static void saveSoapToXml(String FileName, SOAPMessage soapMessage) {
+    public static void saveSoapToXml(String fileName, SOAPMessage soapMessage) {
         String strMsg = soapMessageToString(soapMessage);
         try {
-            Writer w = new OutputStreamWriter(new FileOutputStream(GlobalVariables.pathtosave + FileName), "UTF-8");
+            Writer w = new OutputStreamWriter(new FileOutputStream(GlobalVariables.pathtosave + fileName), "UTF-8");
             w.write(strMsg);
             w.flush();
             w.close();
@@ -73,9 +77,9 @@ public class XmlUtils {
     }
 
     /**
-     * Конверт из w3.dom.Document в Soap-сообщение
+     * Convert from w3.dom.Document to SOAP-message.
      *
-     * @param doc конвертируемый документ
+     * @param doc converting document
      * @return SOAPMessage
      */
     public static SOAPMessage docToSoap(Document doc) throws Exception {
@@ -87,21 +91,12 @@ public class XmlUtils {
         return factory.createMessage(null, in);
     }
 
-    public static Document soapToDoc(SOAPMessage soapMsg)
-            throws TransformerException, SOAPException, IOException {
-      /*  MyByteArrayOutputStream baos = new MyByteArrayOutputStream();
-        soapMsg.writeTo(baos);
-        ByteArrayInputStream bais = baos.getByteArrayInputStream();
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(bais);
-        return(doc);*/
-        Document doc = null;
-        return doc;
-    }
-
+    /**
+     * SOAP-message to sting.
+     *
+     * @param soapMessage to converting
+     * @return String
+     */
     public static String soapMessageToString(SOAPMessage soapMessage) {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -114,6 +109,12 @@ public class XmlUtils {
         return null;
     }
 
+    /**
+     * String to SOAP-message,
+     *
+     * @param soap string to convert
+     * @return SOAP-message
+     */
     public static SOAPMessage stringToSoap(String soap) {
         SOAPMessage soapMessage = null;
         try {

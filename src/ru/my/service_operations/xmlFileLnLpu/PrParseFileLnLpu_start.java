@@ -430,59 +430,62 @@ public class PrParseFileLnLpu_start {
         return message;
     }
 
+    private static final String gost2001="GOST2001";
+    private static final String gost2012="GOST2012";
+
     private static SOAPMessage signation(PrParseFileLnLpu prParseFileLnLpu, SOAPMessage message) throws Exception {
-        List<ROW> rows = unPack(prParseFileLnLpu);
-        saveSoapToXml(signXMLFileName, message);
-        for (ROW row : rows) {
-
-            t_ELN = row.getLncode();
-            message = Sign.signationByParametrs(
-                    "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
-                    "#" + row.getAttribId(), moAlias, moPass, t_ELN);
+            List<ROW> rows = unPack(prParseFileLnLpu);
             saveSoapToXml(signXMLFileName, message);
+            for (ROW row : rows) {
 
-            List<ROW.HOSPITAL_BREACH> hospital_breaches = row.getHospitalbreach();
-            List<ROW.LN_RESULT> ln_results = row.getLnresult();
-            ROW.LN_RESULT ln_result = ln_results.get(0);
-            ROW.HOSPITAL_BREACH hospital_breach = hospital_breaches.get(0);
-
-            if (ln_result.getAttribId() != null) {
-                message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_2_doc",
-                        "#" + ln_result.getAttribId(), docAlias, docPass, t_ELN);
+                t_ELN = row.getLncode();
+                message = Sign.signationByParametrs(
+                        "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
+                        "#" + row.getAttribId(), moAlias, moPass, t_ELN, gost2001);
                 saveSoapToXml(signXMLFileName, message);
-            }
 
-            if (hospital_breach.getAttributeId() != null) {
-                message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_1_doc",
-                        "#" + hospital_breach.getAttributeId(), docAlias, docPass, t_ELN);
-                saveSoapToXml(signXMLFileName, message);
-            }
-            TREAT_FULL_PERIOD treat_full_period;
-            List<TREAT_FULL_PERIOD> treat_full_periods = row.getTREAT_PERIODS();
-            TREAT_PERIOD treat_period;
+                List<ROW.HOSPITAL_BREACH> hospital_breaches = row.getHospitalbreach();
+                List<ROW.LN_RESULT> ln_results = row.getLnresult();
+                ROW.LN_RESULT ln_result = ln_results.get(0);
+                ROW.HOSPITAL_BREACH hospital_breach = hospital_breaches.get(0);
 
-            for (TREAT_FULL_PERIOD treat_full_per : treat_full_periods) {
-                treat_full_period = treat_full_per;
-
-                if (treat_full_period.getAttribIdVk() != null && treat_full_period.getExport().equals("false")) {
-                    message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treat_full_period.getAttribIdVk(),
-                            "#" + treat_full_period.getAttribIdVk(), vkAlias, vkPass, t_ELN);
+                if (ln_result.getAttribId() != null) {
+                    message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_2_doc",
+                            "#" + ln_result.getAttribId(), docAlias, docPass, t_ELN, gost2001);
                     saveSoapToXml(signXMLFileName, message);
                 }
-                List<TREAT_PERIOD> treat_periods1 = treat_full_period.getTreat_period();
 
-                for (TREAT_PERIOD num : treat_periods1) {
-                    treat_period = num;
+                if (hospital_breach.getAttributeId() != null) {
+                    message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_1_doc",
+                            "#" + hospital_breach.getAttributeId(), docAlias, docPass, t_ELN, gost2001);
+                    saveSoapToXml(signXMLFileName, message);
+                }
+                TREAT_FULL_PERIOD treat_full_period;
+                List<TREAT_FULL_PERIOD> treat_full_periods = row.getTREAT_PERIODS();
+                TREAT_PERIOD treat_period;
 
-                    if (treat_period.getAttribId() != null && treat_full_period.getExport().equals("false")) {
-                        message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treat_period.getAttribId(),
-                                "#" + treat_period.getAttribId(), docAlias, docPass, t_ELN);
+                for (TREAT_FULL_PERIOD treat_full_per : treat_full_periods) {
+                    treat_full_period = treat_full_per;
+
+                    if (treat_full_period.getAttribIdVk() != null && treat_full_period.getExport().equals("false")) {
+                        message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treat_full_period.getAttribIdVk(),
+                                "#" + treat_full_period.getAttribIdVk(), vkAlias, vkPass, t_ELN, gost2001);
                         saveSoapToXml(signXMLFileName, message);
+                    }
+                    List<TREAT_PERIOD> treat_periods1 = treat_full_period.getTreat_period();
+
+                    for (TREAT_PERIOD num : treat_periods1) {
+                        treat_period = num;
+
+                        if (treat_period.getAttribId() != null && treat_full_period.getExport().equals("false")) {
+                            message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treat_period.getAttribId(),
+                                    "#" + treat_period.getAttribId(), docAlias, docPass, t_ELN, gost2001);
+                            saveSoapToXml(signXMLFileName, message);
+                        }
                     }
                 }
             }
-        }
-        return message;
+            return message;
     }
 
     /**

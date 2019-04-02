@@ -10,12 +10,18 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.SQL;
+import ru.my.utils.StoredQuery;
 import ru.my.utils.UTF8Control;
 
 import static ru.my.utils.GlobalVariables.*;
@@ -48,7 +54,7 @@ public class ConfigInit implements ServletContextListener {
             } else {
                 input = new FileInputStream(new File(res.getString("absPath")));
             }
-            Reader reader = new InputStreamReader(input, "UTF-8");
+            Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
             resource = new PropertyResourceBundle(reader);
 
         } else {
@@ -84,14 +90,14 @@ public class ConfigInit implements ServletContextListener {
         urlApi = resource.getString("urlApi");
         innerApi = resource.getString("innerApi");
 
- //       ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
-  /*      try {
+       ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
+        try {
             while (resultSet.next()) {
                 GlobalVariables.DefaultLPU = resultSet.getString("keyvalue");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     private static void downloadFile(String URL, String savePath) {

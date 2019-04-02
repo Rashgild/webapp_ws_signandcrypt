@@ -112,8 +112,15 @@ public class Sign {
         return soapMessage;
     }
 
+    private static final String DIG_GOST_2001 = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
+    private static final String DIG_GOST_2012 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256";
+    private static final String SIGN_GOST_2001 = "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
+    private static final String SIGN_GOST_2012 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256";
+
+    private static final String GOST_2001 = "GOST2001";
+
     public static SOAPMessage signationByParametrs(String Actor, String Refer, String Alias,
-                                                   String Password, String ELN) throws Exception {
+                                                   String Password, String ELN, String gost) throws Exception {
 
         Logger logger = Logger.getLogger("");
         X509Certificate cert = Certificate.GetCertificateFromStorage(Alias);
@@ -154,12 +161,12 @@ public class Sign {
         // ref on sign data with hash alg on ГОСТ 34.11.
         // TODO refrence on sign element?.
 
-        Reference ref = fac.newReference(Refer, fac.newDigestMethod("http://www.w3.org/2001/04/xmldsig-more#gostr3411", null),
+        Reference ref = fac.newReference(Refer, fac.newDigestMethod(gost.equals(GOST_2001) ? DIG_GOST_2001 : DIG_GOST_2012, null),
                 transformList, null, null);
 
         //Задаём алгоритм подписи:
         SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE,
-                (C14NMethodParameterSpec) null), fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411", null), Collections.singletonList(ref));
+                (C14NMethodParameterSpec) null), fac.newSignatureMethod(gost.equals(GOST_2001) ? SIGN_GOST_2001 : SIGN_GOST_2012, null), Collections.singletonList(ref));
         //Создаём узел ds:KeyInfo с информацией о сертификате:
         KeyInfoFactory kif = fac.getKeyInfoFactory();
 

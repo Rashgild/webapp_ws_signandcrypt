@@ -1,6 +1,7 @@
+<%@ page import="ru.my.utils.GlobalVariables" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="false" pageEncoding="UTF-8" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <html>
 <head>
@@ -15,6 +16,7 @@
         margin: 0 0 1em;
         white-space: pre-wrap;
     }
+
     .ex2 {
         border: 1px dashed #634f36;
         background: #ffcbd5;
@@ -27,8 +29,8 @@
 </head>
 <body>
 <header>
-    <img src="res/pic/FSSlogo-208x191.gif" width="75" height="50" alt="" />
-    <img src="res/pic/medosLogo-200x200.png" width="75" height="50" alt="" />
+    <img src="<%=GlobalVariables.innerApi%>res/pic/FSSlogo-208x191.gif" width="75" height="50" alt=""/>
+    <img src="<%=GlobalVariables.innerApi%>res/pic/medosLogo-200x200.png" width="75" height="50" alt=""/>
     <h1>Результаты отправки ЛН:</h1>
 </header>
 <c:choose>

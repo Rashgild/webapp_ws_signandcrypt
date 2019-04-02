@@ -169,12 +169,4 @@ public class StoredQuery {
         return "INSERT INTO electronicdisabilitydocumentnumber\n" +
                 "(number, createdate) values ('" + number + "',to_date('" + dateTime + "','dd.MM.yyyy'))";
     }
-
-    public static String GetVoc(String code) {
-        return "select id from vocdisabilitydocumentexportstatus where code='" + code + "'";
-    }
-
-    public static String setDisabilityCase(String patientId) {
-        return "INSERT into disabilitycase (patient_id, createdate,createusername) values (" + patientId + ", current_date, 'Importer') returning id;";
-    }
 }

@@ -10,15 +10,30 @@
     <build>
         <plugins>
             <plugin>
+                <version>3.8.0</version>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
     <name>webapp_ws_signAndCrypt</name>
     <url>http://maven.apache.org</url>
 
@@ -27,6 +42,8 @@
         <tomcat.version>8.5.5</tomcat.version>
         <cryptopro-jcp.version>2.0.40035</cryptopro-jcp.version>
         <project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
+        <jersey.version>2.19</jersey.version>
+        <jaxrx.version>2.0.1</jaxrx.version>
     </properties>
 
     <dependencies>
@@ -35,6 +52,7 @@
             <artifactId>postgresql</artifactId>
             <version>9.4.1209.jre6</version>
         </dependency>
+
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -54,10 +72,29 @@
             <version>2.8.5</version>
         </dependency>
 
+        <!-- JAX-RS -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0</version>
+            <version>${jaxrx.version}</version>
+        </dependency>
+        <!-- Jersey 2.19 -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.version}</version>
         </dependency>
 
         <dependency>

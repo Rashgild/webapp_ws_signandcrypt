@@ -14,6 +14,7 @@ public class App extends Application {
         h.add(SignAndCryptApi.class);
         h.add(Export.class);
         h.add(Import.class);
+        h.add(Forward.class);
         return h;
     }
 }

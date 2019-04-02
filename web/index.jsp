@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page language="java"%>
 <%@ page import="org.apache.log4j.Logger" %>
+<%@ page import="ru.my.utils.GlobalVariables" %>
 <% Logger logger=Logger.getLogger("simple");
 
 %>
@@ -12,16 +13,16 @@
 
   </style>
 
-  <script src="res/js/jquery-3.2.1.min.js"></script>
-  <script src="res/js/forward.js"></script>
+  <script src="<%=GlobalVariables.innerApi%>res/js/jquery-3.2.1.min.js"></script>
+  <script src="<%=GlobalVariables.innerApi%>res/js/forward.js"></script>
 
 </head>
 <body>
 <%logger.info("Logger is start!");%>
 
 <header>
-  <img src="res/pic/medosLogo-200x200.png" width="75" height="50" alt="" />
-  <img src="res/pic/FSSlogo-208x191.gif" width="75" height="50" alt="" />
+  <img src="<%=GlobalVariables.innerApi%>res/pic/medosLogo-200x200.png" width="75" height="50" alt="" />
+  <img src="<%=GlobalVariables.innerApi%>res/pic/FSSlogo-208x191.gif" width="75" height="50" alt="" />
   <h1>Сервис работы с ЭЛН</h1>
 </header>
 <div class="content">
@@ -35,7 +36,6 @@
 </body>
 
 <script>
-
     $(document).ready(function() {
         $.ajax({
             type:"GET",
@@ -46,7 +46,6 @@
         });
         //forwardbyClick("#config.button","/WEB-INF/configurator.jsp");
     });
-
     forwardbyClick("#config.button","/WEB-INF/configurator.jsp");
 </script>
 </html>
