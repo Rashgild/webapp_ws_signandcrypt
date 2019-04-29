@@ -184,6 +184,7 @@ public class sImportLNN extends HttpServlet {
                     SQLrequest.put("createdate", "current_date");
                     SQLrequest.put("createusername", "'Importer'");
                     SQLrequest.put("documenttype_id", "1");
+                    SQLrequest.put("closeexport","0");
 
                     SQLrequest.put("status_id", "1");
                     String req = buildRequest(SQLrequest, "disabilitydocument");

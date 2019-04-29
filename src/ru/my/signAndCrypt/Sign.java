@@ -122,7 +122,6 @@ public class Sign {
     public static SOAPMessage signationByParametrs(String Actor, String Refer, String Alias,
                                                    String Password, String ELN, String gost) throws Exception {
 
-        Logger logger = Logger.getLogger("");
         X509Certificate cert = Certificate.GetCertificateFromStorage(Alias);
         PrivateKey privateKey = Certificate.GetPrivateKey(Password, Alias);
         MessageFactory mf = MessageFactory.newInstance();
@@ -253,7 +252,6 @@ public class Sign {
                     (C14NMethodParameterSpec) null), fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411", null), Collections.singletonList(ref));
             //Создаём узел ds:KeyInfo с информацией о сертификате:
             KeyInfoFactory kif = fac.getKeyInfoFactory();
-            //System.out.println("***"+cert);
             X509Data x509d = kif.newX509Data(Collections.singletonList(cert));
             KeyInfo ki = kif.newKeyInfo(Collections.singletonList(x509d));
             //Подписываем данные в элементе token:

@@ -45,9 +45,14 @@ public class sLnDate extends HttpServlet {
 
             FileOperationsLnImplService service = new FileOperationsLnImplService();
             FileOperationsLn start = service.getFileOperationsLnPort();
-            try {
-                FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(ogrn, eln, snils);
-                out.print("<H1> Инфо=" + fileOperationsLnUserGetLNDataOut.getINFO() + "</H1>");
+
+        FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = null;
+        try {
+            fileOperationsLnUserGetLNDataOut = start.getLNData(ogrn, eln, snils);
+        } catch (SOAPException_Exception e) {
+            e.printStackTrace();
+        }
+        out.print("<H1> Инфо=" + fileOperationsLnUserGetLNDataOut.getINFO() + "</H1>");
                 out.print("<H1> Сообщение=" + fileOperationsLnUserGetLNDataOut.getMESS() + "</H1>");
                 out.print("<H1> Статус=" + fileOperationsLnUserGetLNDataOut.getSTATUS() + "</H1>");
                 out.print("<H1> Состояние=" + fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE() + "</H1>");
@@ -73,6 +78,8 @@ public class sLnDate extends HttpServlet {
                 out.print("<H1> Адрес ЛПУ: " + fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLPUADDRESS() + "</H1>");
 
                 out.print("<H1> Причина: " + fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getREASON1() + "</H1>");
+                out.print("<H1> Причина измен: " + fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getREASON2() + "</H1>");
+                out.print("<H1> Причина измен2: " + fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getREASON3() + "</H1>");
 
 
                 out.print("<H1> ______________________</H1>");

@@ -32,7 +32,6 @@ public class sDisableLn extends HttpServlet {
         String reasonCode = request.getParameter("reasonCode");
         String reason = request.getParameter("reason");
 
-        System.out.println("Ogrn:" + ogrn + ",lncode:" + lnCode + ",snils:" + snils + ",reasonCode:" + reasonCode + ",reason:" + reason);
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>" +

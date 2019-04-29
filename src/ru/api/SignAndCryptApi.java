@@ -142,7 +142,6 @@ public class SignAndCryptApi {
                 row.setDiagnos(get(jtreat, "ddid"));
                 row.setLnhash(get(jtreat, "doctype"));
 
-                System.out.println("getReturndatelpu>>>>>>" + ln_result.getReturndatelpu());
                 String isClose = get(jtreat, "is_close");
                 if (isClose.equals("1") && ln_result.getMseresult() != null) {
                     if (!ln_result.getMseresult().equals("31") && !ln_result.getMseresult().equals("37")) {
@@ -160,7 +159,9 @@ public class SignAndCryptApi {
                         ln_result.setNextlncode(get(jtreat, "next_ln_code"));
                     }
 
-                } else if (!isClose.equals("1")) ln_result.setReturndatelpu(null);
+                } else if {
+                    (!isClose.equals("1"))
+                } ln_result.setReturndatelpu(null);
 
 
                 List<ROW.LN_RESULT> ln_results = new ArrayList<>();
@@ -235,13 +236,10 @@ public class SignAndCryptApi {
             xml = xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
 
 
-            //System.out.println(">>>>"+type);
             signThis = xmlTemplate.replace("<replace>", xml);
             signThis = signThis.replace("<someAdd1>", "doc/" + "ELN_" + elnNumber + "_" + number + "_" + type); // doc/ELN_306742020070_3_doc
             signThis = signThis.replace("<someAdd2>", "ELN_" + elnNumber + "_" + number + "_" + type); // ELN_306742020070_3_doc
             signThis = signThis.replace("<someAdd3>", "ELN_" + elnNumber); // ELN_306742020070
-            //System.out.println(signThis);
-
         } catch (JAXBException | ParserConfigurationException | IOException | TransformerException e) {
             e.printStackTrace();
         }
