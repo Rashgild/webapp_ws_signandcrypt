@@ -363,7 +363,7 @@ public class Export {
         rowset.setEmail("Rashgild@gmail.com");
         rowset.setPhone("89608634440");
         rowset.setSoftware("SignAndCrypt");
-        rowset.setVersion("1.0");
+        rowset.setVersion("1.1");
         rowset.setVersionSoftware("2.0");
         rowset.setRow(rows);
         List<ru.my.entities.ROWSET> rowsets = new ArrayList<>();
