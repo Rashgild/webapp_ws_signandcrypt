@@ -276,10 +276,6 @@ public class JSONGen {
             byte canonXmlBytes[] = canon.canonicalize(out.toByteArray());
             String canonXmlString = new String(canonXmlBytes);
 
-            System.out.println(canonXmlString);
-
-
-
        return  SoapMessageToString(message);
 
         } catch (IOException e) {

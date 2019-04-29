@@ -213,20 +213,35 @@ public class PrParseFileLnLpu_start {
             row.setGender(resultSet.getInt("GENDER"));
 
             String reason = resultSet.getString("REASON1");
-            if(reason.equals("1")) reason = "01";
-            if(reason.equals("2")) reason = "02";
-            if(reason.equals("3")) reason = "03";
-            if(reason.equals("4")) reason = "04";
-            if(reason.equals("5")) reason = "05";
-            if(reason.equals("6")) reason = "06";
-            if(reason.equals("7")) reason = "07";
-            if(reason.equals("8")) reason = "08";
-            if(reason.equals("9")) reason = "09";
 
+            if(reason!=null) {
+                if (reason.equals("1")) reason = "01";
+                if (reason.equals("2")) reason = "02";
+                if (reason.equals("3")) reason = "03";
+                if (reason.equals("4")) reason = "04";
+                if (reason.equals("5")) reason = "05";
+                if (reason.equals("6")) reason = "06";
+                if (reason.equals("7")) reason = "07";
+                if (reason.equals("8")) reason = "08";
+                if (reason.equals("9")) reason = "09";
+            }
+
+            String reason3 = resultSet.getString("REASON3");
+            if (reason3 != null) {
+                if (reason3.equals("1")) reason3 = "01";
+                if (reason3.equals("2")) reason3 = "02";
+                if (reason3.equals("3")) reason3 = "03";
+                if (reason3.equals("4")) reason3 = "04";
+                if (reason3.equals("5")) reason3 = "05";
+                if (reason3.equals("6")) reason3 = "06";
+                if (reason3.equals("7")) reason3 = "07";
+                if (reason3.equals("8")) reason3 = "08";
+                if (reason3.equals("9")) reason3 = "09";
+            }
 
             row.setReason1(reason);
             row.setReason2(resultSet.getString("REASON2"));
-            row.setReason3(resultSet.getString("REASON3"));
+            row.setReason3(reason3);
             row.setDiagnos(resultSet.getString("DIAGNOS"));
             row.setParentcode(resultSet.getString("PARENT_CODE"));
             row.setDate1(resultSet.getString("DATE1"));
@@ -261,7 +276,6 @@ public class PrParseFileLnLpu_start {
                     Date date1 =  new java.sql.Date(format.parse(row.getServ1AGE()).getTime());
                     Date date2 = new java.sql.Date(format.parse(StartPeriod).getTime());
 
-                    System.out.println(StartPeriod);
                     //row.setServ1AGE(calculateAge(date2,date1,0));
                     //row.setServ1MM(Integer.valueOf(calculateAge(date2,date1,2)));
                     String years = calculateAge(date2,date1,0);

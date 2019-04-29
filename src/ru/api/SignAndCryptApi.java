@@ -79,7 +79,6 @@ public class SignAndCryptApi {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods","POST");
         String xml = data;
-        System.out.println(data);
 
         JSONObject jsonObject = new JSONObject();
         String counter = parseXML(xml,"<fil:BIRTHDAY>");
@@ -121,8 +120,6 @@ public class SignAndCryptApi {
 
     //Парс json -> возврат ROW (xml)
     private ROW parseJson(String json) throws ParseException {
-
-        System.out.println(json);
         ROW row = new ROW();
         JsonParser parser = new JsonParser();
         JsonObject jparse = parser.parse(json).getAsJsonObject();
@@ -149,7 +146,6 @@ public class SignAndCryptApi {
                row.setDiagnos(get(jtreat,"ddid"));
                row.setLnhash(get(jtreat,"doctype"));
 
-                System.out.println("getReturndatelpu>>>>>>"+ln_result.getReturndatelpu());
                String isClose = get(jtreat,"is_close");
                if(isClose.equals("1") && ln_result.getMseresult()!=null) {
                    if (!ln_result.getMseresult().equals("31") && !ln_result.getMseresult().equals("37")){

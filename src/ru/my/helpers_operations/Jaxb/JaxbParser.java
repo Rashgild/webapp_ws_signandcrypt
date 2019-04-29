@@ -57,7 +57,6 @@ public class JaxbParser implements Parser {
         Marshaller marshaller = context.createMarshaller();
         marshaller.marshal(o, document);
 
-        //writeDoc(document,System.out);
         return document;
     }
 

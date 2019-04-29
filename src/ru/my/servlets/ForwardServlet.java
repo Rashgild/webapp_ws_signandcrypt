@@ -17,7 +17,6 @@ public class ForwardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String forwardLink = request.getParameter("Link").trim();
-        System.out.println(forwardLink);
         forward(request,response,forwardLink);
     }
 

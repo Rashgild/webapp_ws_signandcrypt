@@ -108,13 +108,11 @@ public class sImportLNN extends HttpServlet {
                     SQL.SQL_UpdIns("INSERT into disabilitycase (patient_id, createdate,createusername) values (" + pid + ", current_date, 'Importer')");
                     String idDisCase = SQL.Insert_returning("select max(id) as id from disabilitycase");
 
-                    System.out.println(idDisCase);
                     String lpuOGRN = row.getLPUOGRN();
                     String lpuAddress = row.getLPUADDRESS();
                     String lpuName = row.getLPUNAME();
                     String AnotherLPUid = "";
 
-                    //try{
                     if (ogrnMo.equals(lpuOGRN)) {
                         System.out.println("lpuOGRN>>>>" + lpuOGRN);
 
@@ -173,11 +171,8 @@ public class sImportLNN extends HttpServlet {
 
 
                     if (row.getDIAGNOS() != null && !row.getDIAGNOS().equals("")) {
-                        System.out.println(">>>>>"+row.getDIAGNOS());
-                        System.out.println("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
 
                         String id10 = SQL.Insert_returning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
-                        System.out.println(">>>"+id10);
                         if (id10!=null &&!id10.equals("")){
                             SQLrequest.put("idc10_id",id10);
                             SQLrequest.put("idc10final_id",id10);
@@ -207,6 +202,7 @@ public class sImportLNN extends HttpServlet {
                     SQLrequest.put("createdate","current_date");
                     SQLrequest.put("createusername","'Importer'");
                     SQLrequest.put("documenttype_id","1");
+                    SQLrequest.put("closeexport","1");
 
                     SQLrequest.put("status_id","1");
                     String req =  buildRequest(SQLrequest, "disabilitydocument");
@@ -271,7 +267,6 @@ public class sImportLNN extends HttpServlet {
         boolean f = false;
         int size = SQLrequest.size(),i=0;
 
-        System.out.println(size);
         for (Map.Entry entry : SQLrequest.entrySet()) {
 
             header.append(entry.getKey());
@@ -287,7 +282,6 @@ public class sImportLNN extends HttpServlet {
 
         String sql = (header.append(body)).toString();
 
-        System.out.println(sql);
         return sql;
     }
 }

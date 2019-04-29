@@ -23,7 +23,6 @@ public class SQL {
             //Class.forName("org.postgresql.Driver");
             Class.forName(dbdriver);
             connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
-            //System.out.println("Соединение установлено");
             Statement statement;
 
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -48,8 +47,7 @@ public class SQL {
         try {
             Class.forName(dbdriver);
             connection = DriverManager.getConnection(dbhost,dblogin,dbpassword);
-            Statement statement = null;
-            statement = connection.createStatement();
+            Statement statement = connection.createStatement();
             res =  statement.executeUpdate(sql);
             connection.close();
             return res;

@@ -138,7 +138,6 @@ public class Encrypt {
         NodeList nList = doc.getElementsByTagName("xenc:EncryptedData");
         for (int temp = 0; temp < nList.getLength(); temp++) {
             org.w3c.dom.Node nNode = nList.item(temp);
-            // System.out.println("\nCurrent Element :" + nNode.getNodeName());
             if (nNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;
                 //  X509Certificate.addTextNode(eElement.getElementsByTagName("ds:X509Certificate").item(0).getTextContent());

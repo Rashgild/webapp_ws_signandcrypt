@@ -89,7 +89,6 @@ public class Export {
             resultJson.put("message",result.getMESS());
             resultJson.put("status",result.getSTATUS());
             resultJson.put("requestId",result.getREQUESTID());
-            System.out.println("mssL>>>"+result.getMESS());
 
             List<INFO.ROWSET.ROW> rows = result.getINFO().getROWSET().getROW();
             if (rows != null && rows.size() > 0) {
@@ -124,7 +123,6 @@ public class Export {
     }
 
     private SOAPMessage createDisabilityXml(String json) throws Exception {
-        System.out.println(json);
         int per = 3;
         String head="";
         JsonParser parser =new JsonParser();
@@ -301,11 +299,6 @@ public class Export {
                 }
             }
 
-            System.out.println("AGE1>>>>>>>>>>>>");
-            System.out.println(row.getServ1AGE());
-            System.out.println(row.getServ1MM());
-
-
             if(row.getServ2AGE()!=null && !row.getServ2AGE().equals("")) {
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 Date date1 =  new java.sql.Date(format.parse(row.getServ2AGE()).getTime());
@@ -336,7 +329,6 @@ public class Export {
                         get(jtreat,"typesignclose"));
             }
         }
-        System.out.println("getReturndatelpu>>>>>>>>>>"+ln_result.getReturndatelpu());
 
         if(isClose && ln_result.getMseresult()!=null) {
             if (!ln_result.getMseresult().equals("31") && !ln_result.getMseresult().equals("37")){
@@ -361,7 +353,7 @@ public class Export {
         rowset.setEmail("Rashgild@gmail.com");
         rowset.setPhone("89608634440");
         rowset.setSoftware("SignAndCrypt");
-        rowset.setVersion("1.0");
+        rowset.setVersion("1.1");
         rowset.setVersionSoftware("2.0");
         rowset.setRow(rows);
         List<ru.my.entities.ROWSET> rowsets = new ArrayList<>();
