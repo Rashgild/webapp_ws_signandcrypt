@@ -441,7 +441,7 @@ public class PrParseFileLnLpu_start {
                 t_ELN = row.getLncode();
                 message = Sign.signationByParametrs(
                         "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
-                        "#" + row.getAttribId(), moAlias, moPass, t_ELN, gost2001);
+                        "#" + row.getAttribId(), moAlias, moPass, t_ELN, gost2012);
                 saveSoapToXml(signXMLFileName, message);
 
                 List<ROW.HOSPITAL_BREACH> hospital_breaches = row.getHospitalbreach();

@@ -14,9 +14,9 @@ public class LnDate_start {
     public static SOAPMessage Start(SOAPMessage soapMsg)
     {
         try {
-            //soapMsg.writeTo(System.out);
             NewLnNumRange_start.Create(soapMsg);
             soapMsg= Sign.signation();
+
             XmlUtils.saveSoapToXml("GetLnDate.xml", soapMsg);
             GlobalVariables.Request = XmlUtils.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();

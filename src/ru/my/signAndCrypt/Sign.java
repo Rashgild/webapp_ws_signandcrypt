@@ -244,13 +244,16 @@ public class Sign {
             Transform transformC14N = fac.newTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS, (XMLStructure) null);
             transformList.add(transformC14N);
 
+            //TODO!
             // Ссылка на подписываемые данные с алгоритмом хеширования ГОСТ 34.11.
-            Reference ref = fac.newReference("#OGRN_" + GlobalVariables.ogrnMo, fac.newDigestMethod("http://www.w3.org/2001/04/xmldsig-more#gostr3411", null),
+            Reference ref = fac.newReference("#OGRN_" + GlobalVariables.ogrnMo, fac.newDigestMethod(DIG_GOST_2012, null),
                     transformList, null, null);
+            /*Reference ref = fac.newReference("#OGRN_" + GlobalVariables.ogrnMo, fac.newDigestMethod("http://www.w3.org/2001/04/xmldsig-more#gostr3411", null),
+                    transformList, null, null);*/
 
             //Задаём алгоритм подписи:
             SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE,
-                    (C14NMethodParameterSpec) null), fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411", null), Collections.singletonList(ref));
+                    (C14NMethodParameterSpec) null), fac.newSignatureMethod(SIGN_GOST_2012, null), Collections.singletonList(ref));
             //Создаём узел ds:KeyInfo с информацией о сертификате:
             KeyInfoFactory kif = fac.getKeyInfoFactory();
             //System.out.println("***"+cert);
