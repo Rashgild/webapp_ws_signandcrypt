@@ -54,7 +54,7 @@
 <br><br>
 <p id="info_msg" name="SignatureTitle">Данные для подписи:</p>
 <div id="item_border2" name="signThis">
-    <textarea id="SignThis" readonly="readonly"
+    <textarea id="SignThis"
               style="font-size:9pt;height:600px;width:100%;resize:none;border:0;"><%=request.getAttribute("xml")%></textarea>
 </div>
 <p id="info_msg">Подписанные данные:</p>

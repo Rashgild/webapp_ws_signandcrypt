@@ -30,17 +30,7 @@ import ru.my.signAndCrypt.Sign;
 import ru.my.utils.GlobalVariables;
 import ru.my.utils.SQL;
 
-import static ru.my.utils.GlobalVariables.DisabilityDocument_id;
-import static ru.my.utils.GlobalVariables.cryptXMLFileName;
-import static ru.my.utils.GlobalVariables.docAlias;
-import static ru.my.utils.GlobalVariables.docPass;
-import static ru.my.utils.GlobalVariables.moAlias;
-import static ru.my.utils.GlobalVariables.moPass;
-import static ru.my.utils.GlobalVariables.ogrnMo;
-import static ru.my.utils.GlobalVariables.signXMLFileName;
-import static ru.my.utils.GlobalVariables.t_ELN;
-import static ru.my.utils.GlobalVariables.vkAlias;
-import static ru.my.utils.GlobalVariables.vkPass;
+import static ru.my.utils.GlobalVariables.*;
 import static ru.my.utils.StoredQuery.PrParse_Query1;
 import static ru.my.utils.StoredQuery.PrParse_Query2;
 import static ru.my.utils.XmlUtils.saveSoapToXml;
@@ -441,7 +431,7 @@ public class PrParseFileLnLpu_start {
                 t_ELN = row.getLncode();
                 message = Sign.signationByParametrs(
                         "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
-                        "#" + row.getAttribId(), moAlias, moPass, t_ELN, gost2012);
+                        "#" + row.getAttribId(), moAlias, moPass, t_ELN, moGost.equals("2012")?gost2012:gost2001);
                 saveSoapToXml(signXMLFileName, message);
 
                 List<ROW.HOSPITAL_BREACH> hospital_breaches = row.getHospitalbreach();
@@ -451,13 +441,13 @@ public class PrParseFileLnLpu_start {
 
                 if (ln_result.getAttribId() != null) {
                     message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_2_doc",
-                            "#" + ln_result.getAttribId(), docAlias, docPass, t_ELN, gost2001);
+                            "#" + ln_result.getAttribId(), docAlias, docPass, t_ELN, docGost.equals("2012")?gost2012:gost2001);
                     saveSoapToXml(signXMLFileName, message);
                 }
 
                 if (hospital_breach.getAttributeId() != null) {
                     message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_1_doc",
-                            "#" + hospital_breach.getAttributeId(), docAlias, docPass, t_ELN, gost2001);
+                            "#" + hospital_breach.getAttributeId(), docAlias, docPass, t_ELN, docGost.equals("2012")?gost2012:gost2001);
                     saveSoapToXml(signXMLFileName, message);
                 }
                 TREAT_FULL_PERIOD treat_full_period;
@@ -469,7 +459,7 @@ public class PrParseFileLnLpu_start {
 
                     if (treat_full_period.getAttribIdVk() != null && treat_full_period.getExport().equals("false")) {
                         message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treat_full_period.getAttribIdVk(),
-                                "#" + treat_full_period.getAttribIdVk(), vkAlias, vkPass, t_ELN, gost2001);
+                                "#" + treat_full_period.getAttribIdVk(), vkAlias, vkPass, t_ELN, vkGost.equals("2012")?gost2012:gost2001);
                         saveSoapToXml(signXMLFileName, message);
                     }
                     List<TREAT_PERIOD> treat_periods1 = treat_full_period.getTreat_period();
@@ -479,7 +469,7 @@ public class PrParseFileLnLpu_start {
 
                         if (treat_period.getAttribId() != null && treat_full_period.getExport().equals("false")) {
                             message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treat_period.getAttribId(),
-                                    "#" + treat_period.getAttribId(), docAlias, docPass, t_ELN, gost2001);
+                                    "#" + treat_period.getAttribId(), docAlias, docPass, t_ELN, docGost.equals("2012")?gost2012:gost2001);
                             saveSoapToXml(signXMLFileName, message);
                         }
                     }

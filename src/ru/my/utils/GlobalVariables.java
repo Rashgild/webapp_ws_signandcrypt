@@ -37,6 +37,10 @@ public class GlobalVariables {
     public static String urlApi = "";
     public static String innerApi = "";
 
+    public static String docGost = "";
+    public static String vkGost = "";
+    public static String moGost = "";
+
 
     //internal Global Temp Variables
     public static String t_ELN = "";

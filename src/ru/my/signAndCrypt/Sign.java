@@ -43,73 +43,79 @@ public class Sign {
         X509Certificate cert = Certificate.GetCertificateFromStorage(Alias);
         PrivateKey privateKey = Certificate.GetPrivateKey(Password, Alias);
         MessageFactory mf = MessageFactory.newInstance();
-        logger.info("signing");
-        Document doc = soapMessage.getSOAPPart().getEnvelope().getOwnerDocument();
+        logger.info("signing>>>>>>>>>>>>>");
+        try {
+            Document doc = soapMessage.getSOAPPart().getEnvelope().getOwnerDocument();
 
-        WSSecHeader header = new WSSecHeader();
-        header.setActor(Actor); ///TODO: name actor (sender?)
-        header.setMustUnderstand(false);
+            WSSecHeader header = new WSSecHeader();
+            header.setActor(Actor); ///TODO: name actor (sender?)
+            header.setMustUnderstand(false);
 
-        header.insertSecurityHeader(soapMessage.getSOAPPart().getEnvelope().getOwnerDocument());
-        // Elem of sign.
-        Element token = header.getSecurityHeader();
-        // loading prov.
-        Provider xmlDSigProvider = new ru.CryptoPro.JCPxml.dsig.internal.dom.XMLDSigRI();
-        //add transf on doc and point SignedInfo (согласно методическим рекомендациям СМЭВ)
-        final Transforms transforms = new Transforms(doc);
-        transforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM", xmlDSigProvider);
-        //Преобразования над узлом ds:SignedInfo:
-        List<Transform> transformList = new ArrayList<>();
-        Transform transformC14N = fac.newTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS, (XMLStructure) null);
-        transformList.add(transformC14N);
-        //DOMSignContext signContext = new DOMSignContext(privateKey, token);
-        // ref on sign data with hash alg on ГОСТ 34.11.
-        // TODO refrence on sign element?.
+            header.insertSecurityHeader(soapMessage.getSOAPPart().getEnvelope().getOwnerDocument());
+            // Elem of sign.
+            Element token = header.getSecurityHeader();
+            // loading prov.
+            Provider xmlDSigProvider = new ru.CryptoPro.JCPxml.dsig.internal.dom.XMLDSigRI();
+            //add transf on doc and point SignedInfo (согласно методическим рекомендациям СМЭВ)
+            final Transforms transforms = new Transforms(doc);
+            transforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+            XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM", xmlDSigProvider);
+            //Преобразования над узлом ds:SignedInfo:
+            List<Transform> transformList = new ArrayList<>();
+            Transform transformC14N = fac.newTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS, (XMLStructure) null);
+            transformList.add(transformC14N);
+            //DOMSignContext signContext = new DOMSignContext(privateKey, token);
+            // ref on sign data with hash alg on ГОСТ 34.11.
+            // TODO refrence on sign element?.
 
-        Reference ref = fac.newReference(Refer, fac.newDigestMethod("http://www.w3.org/2001/04/xmldsig-more#gostr3411", null),
-                transformList, null, null);
+            Reference ref = fac.newReference(Refer, fac.newDigestMethod("http://www.w3.org/2001/04/xmldsig-more#gostr3411", null),
+                    transformList, null, null);
 
-        //Задаём алгоритм подписи:
-        SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE,
-                (C14NMethodParameterSpec) null), fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411", null), Collections.singletonList(ref));
-        //Создаём узел ds:KeyInfo с информацией о сертификате:
-        KeyInfoFactory kif = fac.getKeyInfoFactory();
+            //Задаём алгоритм подписи:
+            SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE,
+                    (C14NMethodParameterSpec) null), fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411", null), Collections.singletonList(ref));
+            //Создаём узел ds:KeyInfo с информацией о сертификате:
+            KeyInfoFactory kif = fac.getKeyInfoFactory();
 
-        X509Data x509d = kif.newX509Data(Collections.singletonList(cert));
-        KeyInfo ki = kif.newKeyInfo(Collections.singletonList(x509d));
-        //Подписываем данные в элементе token:
-        XMLSignature sig = fac.newXMLSignature(si, ki); //
-        DOMSignContext signContext = new DOMSignContext(privateKey, token);  //
+            X509Data x509d = kif.newX509Data(Collections.singletonList(cert));
+            KeyInfo ki = kif.newKeyInfo(Collections.singletonList(x509d));
+            //Подписываем данные в элементе token:
+            XMLSignature sig = fac.newXMLSignature(si, ki); //
+            DOMSignContext signContext = new DOMSignContext(privateKey, token);  //
 
-        sig.sign(signContext);  // EXC
-        //Следующий этап — поместить узел ds:Signature и сертификат (X509Certificate) в узел wsse:Security,
-        //причём сертификат нужно удалить из ds:KeyInfo и оставить там ссылку на wsse:BinarySecurityToken с сертификатом:
-        // Узел подписи Signature.
-        Element sigE = (Element) XPathAPI.selectSingleNode(signContext.getParent(), "//ds:Signature");
-        // Блок данных KeyInfo.
-        org.w3c.dom.Node keyE = XPathAPI.selectSingleNode(sigE, "//ds:KeyInfo", sigE);
-        // Элемент SenderCertificate, который должен содержать сертификат.
-        Element cerVal = (Element) XPathAPI.selectSingleNode(token, "//*[@wsu:Id='SenderCertificate']");
+            sig.sign(signContext);  // EXC
+            //Следующий этап — поместить узел ds:Signature и сертификат (X509Certificate) в узел wsse:Security,
+            //причём сертификат нужно удалить из ds:KeyInfo и оставить там ссылку на wsse:BinarySecurityToken с сертификатом:
+            // Узел подписи Signature.
+            Element sigE = (Element) XPathAPI.selectSingleNode(signContext.getParent(), "//ds:Signature");
+            // Блок данных KeyInfo.
+            org.w3c.dom.Node keyE = XPathAPI.selectSingleNode(sigE, "//ds:KeyInfo", sigE);
+            // Элемент SenderCertificate, который должен содержать сертификат.
+            Element cerVal = (Element) XPathAPI.selectSingleNode(token, "//*[@wsu:Id='SenderCertificate']");
 
 
-        //cerVal.setTextContent(XPathAPI.selectSingleNode(keyE, "X509Certificate", keyE).getFirstChild().getNodeValue());
-        org.w3c.dom.Node certi = XPathAPI.selectSingleNode(sigE, "//ds:X509Certificate", sigE);
-        keyE.removeChild(XPathAPI.selectSingleNode(keyE, "//ds:X509Data", keyE));
-        org.w3c.dom.Node str = keyE.appendChild(doc.createElementNS("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "wsse:SecurityTokenReference"));
-        Element strRef = (Element) str.appendChild(doc.createElementNS("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "wsse:Reference"));
-        strRef.setAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
+            //cerVal.setTextContent(XPathAPI.selectSingleNode(keyE, "X509Certificate", keyE).getFirstChild().getNodeValue());
+            org.w3c.dom.Node certi = XPathAPI.selectSingleNode(sigE, "//ds:X509Certificate", sigE);
+            keyE.removeChild(XPathAPI.selectSingleNode(keyE, "//ds:X509Data", keyE));
+            org.w3c.dom.Node str = keyE.appendChild(doc.createElementNS("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "wsse:SecurityTokenReference"));
+            Element strRef = (Element) str.appendChild(doc.createElementNS("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "wsse:Reference"));
+            strRef.setAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
 
-        strRef.setAttribute("URI", "#http://eln.fss.ru/actor/mo/" + GlobalVariables.ogrnMo + "/ELN_" + ELN);
-        header.getSecurityHeader().appendChild(sigE);
+            strRef.setAttribute("URI", "#http://eln.fss.ru/actor/mo/" + GlobalVariables.ogrnMo + "/ELN_" + ELN);
+            header.getSecurityHeader().appendChild(sigE);
 
-        keyE = XPathAPI.selectSingleNode(sigE, "//wsse:Security", sigE);
-        Element strRef2 = (Element) keyE.appendChild(doc.createElementNS("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "wse:BinarySecurityToken"));
-        strRef2.setAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
-        strRef2.setAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
-        strRef2.setAttribute("wsu:Id", "http://eln.fss.ru/actor/mo/" + GlobalVariables.ogrnMo + "/ELN_" + ELN);
-        strRef2.setTextContent(certi.getFirstChild().getNodeValue());
-        return soapMessage;
+            keyE = XPathAPI.selectSingleNode(sigE, "//wsse:Security", sigE);
+            Element strRef2 = (Element) keyE.appendChild(doc.createElementNS("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "wse:BinarySecurityToken"));
+            strRef2.setAttribute("EncodingType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
+            strRef2.setAttribute("ValueType", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
+            strRef2.setAttribute("wsu:Id", "http://eln.fss.ru/actor/mo/" + GlobalVariables.ogrnMo + "/ELN_" + ELN);
+            strRef2.setTextContent(certi.getFirstChild().getNodeValue());
+
+            return soapMessage;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static final String DIG_GOST_2001 = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";

@@ -90,6 +90,10 @@ public class ConfigInit implements ServletContextListener {
         urlApi = resource.getString("urlApi");
         innerApi = resource.getString("innerApi");
 
+        docGost = resource.getString("docGost");
+        vkGost = resource.getString("vkGost");
+        moGost = resource.getString("moGost");
+
        ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
         try {
             while (resultSet.next()) {

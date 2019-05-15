@@ -104,7 +104,7 @@ public class SignAndCryptApi {
 
     private String parseXML(String xml, String searchString) {
         String[] search = xml.split("");
-        int start = xml.indexOf(searchString) + searchString.length() + 1;
+        int start = xml.indexOf(searchString) + searchString.length() ;
         StringBuilder sb = new StringBuilder();
         while (!search[start].equals("<")) {
             sb.append(search[start]);
