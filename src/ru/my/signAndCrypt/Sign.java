@@ -68,12 +68,13 @@ public class Sign {
             // ref on sign data with hash alg on ГОСТ 34.11.
             // TODO refrence on sign element?.
 
-            Reference ref = fac.newReference(Refer, fac.newDigestMethod("http://www.w3.org/2001/04/xmldsig-more#gostr3411", null),
-                    transformList, null, null);
+            Reference ref = fac.newReference(Refer, fac.newDigestMethod(DIG_GOST_2012, null),
+                    transformList, null, null);/*  Reference ref = fac.newReference(Refer, fac.newDigestMethod("http://www.w3.org/2001/04/xmldsig-more#gostr3411", null),
+                    transformList, null, null);*/
 
             //Задаём алгоритм подписи:
             SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE,
-                    (C14NMethodParameterSpec) null), fac.newSignatureMethod("http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411", null), Collections.singletonList(ref));
+                    (C14NMethodParameterSpec) null), fac.newSignatureMethod(SIGN_GOST_2012, null), Collections.singletonList(ref));
             //Создаём узел ds:KeyInfo с информацией о сертификате:
             KeyInfoFactory kif = fac.getKeyInfoFactory();
 

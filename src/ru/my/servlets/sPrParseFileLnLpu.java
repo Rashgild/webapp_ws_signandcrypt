@@ -10,20 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
-import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
-import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnUserGetLNDataOut;
-import ru.ibs.fss.ln.ws.fileoperationsln.INFO;
-import ru.ibs.fss.ln.ws.fileoperationsln.PrParseFilelnlpuElement;
-import ru.ibs.fss.ln.ws.fileoperationsln.ROWSET;
-import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
-import ru.ibs.fss.ln.ws.fileoperationsln.WSResult;
+import ru.ibs.fss.ln.ws.fileoperationsln.*;
 import ru.my.utils.GlobalVariables;
 import ru.my.utils.SQL;
 import ru.my.utils.StoredQuery;
 
-import static ru.my.utils.GlobalVariables.passwordSSL;
-import static ru.my.utils.GlobalVariables.pathandnameSSL;
+import static ru.my.utils.GlobalVariables.*;
 
 @WebServlet("/SetLnData")
 public class sPrParseFileLnLpu extends HttpServlet {
@@ -113,32 +105,51 @@ public class sPrParseFileLnLpu extends HttpServlet {
         Logger logger = Logger.getLogger("");
         logger.info("Get Hash");
         String snils = "", eln = "";
-        ResultSet resultSet = SQL.select(StoredQuery.getLNandSnils(id));
+        ResultSet rs = SQL.select(StoredQuery.getLnHash(id));
+        String hash = null;
         try {
-            while (resultSet.next()) {
-                snils = resultSet.getString("snils");
-                eln = resultSet.getString("ln_code");
+            while (rs.next()){
+                hash = rs.getString("lasthash");
+                System.out.println(GlobalVariables.hash + ">>>>from base hash");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        if (snils == null || snils.length() <= 0) return false;
-        snils = snils.replace(" ", "").replace("-", "");
-        logger.info("Snils: " + snils);
-        logger.info("Eln: " + eln);
-        try {
-            System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
-            System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
-            FileOperationsLnImplService service = new FileOperationsLnImplService();
-            FileOperationsLn start = service.getFileOperationsLnPort();
-            FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(GlobalVariables.ogrnMo, eln, snils);
-            GlobalVariables.hash = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNHASH();
-            GlobalVariables.state = fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW().get(0).getLNSTATE();
+        if(hash==null) {
+            ResultSet resultSet = SQL.select(StoredQuery.getLNandSnils(id));
+            try {
+                while (resultSet.next()) {
+                    snils = resultSet.getString("snils");
+                    eln = resultSet.getString("ln_code");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (snils == null || snils.length() <= 0) return false;
+            snils = snils.replace(" ", "").replace("-", "");
+            logger.info("Snils: " + snils);
+            logger.info("Eln: " + eln);
+            try {
+                System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
+                System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
+                FileOperationsLnImplService service = new FileOperationsLnImplService();
+                FileOperationsLn start = service.getFileOperationsLnPort();
+                FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(GlobalVariables.ogrnMo, eln, snils);
+                for (ROW row : fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW()) {
+                    GlobalVariables.hash = row.getLNHASH();
+                    System.out.println(GlobalVariables.hash + ">>>>has");
+                    GlobalVariables.state = row.getLNSTATE();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        } else {
+            GlobalVariables.hash = hash;
+            return true;
         }
-        return true;
     }
 }

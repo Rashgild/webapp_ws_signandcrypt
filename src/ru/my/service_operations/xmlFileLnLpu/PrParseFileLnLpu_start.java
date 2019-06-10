@@ -259,6 +259,7 @@ public class PrParseFileLnLpu_start {
                     int years = calculateCurrentYears(dateFrom,dateTo);
                     if (years<1) {
                         row.setServ1MM(calculateCurrentMonths(dateFrom, dateTo));
+                        row.setServ1AGE(null);
                     }else {
                         row.setServ1AGE(String.valueOf(years));
                     }

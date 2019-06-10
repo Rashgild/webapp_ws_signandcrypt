@@ -79,22 +79,22 @@ public class Export {
     }
 
     private String sendRequest() {
-        System.setProperty("javax.net.ssl.trustStore", pathandnameSSL);
-        System.setProperty("javax.net.ssl.trustStorePassword", passwordSSL);
-        FileOperationsLnImplService service = new FileOperationsLnImplService();
-        FileOperationsLn start = service.getFileOperationsLnPort();
-        ru.ibs.fss.ln.ws.fileoperationsln.ROWSET rowset = new ru.ibs.fss.ln.ws.fileoperationsln.ROWSET();
-
-        rowset.setAuthor("ThisIsNewSender");
-        PrParseFilelnlpuElement prParseFilelnlpuElement = new PrParseFilelnlpuElement();
-        PrParseFilelnlpuElement.PXmlFile pXmlFile = new PrParseFilelnlpuElement.PXmlFile();
-        pXmlFile.setROWSET(rowset);
-        prParseFilelnlpuElement.setPXmlFile(pXmlFile);
-        WSResult result;
-
         JSONObject resultJson = new JSONObject();
 
         try {
+            System.setProperty("javax.net.ssl.trustStore", pathandnameSSL);
+            System.setProperty("javax.net.ssl.trustStorePassword", passwordSSL);
+            FileOperationsLnImplService service = new FileOperationsLnImplService();
+            FileOperationsLn start = service.getFileOperationsLnPort();
+            ru.ibs.fss.ln.ws.fileoperationsln.ROWSET rowset = new ru.ibs.fss.ln.ws.fileoperationsln.ROWSET();
+
+            rowset.setAuthor("ThisIsNewSender");
+            PrParseFilelnlpuElement prParseFilelnlpuElement = new PrParseFilelnlpuElement();
+            PrParseFilelnlpuElement.PXmlFile pXmlFile = new PrParseFilelnlpuElement.PXmlFile();
+            pXmlFile.setROWSET(rowset);
+            prParseFilelnlpuElement.setPXmlFile(pXmlFile);
+            WSResult result;
+
             result = start.prParseFilelnlpu(prParseFilelnlpuElement);
 
             resultJson.put("message", result.getMESS());
@@ -129,7 +129,7 @@ public class Export {
                     }
                 }
             }
-        } catch (SOAPException_Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return resultJson.toString();
@@ -392,6 +392,7 @@ public class Export {
         message = Sign.signationByParametrs(message,
                 "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
                 "#" + row.getAttribId(), moAlias, moPass, t_ELN);
+
         return message;
     }
 

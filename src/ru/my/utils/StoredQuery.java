@@ -137,6 +137,10 @@ public class StoredQuery {
                 "order by treat_dt1 asc \n";
     }
 
+    public static String getLnHash(String disabilityId){
+        return "select lasthash from ElectronicDisabilityDocumentNumber where disabilitydocument_id="+disabilityId;
+    }
+
     protected static String QueryToSave(String result, Integer status) {
         return "INSERT INTO exportfsslog" +
                 "(result, responsecode, status, disabilitydocument, disabilitynumber, requestcode, requestdate, requesttime, requesttype)" +
