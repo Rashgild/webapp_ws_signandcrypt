@@ -18,7 +18,6 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  *
  */
-//@WebServiceClient(name = "FileOperationsLnImplService", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", wsdlLocation = "https://docs.fss.ru/WSLnCrypto/FileOperationsLnPort?WSDL")
 @WebServiceClient(name = "FileOperationsLnImplService", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", wsdlLocation = "https://docs.fss.ru//WSLnCryptoV11/FileOperationsLnPort?WSDL")
 @HandlerChain(file= "ru/my/interceptor/handler-chain.xml")
 public class FileOperationsLnImplService
@@ -33,8 +32,7 @@ public class FileOperationsLnImplService
         URL url = null;
         WebServiceException e = null;
         try {
-            //url = new URL("https://docs.fss.ru/WSLnCrypto/FileOperationsLnPort?WSDL");
-            url = new URL("https://docs.fss.ru//WSLnCryptoV11/FileOperationsLnPort?WSDL");
+            url = new URL("https://docs.fss.ru/WSLnCryptoV11/FileOperationsLnPort?WSDL");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

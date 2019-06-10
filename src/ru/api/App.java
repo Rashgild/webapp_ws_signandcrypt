@@ -1,9 +1,9 @@
 package ru.api;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 @ApplicationPath("/api")
 public class App extends Application {
@@ -14,6 +14,7 @@ public class App extends Application {
         h.add(SignAndCryptApi.class);
         h.add(Export.class);
         h.add(Import.class);
+        h.add(Forward.class);
         return h;
     }
 }

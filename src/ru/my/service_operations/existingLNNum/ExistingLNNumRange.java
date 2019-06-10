@@ -1,7 +1,7 @@
 package ru.my.service_operations.existingLNNum;
 
-import ru.my.helpers_operations.GlobalVariables;
-import ru.my.helpers_operations.WorkWithXML;
+import ru.my.utils.GlobalVariables;
+import ru.my.utils.XmlUtils;
 import ru.my.service_operations.newLNNumRange.NewLnNumRange_start;
 import ru.my.signAndCrypt.Encrypt;
 import ru.my.signAndCrypt.Sign;
@@ -22,9 +22,9 @@ public class ExistingLNNumRange {
     {
         try {
             NewLnNumRange_start.Create(soapMsg);
-            soapMsg= Sign.Signation();
-            WorkWithXML.SaveSOAPToXML("ExistingLNNumRange.xml", soapMsg);
-            GlobalVariables.Request = WorkWithXML.SoapMessageToString(soapMsg);
+            soapMsg= Sign.signation();
+            XmlUtils.saveSoapToXml("ExistingLNNumRange.xml", soapMsg);
+            GlobalVariables.Request = XmlUtils.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();

@@ -1,6 +1,3 @@
-/**
- * Created by rkurbanov on 11.08.2017.
- */
 
 function forwardWithotClick(aLink) {
     $.get("ForwardServlet", {Link: aLink}, function (response) {

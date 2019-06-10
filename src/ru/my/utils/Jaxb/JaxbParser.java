@@ -1,7 +1,7 @@
-package ru.my.helpers_operations.Jaxb;
+package ru.my.utils.Jaxb;
 
-import org.w3c.dom.Document;
-
+import java.io.File;
+import java.io.OutputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -15,13 +15,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 
-/**
- * Created by rkurbanov on 05.12.2016.
- */
+import org.w3c.dom.Document;
+
 public class JaxbParser implements Parser {
     @Override
     public Object getObject(File file, Class c) throws JAXBException {
@@ -36,18 +32,11 @@ public class JaxbParser implements Parser {
     public void saveObject(File file, Object o) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(o.getClass());
         Marshaller marshaller = context.createMarshaller();
-
-        //SOAPMessage soapMessage = (SOAPMessage) context.createMarshaller();
-
-        marshaller.marshal(o,file);
+        marshaller.marshal(o, file);
     }
 
     @Override
-    public Document ObjToSoap(Object o) throws JAXBException, IOException, ParserConfigurationException, TransformerException {
-
-        /*JAXBContext context = JAXBContext.newInstance(o.getClass());
-        Marshaller marshaller = context.createMarshaller();*/
-
+    public Document objToSoap(Object o) throws JAXBException, ParserConfigurationException {
         JAXBContext context = JAXBContext.newInstance(o.getClass());
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -60,12 +49,9 @@ public class JaxbParser implements Parser {
         return document;
     }
 
-    public static void writeDoc(Document doc, OutputStream out)
-            throws TransformerException {
-        // создание объекта копирования содержимого XML-документа в поток
+    public static void writeDoc(Document doc, OutputStream out) throws TransformerException {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        // копирование содержимого XML-документа в поток
         transformer.transform(new DOMSource(doc), new StreamResult(out));
     }
 }

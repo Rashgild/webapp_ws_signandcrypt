@@ -1,15 +1,15 @@
-<%@ page import="ru.my.helpers_operations.GlobalVariables" %>
+<%@ page import="ru.my.utils.GlobalVariables" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="http://192.168.7.208:8080/SignAndCrypt/res/js/jquery-3.2.1.min.js"></script>
+    <script src="<%=GlobalVariables.innerApi%>res/js/jquery-3.2.1.min.js"></script>
     <meta charset="UTF-8">
     <title>SignAndCrypt</title>
     <script language="javascript">window.allow_firefox_cadesplugin_async = 1</script>
-    <script language="javascript" src="http://192.168.7.208:8080/SignAndCrypt/res/js/cadesplugin_api.js"></script>
-    <script type="text/javascript" src="http://192.168.7.208:8080/SignAndCrypt/res/js/nmcades_plugin_api.js"></script>
-    <script type="text/javascript" src="http://192.168.7.208:8080/SignAndCrypt/res/js/initcode.js"></script>
+    <script language="javascript" src="<%=GlobalVariables.innerApi%>res/js/cadesplugin_api.js"></script>
+    <script type="text/javascript" src="<%=GlobalVariables.innerApi%>res/js/nmcades_plugin_api.js"></script>
+    <script type="text/javascript" src="<%=GlobalVariables.innerApi%>res/js/initcode.js"></script>
     <style>
         #item_border {
             background: #d2fdc9;
@@ -54,7 +54,7 @@
 <br><br>
 <p id="info_msg" name="SignatureTitle">Данные для подписи:</p>
 <div id="item_border2" name="signThis">
-    <textarea id="SignThis" readonly="readonly"
+    <textarea id="SignThis"
               style="font-size:9pt;height:600px;width:100%;resize:none;border:0;"><%=request.getAttribute("xml")%></textarea>
 </div>
 <p id="info_msg">Подписанные данные:</p>

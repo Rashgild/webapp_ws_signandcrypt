@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<javaee:handler-chains
-        xmlns:javaee="http://java.sun.com/xml/ns/javaee"
->
+<javaee:handler-chains xmlns:javaee="http://java.sun.com/xml/ns/javaee">
     <javaee:handler-chain>
         <javaee:handler>
             <javaee:handler-class>ru.my.interceptor.Injecter</javaee:handler-class>
