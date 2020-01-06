@@ -36,7 +36,7 @@ public class NewLnNumRange_start {
 
             SOAPMessage NewMessg = mf.createMessage();
             logger.info("EncryptingMessage");
-            NewMessg = Encrypt.CreateXMLAndEncrypt(NewMessg, "GetNumSigned.xml");
+            NewMessg = Encrypt.createXmlAndEncrypt(NewMessg, "GetNumSigned.xml");
 
             return NewMessg;
         } catch (Exception e) {

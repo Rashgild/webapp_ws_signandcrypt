@@ -70,7 +70,7 @@ public class PrParseFileLnLpu_start {
         try {
             MessageFactory mf = MessageFactory.newInstance();
             SOAPMessage CryptedMessage = mf.createMessage();
-            CryptedMessage = Encrypt.CreateXMLAndEncrypt(CryptedMessage, signXMLFileName);
+            CryptedMessage = Encrypt.createXmlAndEncrypt(CryptedMessage, signXMLFileName);
             saveSoapToXml(cryptXMLFileName, CryptedMessage);
 
             return CryptedMessage;

@@ -25,7 +25,7 @@ public class DisableLn {
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();
-            NewMessg = Encrypt.CreateXMLAndEncrypt(NewMessg, "DisableLn.xml");
+            NewMessg = Encrypt.createXmlAndEncrypt(NewMessg, "DisableLn.xml");
 
             return NewMessg;
         } catch (Exception e) {

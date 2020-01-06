@@ -38,7 +38,6 @@ import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLn;
 import ru.ibs.fss.ln.ws.fileoperationsln.FileOperationsLnImplService;
 import ru.ibs.fss.ln.ws.fileoperationsln.INFO;
 import ru.ibs.fss.ln.ws.fileoperationsln.PrParseFilelnlpuElement;
-import ru.ibs.fss.ln.ws.fileoperationsln.SOAPException_Exception;
 import ru.ibs.fss.ln.ws.fileoperationsln.WSResult;
 import ru.my.entities.PrParseFileLnLpu;
 import ru.my.entities.TREAT_FULL_PERIOD;
@@ -48,7 +47,7 @@ import ru.my.utils.GlobalVariables;
 
 import static ru.api.ApiUtils.get;
 import static ru.my.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start.calculateAge;
-import static ru.my.signAndCrypt.Encrypt.CreateXMLAndEncrypt;
+import static ru.my.signAndCrypt.Encrypt.createXmlAndEncrypt;
 import static ru.my.utils.GlobalVariables.moAlias;
 import static ru.my.utils.GlobalVariables.moPass;
 import static ru.my.utils.GlobalVariables.ogrnMo;
@@ -71,7 +70,7 @@ public class Export {
         SOAPMessage message = createDisabilityXml(data);
         try {
             String mess = soapMessageToString(message);
-            GlobalVariables.Request = CreateXMLAndEncrypt(mess);
+            GlobalVariables.Request = createXmlAndEncrypt(mess);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -22,7 +22,7 @@ public class LnDate_start {
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();
-            NewMessg = Encrypt.CreateXMLAndEncrypt(NewMessg, "GetLnDate.xml");
+            NewMessg = Encrypt.createXmlAndEncrypt(NewMessg, "GetLnDate.xml");
 
             return NewMessg;
 

@@ -23,10 +23,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import ru.CryptoPro.JCP.params.CryptParamsSpec;
 import ru.CryptoPro.JCPxml.Consts;
 import ru.CryptoPro.JCPxml.XmlInit;
 import ru.my.utils.GlobalVariables;
 
+import static ru.CryptoPro.JCP.JCP.GOST_EL_2012_256_NAME;
+import static ru.CryptoPro.JCP.JCP.GOST_EL_2012_512_NAME;
 import static ru.my.utils.GlobalVariables.aliasCert;
 import static ru.my.utils.GlobalVariables.passwordCertStor;
 import static ru.my.utils.GlobalVariables.pathToCert;
@@ -57,11 +60,18 @@ public class Encrypt {
 
         //Создание случайного сессионного ключа.
         final KeyGenerator kg = KeyGenerator.getInstance("GOST28147");
+
+        if (cert != null &&
+                cert.getPublicKey().getAlgorithm().equals(GOST_EL_2012_256_NAME) ||
+                cert.getPublicKey().getAlgorithm().equals(GOST_EL_2012_512_NAME)) {
+
+            CryptParamsSpec spec = CryptParamsSpec.getInstance(CryptParamsSpec.Rosstandart_TC26_Z);
+            kg.init(spec);
+        }
         final SecretKey sessionKey = kg.generateKey();
 
         //Зашифрование сессионного ключа.
         EncryptedKey encryptedKey = wrapKey(doc, sessionKey, cert);
-        //  EncryptedKey encryptedKey = wrapKey(doc, pk, cert);
         //зашифрование документа
         Element element = doc.getDocumentElement();
         XMLCipher xmlCipher = XMLCipher.getInstance(Consts.URI_GOST_CIPHER);
@@ -89,7 +99,6 @@ public class Encrypt {
      * @throws Exception ошибки шифрования
      */
     private static EncryptedKey wrapKey(Document doc, SecretKey sessionKey, X509Certificate cert) throws Exception {
-
         XMLCipher keyCipher = XMLCipher.getInstance(Consts.URI_GOST_TRANSPORT);
         keyCipher.init(XMLCipher.WRAP_MODE, cert.getPublicKey());
         //создание KeyInfo с сертификатом
@@ -111,7 +120,7 @@ public class Encrypt {
      *
      * @param soapMessage перехваченное сообщение
      */
-    public static SOAPMessage CreateXMLAndEncrypt(SOAPMessage soapMessage, String nameFile)
+    public static SOAPMessage createXmlAndEncrypt(SOAPMessage soapMessage, String nameFile)
             throws Exception {
 
         //Cоздание каркаса XML-Encrypt
@@ -201,7 +210,7 @@ public class Encrypt {
     }
 
 
-    public static String CreateXMLAndEncrypt(String message)
+    public static String createXmlAndEncrypt(String message)
             throws Exception {
 
         //Cоздание каркаса XML-Encrypt

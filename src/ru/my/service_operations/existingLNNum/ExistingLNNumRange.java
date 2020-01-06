@@ -28,7 +28,7 @@ public class ExistingLNNumRange {
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();
-            NewMessg = Encrypt.CreateXMLAndEncrypt(NewMessg, "ExistingLNNumRange.xml");
+            NewMessg = Encrypt.createXmlAndEncrypt(NewMessg, "ExistingLNNumRange.xml");
 
             return NewMessg;
         } catch (Exception e) {
