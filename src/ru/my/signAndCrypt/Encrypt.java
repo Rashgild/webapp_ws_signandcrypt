@@ -191,6 +191,14 @@ public class Encrypt {
 
         //Создание случайного сессионного ключа.
         final KeyGenerator kg = KeyGenerator.getInstance("GOST28147");
+
+        if (cert != null &&
+                cert.getPublicKey().getAlgorithm().equals(GOST_EL_2012_256_NAME) ||
+                cert.getPublicKey().getAlgorithm().equals(GOST_EL_2012_512_NAME)) {
+
+            CryptParamsSpec spec = CryptParamsSpec.getInstance(CryptParamsSpec.Rosstandart_TC26_Z);
+            kg.init(spec);
+        }
         final SecretKey sessionKey = kg.generateKey();
         //Зашифрование сессионного ключа.
         EncryptedKey encryptedKey = wrapKey(doc, sessionKey, cert);
