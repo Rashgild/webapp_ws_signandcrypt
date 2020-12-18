@@ -2,7 +2,6 @@
 /*
 web/WEB-INF/lib
 web/WEB-INF/log4j.properties
-/src/ru/ibs/fss/ln/ws/fileoperationsln/FileOperationsLnImplService.java
 #!Ignore
 .gitignore
 !/src

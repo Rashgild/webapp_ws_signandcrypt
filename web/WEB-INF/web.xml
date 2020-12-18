@@ -5,11 +5,10 @@
          version="4.0">
 
     <listener>
-        <listener-class>ru.my.servlets.Log4jInit</listener-class>
-
+        <listener-class>main.java.ru.rashgild.servlets.Log4jInit</listener-class>
     </listener>
     <listener>
-        <listener-class>ru.my.servlets.ConfigInit</listener-class>
+        <listener-class>main.java.ru.rashgild.servlets.ConfigInit</listener-class>
     </listener>
 
 </web-app>

@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page language="java"%>
 <%@ page import="org.apache.log4j.Logger" %>
-<%@ page import="ru.my.utils.GlobalVariables" %>
+<%@ page import="main.java.ru.rashgild.utils.GlobalVariables" %>
 <% Logger logger=Logger.getLogger("simple");
 
 %>
