@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.servlets;
+package ru.rashgild.servlets;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -19,12 +19,12 @@ import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import main.java.ru.rashgild.utils.GlobalVariables;
-import main.java.ru.rashgild.utils.SQL;
-import main.java.ru.rashgild.utils.StoredQuery;
-import main.java.ru.rashgild.utils.UTF8Control;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.SQL;
+import ru.rashgild.utils.StoredQuery;
+import ru.rashgild.utils.UTF8Control;
 
-import static main.java.ru.rashgild.utils.GlobalVariables.*;
+import static ru.rashgild.utils.GlobalVariables.*;
 
 public class ConfigInit implements ServletContextListener {
 

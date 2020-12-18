@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.servlets;
+package ru.rashgild.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLn;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnUserGetExistingLNNumRangeOut;
-import main.java.ru.genereted.v1.fileoperationsln.ws.LnNumList;
-import main.java.ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnUserGetExistingLNNumRangeOut;
+import ru.rashgild.generated.v1.fileoperationsln.ws.LnNumList;
+import ru.rashgild.utils.GlobalVariables;
 
 @WebServlet("/sExistingLNNumRange")
 public class sExistingLNNumRange extends HttpServlet {

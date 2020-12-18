@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.servlets;
+package ru.rashgild.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLn;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnUserGetNewLNNumOut;
-import main.java.ru.genereted.v1.fileoperationsln.ws.SOAPException_Exception;
-import main.java.ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnUserGetNewLNNumOut;
+import ru.rashgild.generated.v1.fileoperationsln.ws.SOAPException_Exception;
+import ru.rashgild.utils.GlobalVariables;
 
-import static main.java.ru.rashgild.utils.SQL.sqlUpdIns;
-import static main.java.ru.rashgild.utils.StoredQuery.SaveNumber;
+import static ru.rashgild.utils.SQL.sqlUpdIns;
+import static ru.rashgild.utils.StoredQuery.SaveNumber;
 
 @WebServlet("/sNewLnNum")
 public class sNewLnNum extends HttpServlet {

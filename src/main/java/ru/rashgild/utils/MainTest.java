@@ -1,6 +1,6 @@
-package main.java.ru.rashgild.utils;
+package ru.rashgild.utils;
 
-import static main.java.ru.rashgild.signAndCrypt.Sign.signationByParametrs;
+import static ru.rashgild.signAndCrypt.Sign.signationByParametrs;
 
 public class MainTest {
 

@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.api;
+package ru.rashgild.api;
 
 import java.util.HashSet;
 import java.util.Set;

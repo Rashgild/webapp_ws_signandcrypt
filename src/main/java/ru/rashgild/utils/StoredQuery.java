@@ -1,9 +1,9 @@
-package main.java.ru.rashgild.utils;
+package ru.rashgild.utils;
 
 import java.text.DateFormat;
 import java.util.Date;
 
-import static main.java.ru.rashgild.utils.GlobalVariables.DefaultLPU;
+import static ru.rashgild.utils.GlobalVariables.DefaultLPU;
 
 public class StoredQuery {
 

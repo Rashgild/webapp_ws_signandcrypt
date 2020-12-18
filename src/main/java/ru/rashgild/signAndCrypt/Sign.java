@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.signAndCrypt;
+package ru.rashgild.signAndCrypt;
 
 import java.io.FileInputStream;
 import java.security.PrivateKey;
@@ -30,8 +30,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import main.java.ru.rashgild.utils.CertificateUtils;
-import main.java.ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.CertificateUtils;
+import ru.rashgild.utils.GlobalVariables;
 
 public class Sign {
 

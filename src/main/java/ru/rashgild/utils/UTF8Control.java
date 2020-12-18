@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.utils;
+package ru.rashgild.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

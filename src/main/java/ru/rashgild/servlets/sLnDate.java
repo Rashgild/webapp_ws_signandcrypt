@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.servlets;
+package ru.rashgild.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-
-import main.java.ru.genereted.v2.types.eln.mo.v01.FileOperationsLnUserGetLNDataOut;
-import main.java.ru.genereted.v2.types.eln.mo.v01.GetLNDataRequest;
-import main.java.ru.genereted.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
-import main.java.ru.genereted.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService_Service;
-import main.java.ru.genereted.v2.fss.integration.ws.eln.mo.v01.InternalException;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
+import ru.rashgild.generated.v2.types.eln.mo.v01.FileOperationsLnUserGetLNDataOut;
+import ru.rashgild.generated.v2.types.eln.mo.v01.GetLNDataRequest;
 
 @WebServlet("/sLnDate")
 public class sLnDate extends HttpServlet {
@@ -44,7 +43,7 @@ public class sLnDate extends HttpServlet {
            /* FileOperationsLnImplService service = new FileOperationsLnImplService();
             FileOperationsLn start = service.getFileOperationsLnPort();*/
 
-            FileOperationsLnService_Service service_service = new FileOperationsLnService_Service();
+            FileOperationsLnServiceImpl service_service = new FileOperationsLnServiceImpl();
             FileOperationsLnService start = service_service.getFileOperationsLnPort();
 
             GetLNDataRequest request1 = new GetLNDataRequest();

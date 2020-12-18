@@ -1,10 +1,10 @@
-package main.java.ru.rashgild.utils;
+package ru.rashgild.utils;
 
 import java.io.File;
 
-import main.java.ru.rashgild.entities.PrParseFileLnLpu;
-import main.java.ru.rashgild.utils.Jaxb.JaxbParser;
-import main.java.ru.rashgild.utils.Jaxb.Parser;
+import ru.rashgild.entities.PrParseFileLnLpu;
+import ru.rashgild.utils.Jaxb.JaxbParser;
+import ru.rashgild.utils.Jaxb.Parser;
 
 public class GlobalVariables {
 

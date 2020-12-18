@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.utils;
+package ru.rashgild.utils;
 
 import org.apache.log4j.Logger;
 import ru.CryptoPro.JCP.KeyStore.HDImage.HDImageStore;

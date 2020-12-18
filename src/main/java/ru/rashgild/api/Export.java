@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.api;
+package ru.rashgild.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -34,30 +34,30 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLn;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import main.java.ru.genereted.v1.fileoperationsln.ws.INFO;
-import main.java.ru.genereted.v1.fileoperationsln.ws.PrParseFilelnlpuElement;
-import main.java.ru.genereted.v1.fileoperationsln.ws.WSResult;
-import main.java.ru.rashgild.entities.PrParseFileLnLpu;
-import main.java.ru.rashgild.entities.TREAT_FULL_PERIOD;
-import main.java.ru.rashgild.entities.TREAT_PERIOD;
-import main.java.ru.rashgild.signAndCrypt.Sign;
-import main.java.ru.rashgild.utils.GlobalVariables;
-import main.java.ru.genereted.v1.fileoperationsln.ws.ROWSET;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
+import ru.rashgild.generated.v1.fileoperationsln.ws.INFO;
+import ru.rashgild.generated.v1.fileoperationsln.ws.PrParseFilelnlpuElement;
+import ru.rashgild.generated.v1.fileoperationsln.ws.WSResult;
+import ru.rashgild.entities.PrParseFileLnLpu;
+import ru.rashgild.entities.TREAT_FULL_PERIOD;
+import ru.rashgild.entities.TREAT_PERIOD;
+import ru.rashgild.signAndCrypt.Sign;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.generated.v1.fileoperationsln.ws.ROWSET;
 
-import static main.java.ru.rashgild.api.ApiUtils.get;
-import static main.java.ru.rashgild.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start.calculateAge;
-import static main.java.ru.rashgild.signAndCrypt.Encrypt.createXmlAndEncrypt;
-import static main.java.ru.rashgild.utils.GlobalVariables.moAlias;
-import static main.java.ru.rashgild.utils.GlobalVariables.moPass;
-import static main.java.ru.rashgild.utils.GlobalVariables.ogrnMo;
-import static main.java.ru.rashgild.utils.GlobalVariables.passwordSSL;
-import static main.java.ru.rashgild.utils.GlobalVariables.pathandnameSSL;
-import static main.java.ru.rashgild.utils.GlobalVariables.setUp;
-import static main.java.ru.rashgild.utils.GlobalVariables.t_ELN;
-import static main.java.ru.rashgild.utils.XmlUtils.saveSoapToXml;
-import static main.java.ru.rashgild.utils.XmlUtils.soapMessageToString;
+import static ru.rashgild.api.ApiUtils.get;
+import static ru.rashgild.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start.calculateAge;
+import static ru.rashgild.signAndCrypt.Encrypt.createXmlAndEncrypt;
+import static ru.rashgild.utils.GlobalVariables.moAlias;
+import static ru.rashgild.utils.GlobalVariables.moPass;
+import static ru.rashgild.utils.GlobalVariables.ogrnMo;
+import static ru.rashgild.utils.GlobalVariables.passwordSSL;
+import static ru.rashgild.utils.GlobalVariables.pathandnameSSL;
+import static ru.rashgild.utils.GlobalVariables.setUp;
+import static ru.rashgild.utils.GlobalVariables.t_ELN;
+import static ru.rashgild.utils.XmlUtils.saveSoapToXml;
+import static ru.rashgild.utils.XmlUtils.soapMessageToString;
 
 @Path("/export")
 public class Export {
@@ -144,20 +144,20 @@ public class Export {
         JsonArray signclose = jparsr.getAsJsonArray("close");
         String StartPeriod = null;
         List<TREAT_FULL_PERIOD> treat_full_periods = new ArrayList<>();
-        List<main.java.ru.rashgild.entities.ROW> rows = new ArrayList<>();
+        List<ru.rashgild.entities.ROW> rows = new ArrayList<>();
         int DDID_1 = 0;
 
         JsonObject jrow = parser.parse(json).getAsJsonObject();
         GlobalVariables.t_ELN = get(jrow, "ln_code");
         DDID_1 = Integer.parseInt(get(jrow, "ddid"));
 
-        main.java.ru.rashgild.entities.ROW.LN_RESULT ln_result = new main.java.ru.rashgild.entities.ROW.LN_RESULT();
+        ru.rashgild.entities.ROW.LN_RESULT ln_result = new ru.rashgild.entities.ROW.LN_RESULT();
         Boolean isClose = (get(jrow, "is_close")).equals("1") ? true : false;
         ln_result.setMseresult(get(jrow, "mse_result"));
         ln_result.setOtherstatedt(get(jrow, "other_state_dt"));
 
-        List<main.java.ru.rashgild.entities.ROW.LN_RESULT> ln_results = new ArrayList<>();
-        main.java.ru.rashgild.entities.ROW row = new main.java.ru.rashgild.entities.ROW();
+        List<ru.rashgild.entities.ROW.LN_RESULT> ln_results = new ArrayList<>();
+        ru.rashgild.entities.ROW row = new ru.rashgild.entities.ROW();
         String str[];
         String snils = get(jrow, "snils");
         str = snils.split("-");
@@ -220,13 +220,13 @@ public class Export {
 
         /** HOSPITAL_BREACH **/
         if (get(jrow, "hospital_breach_code") != null) {
-            main.java.ru.rashgild.entities.ROW.HOSPITAL_BREACH hospital_breach = new main.java.ru.rashgild.entities.ROW.HOSPITAL_BREACH();
+            ru.rashgild.entities.ROW.HOSPITAL_BREACH hospital_breach = new ru.rashgild.entities.ROW.HOSPITAL_BREACH();
             hospital_breach.setHospitalbreachcode(get(jrow, "hospital_breach_code"));
             hospital_breach.setHospitalbreachdt(get(jrow, "hospital_breach_dt"));
             if (hospital_breach.getHospitalbreachcode() != null) {
                 hospital_breach.setAttributeId("ELN_" + t_ELN + "_1_doc");
             }
-            List<main.java.ru.rashgild.entities.ROW.HOSPITAL_BREACH> hospital_breaches = new ArrayList<>();
+            List<ru.rashgild.entities.ROW.HOSPITAL_BREACH> hospital_breaches = new ArrayList<>();
             hospital_breaches.add(hospital_breach);
             row.setHospitalbreach(hospital_breaches);
         }
@@ -358,7 +358,7 @@ public class Export {
         row.setTREAT_PERIODS(treat_full_periods);
         rows.add(row);
 
-        main.java.ru.rashgild.entities.ROWSET rowset = new main.java.ru.rashgild.entities.ROWSET();
+        ru.rashgild.entities.ROWSET rowset = new ru.rashgild.entities.ROWSET();
         rowset.setAuthor("R.Kurbanov");
         rowset.setEmail("Rashgild@gmail.com");
         rowset.setPhone("89608634440");
@@ -366,7 +366,7 @@ public class Export {
         rowset.setVersion("1.1");
         rowset.setVersionSoftware("2.0");
         rowset.setRow(rows);
-        List<main.java.ru.rashgild.entities.ROWSET> rowsets = new ArrayList<>();
+        List<ru.rashgild.entities.ROWSET> rowsets = new ArrayList<>();
         rowsets.add(rowset);
         PrParseFileLnLpu.Reqest.pXmlFile pXmlFile = new PrParseFileLnLpu.Reqest.pXmlFile();
         pXmlFile.setRowset(rowsets);

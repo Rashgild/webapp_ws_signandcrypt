@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.servlets;
+package ru.rashgild.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLn;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import main.java.ru.genereted.v1.fileoperationsln.ws.PrParseFilelnlpuElement;
-import main.java.ru.genereted.v1.fileoperationsln.ws.ROWSET;
-import main.java.ru.genereted.v1.fileoperationsln.ws.SOAPException_Exception;
-import main.java.ru.genereted.v1.fileoperationsln.ws.WSResult;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
+import ru.rashgild.generated.v1.fileoperationsln.ws.PrParseFilelnlpuElement;
+import ru.rashgild.generated.v1.fileoperationsln.ws.ROWSET;
+import ru.rashgild.generated.v1.fileoperationsln.ws.SOAPException_Exception;
+import ru.rashgild.generated.v1.fileoperationsln.ws.WSResult;
 
 @WebServlet("/GetLnNumber")
 public class GetLnNumber extends HttpServlet {

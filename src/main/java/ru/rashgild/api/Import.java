@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.api;
+package ru.rashgild.api;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -6,10 +6,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLn;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import main.java.ru.genereted.v1.fileoperationsln.ws.SOAPException_Exception;
-import main.java.ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
+import ru.rashgild.generated.v1.fileoperationsln.ws.SOAPException_Exception;
+import ru.rashgild.utils.GlobalVariables;
 
 @Path("/import")
 public class Import {

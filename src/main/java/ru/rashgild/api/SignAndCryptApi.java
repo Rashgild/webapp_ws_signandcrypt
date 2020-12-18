@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.api;
+package ru.rashgild.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -29,15 +29,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
-import main.java.ru.rashgild.entities.ROW;
-import main.java.ru.rashgild.entities.TREAT_FULL_PERIOD;
-import main.java.ru.rashgild.entities.TREAT_PERIOD;
-import main.java.ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.entities.ROW;
+import ru.rashgild.entities.TREAT_FULL_PERIOD;
+import ru.rashgild.entities.TREAT_PERIOD;
+import ru.rashgild.utils.GlobalVariables;
 
-import static main.java.ru.rashgild.api.ApiUtils.cretePostRequest;
-import static main.java.ru.rashgild.api.ApiUtils.get;
-import static main.java.ru.rashgild.utils.GlobalVariables.setUp;
-import static main.java.ru.rashgild.utils.GlobalVariables.urlApi;
+import static ru.rashgild.api.ApiUtils.cretePostRequest;
+import static ru.rashgild.api.ApiUtils.get;
+import static ru.rashgild.utils.GlobalVariables.setUp;
+import static ru.rashgild.utils.GlobalVariables.urlApi;
 
 @Path("/sign")
 public class SignAndCryptApi {

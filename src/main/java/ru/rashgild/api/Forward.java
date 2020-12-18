@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.api;
+package ru.rashgild.api;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,12 +11,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLn;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnUserGetLNDataOut;
-import main.java.ru.genereted.v1.fileoperationsln.ws.ROW;
-import main.java.ru.genereted.v1.fileoperationsln.ws.SOAPException_Exception;
-import main.java.ru.genereted.v1.fileoperationsln.ws.TREATFULLPERIOD;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnUserGetLNDataOut;
+import ru.rashgild.generated.v1.fileoperationsln.ws.ROW;
+import ru.rashgild.generated.v1.fileoperationsln.ws.SOAPException_Exception;
+import ru.rashgild.generated.v1.fileoperationsln.ws.TREATFULLPERIOD;
 
 @Path("/ForwardServlet")
 public class Forward {

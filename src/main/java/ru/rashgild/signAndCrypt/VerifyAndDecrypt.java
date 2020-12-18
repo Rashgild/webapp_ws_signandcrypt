@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.signAndCrypt;
+package ru.rashgild.signAndCrypt;
 
 import org.apache.log4j.Logger;
 import org.apache.xml.security.encryption.XMLCipher;
@@ -8,9 +8,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import ru.CryptoPro.JCPxml.xmldsig.JCPXMLDSigInit;
-import main.java.ru.rashgild.utils.CertificateUtils;
-import main.java.ru.rashgild.utils.GlobalVariables;
-import main.java.ru.rashgild.utils.XmlUtils;
+import ru.rashgild.utils.CertificateUtils;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.XmlUtils;
 
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.dsig.XMLSignature;
@@ -26,7 +26,7 @@ import java.security.Provider;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
 
-import static main.java.ru.rashgild.utils.GlobalVariables.*;
+import static ru.rashgild.utils.GlobalVariables.*;
 
 public class VerifyAndDecrypt {
 

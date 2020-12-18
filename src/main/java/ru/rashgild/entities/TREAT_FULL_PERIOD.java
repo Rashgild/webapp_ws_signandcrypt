@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.entities;
+package ru.rashgild.entities;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;

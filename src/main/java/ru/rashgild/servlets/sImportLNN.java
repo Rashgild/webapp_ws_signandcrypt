@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.servlets;
+package ru.rashgild.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,16 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLn;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import main.java.ru.genereted.v1.fileoperationsln.ws.FileOperationsLnUserGetLNDataOut;
-import main.java.ru.genereted.v1.fileoperationsln.ws.ROW;
-import main.java.ru.genereted.v1.fileoperationsln.ws.SOAPException_Exception;
-import main.java.ru.genereted.v1.fileoperationsln.ws.TREATFULLPERIOD;
-import main.java.ru.rashgild.utils.GlobalVariables;
-import main.java.ru.rashgild.utils.SQL;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
+import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnUserGetLNDataOut;
+import ru.rashgild.generated.v1.fileoperationsln.ws.ROW;
+import ru.rashgild.generated.v1.fileoperationsln.ws.SOAPException_Exception;
+import ru.rashgild.generated.v1.fileoperationsln.ws.TREATFULLPERIOD;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.SQL;
 
-import static main.java.ru.rashgild.utils.GlobalVariables.ogrnMo;
+import static ru.rashgild.utils.GlobalVariables.ogrnMo;
 
 @WebServlet("/sImportLNN")
 public class sImportLNN extends HttpServlet {

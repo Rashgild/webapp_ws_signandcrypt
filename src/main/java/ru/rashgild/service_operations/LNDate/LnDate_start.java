@@ -1,11 +1,11 @@
-package main.java.ru.rashgild.service_operations.LNDate;
+package ru.rashgild.service_operations.LNDate;
 
-import main.java.ru.rashgild.utils.CertificateUtils;
-import main.java.ru.rashgild.utils.GlobalVariables;
-import main.java.ru.rashgild.utils.XmlUtils;
-import main.java.ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
-import main.java.ru.rashgild.signAndCrypt.Encrypt;
-import main.java.ru.rashgild.signAndCrypt.Sign;
+import ru.rashgild.utils.CertificateUtils;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.XmlUtils;
+import ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
+import ru.rashgild.signAndCrypt.Encrypt;
+import ru.rashgild.signAndCrypt.Sign;
 
 import javax.xml.soap.*;
 import java.security.cert.X509Certificate;

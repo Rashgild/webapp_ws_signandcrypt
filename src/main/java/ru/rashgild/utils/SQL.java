@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.utils;
+package ru.rashgild.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,10 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static main.java.ru.rashgild.utils.GlobalVariables.dbdriver;
-import static main.java.ru.rashgild.utils.GlobalVariables.dbhost;
-import static main.java.ru.rashgild.utils.GlobalVariables.dblogin;
-import static main.java.ru.rashgild.utils.GlobalVariables.dbpassword;
+import static ru.rashgild.utils.GlobalVariables.dbdriver;
+import static ru.rashgild.utils.GlobalVariables.dbhost;
+import static ru.rashgild.utils.GlobalVariables.dblogin;
+import static ru.rashgild.utils.GlobalVariables.dbpassword;
 
 public class SQL {
 

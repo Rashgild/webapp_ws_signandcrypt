@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.utils.Jaxb;
+package ru.rashgild.utils.Jaxb;
 
 import java.io.File;
 import java.io.IOException;

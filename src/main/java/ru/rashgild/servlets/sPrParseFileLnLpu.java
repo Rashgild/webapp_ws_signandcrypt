@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.servlets;
+package ru.rashgild.servlets;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import main.java.ru.rashgild.utils.GlobalVariables;
-import main.java.ru.rashgild.utils.SQL;
-import main.java.ru.rashgild.utils.StoredQuery;
-import main.java.ru.genereted.v1.fileoperationsln.ws.*;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.SQL;
+import ru.rashgild.utils.StoredQuery;
+import ru.rashgild.generated.v1.fileoperationsln.ws.*;
 
-import static main.java.ru.rashgild.utils.GlobalVariables.*;
+import static ru.rashgild.utils.GlobalVariables.*;
 
 @WebServlet("/SetLnData")
 public class sPrParseFileLnLpu extends HttpServlet {

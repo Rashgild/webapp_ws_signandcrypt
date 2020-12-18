@@ -6,6 +6,6 @@
         },
         elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 
-package main.java.ru.rashgild.entities;
+package ru.rashgild.entities;
 
 import javax.xml.bind.annotation.XmlNs;

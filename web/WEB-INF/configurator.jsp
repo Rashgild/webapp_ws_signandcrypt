@@ -1,4 +1,4 @@
-<%@ page import="main.java.ru.rashgild.utils.GlobalVariables" %>
+<%@ page import="ru.rashgild.utils.GlobalVariables" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

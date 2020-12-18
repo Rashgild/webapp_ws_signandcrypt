@@ -1,6 +1,6 @@
-package main.java.ru.rashgild.service_operations.newLNNum;
+package ru.rashgild.service_operations.newLNNum;
 
-import main.java.ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
+import ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
 
 import javax.xml.soap.SOAPMessage;
 

@@ -1,17 +1,17 @@
-package main.java.ru.rashgild.interceptor;
+package ru.rashgild.interceptor;
 
 import org.apache.log4j.Logger;
 
-import main.java.ru.rashgild.utils.GlobalVariables;
-import main.java.ru.rashgild.utils.SQL;
-import main.java.ru.rashgild.utils.XmlUtils;
-import main.java.ru.rashgild.service_operations.LNDate.LnDate_start;
-import main.java.ru.rashgild.service_operations.disableLn.DisableLn;
-import main.java.ru.rashgild.service_operations.existingLNNum.ExistingLNNumRange;
-import main.java.ru.rashgild.service_operations.newLNNum.NewLNNum;
-import main.java.ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
-import main.java.ru.rashgild.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start;
-import main.java.ru.rashgild.signAndCrypt.VerifyAndDecrypt;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.SQL;
+import ru.rashgild.utils.XmlUtils;
+import ru.rashgild.service_operations.LNDate.LnDate_start;
+import ru.rashgild.service_operations.disableLn.DisableLn;
+import ru.rashgild.service_operations.existingLNNum.ExistingLNNumRange;
+import ru.rashgild.service_operations.newLNNum.NewLNNum;
+import ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
+import ru.rashgild.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start;
+import ru.rashgild.signAndCrypt.VerifyAndDecrypt;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
@@ -21,7 +21,7 @@ import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.Set;
 
-import static main.java.ru.rashgild.utils.XmlUtils.stringToSoap;
+import static ru.rashgild.utils.XmlUtils.stringToSoap;
 
 public class Injecter implements SOAPHandler<SOAPMessageContext> {
 

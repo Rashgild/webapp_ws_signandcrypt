@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.service_operations.xmlFileLnLpu;
+package ru.rashgild.service_operations.xmlFileLnLpu;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -20,21 +20,21 @@ import javax.xml.soap.SOAPMessage;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 
-import main.java.ru.rashgild.entities.PrParseFileLnLpu;
-import main.java.ru.rashgild.entities.ROW;
-import main.java.ru.rashgild.entities.ROWSET;
-import main.java.ru.rashgild.entities.TREAT_FULL_PERIOD;
-import main.java.ru.rashgild.entities.TREAT_PERIOD;
-import main.java.ru.rashgild.signAndCrypt.Encrypt;
-import main.java.ru.rashgild.signAndCrypt.Sign;
-import main.java.ru.rashgild.utils.GlobalVariables;
-import main.java.ru.rashgild.utils.SQL;
+import ru.rashgild.entities.PrParseFileLnLpu;
+import ru.rashgild.entities.ROW;
+import ru.rashgild.entities.ROWSET;
+import ru.rashgild.entities.TREAT_FULL_PERIOD;
+import ru.rashgild.entities.TREAT_PERIOD;
+import ru.rashgild.signAndCrypt.Encrypt;
+import ru.rashgild.signAndCrypt.Sign;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.SQL;
 
-import static main.java.ru.rashgild.utils.GlobalVariables.*;
-import static main.java.ru.rashgild.utils.StoredQuery.PrParse_Query1;
-import static main.java.ru.rashgild.utils.StoredQuery.PrParse_Query2;
-import static main.java.ru.rashgild.utils.XmlUtils.saveSoapToXml;
-import static main.java.ru.rashgild.utils.XmlUtils.soapMessageToString;
+import static ru.rashgild.utils.GlobalVariables.*;
+import static ru.rashgild.utils.StoredQuery.PrParse_Query1;
+import static ru.rashgild.utils.StoredQuery.PrParse_Query2;
+import static ru.rashgild.utils.XmlUtils.saveSoapToXml;
+import static ru.rashgild.utils.XmlUtils.soapMessageToString;
 
 public class PrParseFileLnLpu_start {
 

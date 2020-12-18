@@ -1,4 +1,4 @@
-package main.java.ru.rashgild.signAndCrypt;
+package ru.rashgild.signAndCrypt;
 
 import java.io.FileInputStream;
 import java.security.cert.X509Certificate;
@@ -26,17 +26,17 @@ import org.w3c.dom.NodeList;
 import ru.CryptoPro.JCP.params.CryptParamsSpec;
 import ru.CryptoPro.JCPxml.Consts;
 import ru.CryptoPro.JCPxml.XmlInit;
-import main.java.ru.rashgild.utils.CertificateUtils;
-import main.java.ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.CertificateUtils;
+import ru.rashgild.utils.GlobalVariables;
 
 import static ru.CryptoPro.JCP.JCP.GOST_EL_2012_256_NAME;
 import static ru.CryptoPro.JCP.JCP.GOST_EL_2012_512_NAME;
-import static main.java.ru.rashgild.utils.GlobalVariables.aliasCert;
-import static main.java.ru.rashgild.utils.GlobalVariables.passwordCertStor;
-import static main.java.ru.rashgild.utils.GlobalVariables.pathToCert;
-import static main.java.ru.rashgild.utils.XmlUtils.saveSoapToXml;
-import static main.java.ru.rashgild.utils.XmlUtils.soapMessageToString;
-import static main.java.ru.rashgild.utils.XmlUtils.stringToSoap;
+import static ru.rashgild.utils.GlobalVariables.aliasCert;
+import static ru.rashgild.utils.GlobalVariables.passwordCertStor;
+import static ru.rashgild.utils.GlobalVariables.pathToCert;
+import static ru.rashgild.utils.XmlUtils.saveSoapToXml;
+import static ru.rashgild.utils.XmlUtils.soapMessageToString;
+import static ru.rashgild.utils.XmlUtils.stringToSoap;
 
 public class Encrypt {
 
