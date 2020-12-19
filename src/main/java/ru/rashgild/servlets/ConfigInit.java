@@ -41,6 +41,7 @@ public class ConfigInit implements ServletContextListener {
 
     public static void Configure() throws IOException {
 
+        System.out.println("INITIALIZE!!!!!!!!!!!!!!!!!");
         ResourceBundle res = ResourceBundle.getBundle("update", new UTF8Control());
 
         InputStream input;

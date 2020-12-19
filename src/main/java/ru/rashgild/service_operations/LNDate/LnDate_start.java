@@ -16,7 +16,7 @@ public class LnDate_start {
     {
         try {
             NewLnNumRange_start.Create(soapMsg);
-            soapMsg= Sign.signation();
+            soapMsg = Sign.signation();
 
             X509Certificate cert = CertificateUtils.getCertificateFromKeyStorage(GlobalVariables.moAlias);
             SOAPEnvelope soapEnvelope = soapMsg.getSOAPPart().getEnvelope();

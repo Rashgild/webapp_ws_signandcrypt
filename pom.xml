@@ -2,12 +2,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.webapp</groupId>
+    <groupId>ru.rashgild</groupId>
     <artifactId>sign_and_crypt</artifactId>
     <packaging>jar</packaging>
     <version>2.0</version>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.5.RELEASE</version>
+    </parent>
+
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--<build>
         <plugins>
             <plugin>
                 <version>3.8.0</version>
@@ -32,14 +47,13 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
     <name>webapp_ws_signAndCrypt</name>
     <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <tomcat.version>8.5.5</tomcat.version>
         <cryptopro-jcp.version>2.0.40035</cryptopro-jcp.version>
         <project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
         <jersey.version>2.19</jersey.version>
@@ -47,6 +61,26 @@
     </properties>
 
     <dependencies>
+        <!--Spring-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -65,6 +99,7 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
+
 
         <dependency>
             <groupId>com.google.code.gson</groupId>

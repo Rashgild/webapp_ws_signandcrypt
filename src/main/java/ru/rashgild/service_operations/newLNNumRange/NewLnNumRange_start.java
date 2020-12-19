@@ -51,8 +51,7 @@ public class NewLnNumRange_start {
      *
      * @param soapMessage перехваченное сообщение
      */
-    public static void Create(SOAPMessage soapMessage)
-            throws SOAPException {
+    public static void Create(SOAPMessage soapMessage) throws SOAPException {
 
         SOAPEnvelope soapEnv = soapMessage.getSOAPPart().getEnvelope();
         //SOAPHeader soapHeader = soapEnv.getHeader();

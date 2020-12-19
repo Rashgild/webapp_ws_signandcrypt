@@ -2,6 +2,16 @@ package ru.rashgild.interceptor;
 
 import org.apache.log4j.Logger;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import ru.rashgild.service.LnDateService;
+import ru.rashgild.service.LnDateServiceImpl;
 import ru.rashgild.utils.GlobalVariables;
 import ru.rashgild.utils.SQL;
 import ru.rashgild.utils.XmlUtils;
@@ -13,9 +23,12 @@ import ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
 import ru.rashgild.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start;
 import ru.rashgild.signAndCrypt.VerifyAndDecrypt;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
@@ -23,7 +36,26 @@ import java.util.Set;
 
 import static ru.rashgild.utils.XmlUtils.stringToSoap;
 
-public class Injecter implements SOAPHandler<SOAPMessageContext> {
+public class Injecter extends SpringBeanAutowiringSupport implements SOAPHandler<SOAPMessageContext> {
+
+    @Autowired
+    private LnDateService lnDateService;
+
+    @Resource
+    WebServiceContext wsContext;
+
+   /* public Injecter(LnDateService lnDateService) {
+        this.lnDateService = lnDateService;
+    }*/
+
+   /* @Override
+    @PostConstruct
+    public void afterPropertiesSet() throws Exception {
+        Logger logger = Logger.getLogger(Injecter.class);
+        logger.info("AuthenticationHandler - PostConstruct");
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }*/
+
 
     @Override
     public boolean handleMessage(SOAPMessageContext context) {
@@ -52,7 +84,9 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
 
                 if (whatTheFunc(soapMsg) == 4) {
                     logger.info("2.1) initialized getLNDate!");
-                    soapMsg = LnDate_start.Start(soapMsg);
+                    //soapMsg = LnDate_start.Start(soapMsg);
+                    //lnDateService = new LnDateServiceImpl();
+                    soapMsg = lnDateService.generateMessage(soapMsg);
                 }
 
                 if (whatTheFunc(soapMsg) == 5) {
@@ -88,6 +122,7 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
             }
             return true;
         } catch (Exception e) {
+            logger.info("ErrorInSending!");
             SQL.saveInBaseDate("ErrorInSending", 0);
             e.printStackTrace();
             return false;

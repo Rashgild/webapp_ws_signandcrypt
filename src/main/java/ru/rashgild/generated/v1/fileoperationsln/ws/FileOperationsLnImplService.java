@@ -19,7 +19,7 @@ import javax.xml.ws.WebServiceFeature;
  *
  */
 @WebServiceClient(name = "FileOperationsLnImplService", targetNamespace = "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl", wsdlLocation = "https://docs.fss.ru//WSLnCryptoV11/FileOperationsLnPort?WSDL")
-@HandlerChain(file= "main/java/ru/rashgild/interceptor/handler-chain.xml")
+@HandlerChain(file= "ru/rashgild/interceptor/handler-chain.xml")
 public class FileOperationsLnImplService
         extends Service
 {
