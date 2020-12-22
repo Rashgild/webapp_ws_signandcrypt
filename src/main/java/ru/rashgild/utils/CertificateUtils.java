@@ -5,6 +5,7 @@ import ru.CryptoPro.JCP.KeyStore.HDImage.HDImageStore;
 import ru.CryptoPro.JCPxml.xmldsig.JCPXMLDSigInit;
 
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.soap.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -79,5 +80,16 @@ public class CertificateUtils {
         sw.write(DatatypeConverter.printBase64Binary(certificate.getEncoded()).replaceAll("(.{64})", "$1\n"));
 
         return sw.toString();
+    }
+
+    public static SOAPMessage addCertificateToHeader(SOAPMessage message) throws SOAPException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        if (message != null) {
+            X509Certificate cert = CertificateUtils.getCertificateFromKeyStorage(GlobalVariables.moAlias);
+            SOAPEnvelope soapEnvelope = message.getSOAPPart().getEnvelope();
+            SOAPHeader header1 = soapEnvelope.getHeader();
+            SOAPElement x509Certificate = header1.addChildElement("X509Certificate", null, "http://www.w3.org/2000/09/xmldsig#");
+            x509Certificate.addTextNode(CertificateUtils.certToBase64(cert));
+        }
+        return message;
     }
 }

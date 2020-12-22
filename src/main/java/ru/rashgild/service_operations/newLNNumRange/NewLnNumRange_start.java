@@ -15,6 +15,8 @@ import ru.rashgild.utils.XmlUtils;
 import ru.rashgild.signAndCrypt.Encrypt;
 import ru.rashgild.signAndCrypt.Sign;
 
+import static ru.rashgild.utils.CertificateUtils.addCertificateToHeader;
+
 public class NewLnNumRange_start {
 
     /**
@@ -30,6 +32,8 @@ public class NewLnNumRange_start {
             Create(soapMsg);
             logger.info("SigningMessage");
             soapMsg = Sign.signation();
+            soapMsg = addCertificateToHeader(soapMsg);
+
             XmlUtils.saveSoapToXml("GetNumSigned.xml", soapMsg);
             GlobalVariables.Request = XmlUtils.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();

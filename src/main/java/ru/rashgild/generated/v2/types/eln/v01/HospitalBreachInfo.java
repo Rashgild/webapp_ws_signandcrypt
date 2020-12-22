@@ -47,7 +47,7 @@ public class HospitalBreachInfo {
     protected String hospitalBreachCode;
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar hospitalBreachDt;
+    protected String hospitalBreachDt;
 
     /**
      * Gets the value of the hospitalBreachCode property.
@@ -78,10 +78,10 @@ public class HospitalBreachInfo {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getHospitalBreachDt() {
+    public String getHospitalBreachDt() {
         return hospitalBreachDt;
     }
 
@@ -90,10 +90,10 @@ public class HospitalBreachInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setHospitalBreachDt(XMLGregorianCalendar value) {
+    public void setHospitalBreachDt(String value) {
         this.hospitalBreachDt = value;
     }
 

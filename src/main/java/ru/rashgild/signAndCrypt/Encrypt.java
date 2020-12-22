@@ -247,11 +247,12 @@ public class Encrypt {
         SOAPElement CipherData2 = EncryptedData.addChildElement("CipherData");
         SOAPElement CipherValue2 = CipherData2.addChildElement("CipherValue");
 
-        org.w3c.dom.Document doc =
-                StartEncrypt2(CertificateUtils.extractCertificateFromCertStore(
-                        passwordCertStor,
-                        aliasCert,
-                        pathToCert), message);
+        java.security.cert.X509Certificate cert = CertificateUtils.extractCertificateFromCertStore(
+                passwordCertStor,
+                aliasCert,
+                pathToCert);
+
+        org.w3c.dom.Document doc = StartEncrypt2(cert, message);
 
         //Передача данных в сформированный каркас
         NodeList nList = doc.getElementsByTagName("xenc:EncryptedData");
@@ -265,8 +266,8 @@ public class Encrypt {
         }
 
         //TODO delGlobal
-        X509Certificate.addTextNode(CertificateUtils.certToBase64(CertificateUtils.getCertificateFromKeyStorage(GlobalVariables.moAlias)));
-
+        //X509Certificate.addTextNode(CertificateUtils.certToBase64(CertificateUtils.getCertificateFromKeyStorage(GlobalVariables.moAlias)));
+        X509Certificate.addTextNode(CertificateUtils.certToBase64(cert));
         return soapMessageToString(soapMessage);
     }
 }

@@ -38,7 +38,7 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
 
                 if (whatTheFunc(soapMsg) == 1) {
                     logger.info("2.1) initialized PrParseFileLnLpu_start!");
-                    soapMsg = PrParseFileLnLpu_start.Start(GlobalVariables.requestParam);
+                    soapMsg = PrParseFileLnLpu_start.start(GlobalVariables.requestParam);
                 }
                 if (whatTheFunc(soapMsg) == 2) {
                     logger.info("2.1) initialized NewLNNumRange_start!");
@@ -98,8 +98,9 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
     public boolean handleFault(SOAPMessageContext context) {
         SOAPMessage msg = context.getMessage();
         Logger logger = Logger.getLogger("simple");
+        logger.error("fail send");
         logger.info(XmlUtils.soapMessageToString(msg));
-        return false;
+        return true;
     }
 
     @Override

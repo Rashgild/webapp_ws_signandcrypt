@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.lang.String;
 
 /**
  * ������ ������������������: �� ����� �� �������������
@@ -64,16 +64,16 @@ public class ServFullData {
     protected String servRelationCode;
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar servDt1;
+    protected String servDt1;
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar servDt2;
+    protected String servDt2;
     protected String treatmentType;
     protected String surname;
     protected String name;
     protected String patronymic;
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar birthday;
+    protected String birthday;
     protected String reason1;
     protected String snils;
 
@@ -106,10 +106,10 @@ public class ServFullData {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getServDt1() {
+    public String getServDt1() {
         return servDt1;
     }
 
@@ -118,10 +118,10 @@ public class ServFullData {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setServDt1(XMLGregorianCalendar value) {
+    public void setServDt1(String value) {
         this.servDt1 = value;
     }
 
@@ -130,10 +130,10 @@ public class ServFullData {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getServDt2() {
+    public String getServDt2() {
         return servDt2;
     }
 
@@ -142,10 +142,10 @@ public class ServFullData {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setServDt2(XMLGregorianCalendar value) {
+    public void setServDt2(String value) {
         this.servDt2 = value;
     }
 
@@ -250,10 +250,10 @@ public class ServFullData {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
@@ -262,10 +262,10 @@ public class ServFullData {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setBirthday(XMLGregorianCalendar value) {
+    public void setBirthday(String value) {
         this.birthday = value;
     }
 

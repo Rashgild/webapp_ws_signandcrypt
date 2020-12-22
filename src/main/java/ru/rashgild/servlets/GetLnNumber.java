@@ -1,18 +1,11 @@
 package ru.rashgild.servlets;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import ru.rashgild.generated.v1.fileoperationsln.ws.PrParseFilelnlpuElement;
-import ru.rashgild.generated.v1.fileoperationsln.ws.ROWSET;
-import ru.rashgild.generated.v1.fileoperationsln.ws.SOAPException_Exception;
-import ru.rashgild.generated.v1.fileoperationsln.ws.WSResult;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/GetLnNumber")
 public class GetLnNumber extends HttpServlet {
@@ -36,7 +29,7 @@ public class GetLnNumber extends HttpServlet {
         System.setProperty("javax.net.ssl.trustStore", "C:/cacerts1");//КОНФ
         System.setProperty("javax.net.ssl.trustStorePassword", "123456");
 
-        FileOperationsLnImplService service = new FileOperationsLnImplService();
+/*        FileOperationsLnImplService service = new FileOperationsLnImplService();
         FileOperationsLn start = service.getFileOperationsLnPort();
 
         ROWSET rowset = new ROWSET();
@@ -49,6 +42,6 @@ public class GetLnNumber extends HttpServlet {
 
         } catch (SOAPException_Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

@@ -1,34 +1,28 @@
 package ru.rashgild.service_operations.xmlFileLnLpu;
 
+import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import ru.rashgild.generated.v2.types.eln.mo.v01.PrParseFilelnlpuRequest;
+import ru.rashgild.generated.v2.types.eln.mo.v01.Rowset;
+import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
+import ru.rashgild.signAndCrypt.Encrypt;
+import ru.rashgild.signAndCrypt.Sign;
+import ru.rashgild.utils.CertificateUtils;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.SQL;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.soap.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.security.cert.X509Certificate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import javax.xml.bind.JAXBException;
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPMessage;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-
-import ru.rashgild.entities.PrParseFileLnLpu;
-import ru.rashgild.entities.ROW;
-import ru.rashgild.entities.ROWSET;
-import ru.rashgild.entities.TREAT_FULL_PERIOD;
-import ru.rashgild.entities.TREAT_PERIOD;
-import ru.rashgild.signAndCrypt.Encrypt;
-import ru.rashgild.signAndCrypt.Sign;
-import ru.rashgild.utils.GlobalVariables;
-import ru.rashgild.utils.SQL;
 
 import static ru.rashgild.utils.GlobalVariables.*;
 import static ru.rashgild.utils.StoredQuery.PrParse_Query1;
@@ -38,32 +32,36 @@ import static ru.rashgild.utils.XmlUtils.soapMessageToString;
 
 public class PrParseFileLnLpu_start {
 
-    public static SOAPMessage Start(String disabilityId) {
+    private static final String GOST_2001 = "GOST2001";
+    private static final String GOST_2012 = "GOST2012";
 
-        Logger logger = Logger.getLogger("simple");
+    public static SOAPMessage start(String disabilityId) {
+        Logger logger = Logger.getLogger("PrParseFileLnLpu_start");
         DisabilityDocument_id = disabilityId;
         GlobalVariables.setUp();
-
         logger.info("1)Formation skeleton");
-        PrParseFileLnLpu prParseFileLnLpu = null;
+        PrParseFilelnlpuRequest prParseFilelnlpuRequest = null;
         try {
-            prParseFileLnLpu = createSkeleton(PrParse_Query1(disabilityId), PrParse_Query2(disabilityId));
+            prParseFilelnlpuRequest = createSkeleton(PrParse_Query1(disabilityId), PrParse_Query2(disabilityId));
         } catch (SQLException | ParseException e) {
             logger.error(e);
         }
-        GlobalVariables.prparse = prParseFileLnLpu;
-
+        GlobalVariables.prparse = prParseFilelnlpuRequest;
         logger.info("2)Create message");
-        SOAPMessage message = createSoapMessage(prParseFileLnLpu);
-
-        logger.info("3)Singing");
+        SOAPMessage message = createSoapMessage(prParseFilelnlpuRequest);
+        logger.info("3)Signing");
         try {
-            message = signation(prParseFileLnLpu, message);
+            message = signDocument(prParseFilelnlpuRequest, message);
+            X509Certificate cert = CertificateUtils.getCertificateFromKeyStorage(GlobalVariables.moAlias);
+            SOAPEnvelope soapEnvelope = message.getSOAPPart().getEnvelope();
+            SOAPHeader header1 = soapEnvelope.getHeader();
+            SOAPElement x509Certificate = header1.addChildElement("X509Certificate", null, "http://www.w3.org/2000/09/xmldsig#");
+            x509Certificate.addTextNode(CertificateUtils.certToBase64(cert));
         } catch (Exception e) {
             logger.error(e);
         }
 
-        logger.info("3.5) Prepatre request");
+        logger.info("3.5) Prepare request");
         GlobalVariables.Request = soapMessageToString(message);
 
         logger.info("4) Crypting");
@@ -83,14 +81,13 @@ public class PrParseFileLnLpu_start {
 
     private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-    private static PrParseFileLnLpu createSkeleton(String sql1, String sql2) throws SQLException, ParseException {
-
+    private static PrParseFilelnlpuRequest createSkeleton(String sql1, String sql2) throws SQLException, ParseException {
         Logger logger = Logger.getLogger("simple");
         ResultSet resultSet = SQL.select(sql1);
         ResultSet resultSet2 = SQL.select(sql2);
 
         String StartPeriod = null;
-        List<ROW> rows = new ArrayList<>();
+        List<Rowset.Row> rows = new ArrayList<>();
 
         while (resultSet.next()) {
             GlobalVariables.t_ELN = resultSet.getString("LN_CODE");
@@ -98,322 +95,229 @@ public class PrParseFileLnLpu_start {
             int per = 3;
             int DDID_1 = resultSet.getInt("DDID");
 
-            ROW.LN_RESULT ln_result = new ROW.LN_RESULT();
+            Rowset.Row.LnResult ln_result = new Rowset.Row.LnResult();
             boolean isClose = resultSet.getString("IS_CLOSE").equals("1");
-            ln_result.setMseresult(resultSet.getString("MSE_RESULT"));
-            ln_result.setOtherstatedt(resultSet.getString("other_state_dt"));
+            ln_result.setMseResult(resultSet.getString("MSE_RESULT"));
+            ln_result.setOtherStateDt(resultSet.getString("other_state_dt"));
 
-            List<TREAT_FULL_PERIOD> treat_full_periods = new ArrayList<>();
+            List<TreatFullPeriodMo> treat_full_periods = new ArrayList<>();
             while (resultSet2.next()) {
-
                 //TODO CheckIT!
-                String isexport = resultSet2.getString("isexport");
+                String isExport = resultSet2.getString("isexport");
                 int DDID_2 = resultSet2.getInt("DDID");
                 if (DDID_1 == DDID_2) {
-                    TREAT_PERIOD treat_period = new TREAT_PERIOD();
-                    treat_period.setTreatdt1(resultSet2.getString("TREAT_DT1"));
+                    TreatFullPeriodMo.TreatPeriod treatPeriod = new TreatFullPeriodMo.TreatPeriod();
+                    treatPeriod.setTreatDt1(resultSet2.getString("TREAT_DT1"));
                     if (StartPeriod == null) {
                         StartPeriod = resultSet2.getString("TREAT_DT1");
                     }
                     //EndPeriod = resultSet2.getString("TREAT_DT2");
-                    treat_period.setTreatdt2(resultSet2.getString("TREAT_DT2"));
-                    ln_result.setReturndatelpu(resultSet2.getString("TREAT_DT2"));//берем день выхода на работу
-                    treat_period.setTreatdoctorrole(resultSet2.getString("TREAT_DOCTOR_ROLE"));
-                    treat_period.setTreatdoctor(resultSet2.getString("TREAT_DOCTOR"));
-                    treat_period.setAttribId("ELN_" + t_ELN + "_" + per + "_doc");
+                    treatPeriod.setTreatDt2(resultSet2.getString("TREAT_DT2"));
+                    ln_result.setReturnDateLpu(resultSet2.getString("TREAT_DT2"));//берем день выхода на работу
+                    treatPeriod.setTreatDoctorRole(resultSet2.getString("TREAT_DOCTOR_ROLE"));
+                    treatPeriod.setTreatDoctor(resultSet2.getString("TREAT_DOCTOR"));
+                    treatPeriod.setId("ELN_" + t_ELN + "_" + per + "_doc");
 
+                    TreatFullPeriodMo treatFullPeriodMo = new TreatFullPeriodMo();
 
-                    List<TREAT_PERIOD> treat_periods = new ArrayList<>();
-                    treat_periods.add(treat_period);
-                    TREAT_FULL_PERIOD treat_full_period = new TREAT_FULL_PERIOD();
-                    treat_full_period.setTreatchairmanrole(resultSet2.getString("TREAT_CHAIRMAN_ROLE"));
-                    treat_full_period.setTreatchairman(resultSet2.getString("TREAT_CHAIRMAN"));
-                    if (treat_full_period.getTreatchairmanrole() != null) {
-                        treat_full_period.setAttribIdVk("ELN_" + t_ELN + "_" + per + "_vk");
+                    treatFullPeriodMo.setTreatChairmanRole(resultSet2.getString("TREAT_CHAIRMAN_ROLE"));
+                    treatFullPeriodMo.setTreatChairman(resultSet2.getString("TREAT_CHAIRMAN"));
+                    if (treatFullPeriodMo.getTreatChairmanRole() != null) {
+                        treatFullPeriodMo.setId("ELN_" + t_ELN + "_" + per + "_vk");
                     }
 
                     //TODO А это надо?
-                    System.out.println("ISEXPORT>>>>>>>" + isexport);
-                    if (isexport != null && (isexport.equals("true") || isexport.equals("t"))) {
-                        treat_full_period.setExport("true");
+                    /*System.out.println("ISEXPORT>>>>>>>" + isExport);
+                    if (isExport != null && (isExport.equals("true") || isExport.equals("t"))) {
+                        treatFullPeriodMo.setExport("true");
                     } else {
-                        treat_full_period.setExport("false");
-                    }
+                        treatFullPeriodMo.setExport("false");
+                    }*/
 
-                    treat_full_period.setTreat_period(treat_periods);
-                    treat_full_periods.add(treat_full_period);
+                    treatFullPeriodMo.setTreatPeriod(treatPeriod);
+                    treat_full_periods.add(treatFullPeriodMo);
                     per++;
                 }
             }
+            Rowset.Row.TreatPeriods treatFullPeriod = new Rowset.Row.TreatPeriods();
+            treatFullPeriod.setTreatFullPeriod(treat_full_periods);
 
             resultSet2.beforeFirst(); // возврат курсора в начало
-            ROW.HOSPITAL_BREACH hospital_breach = new ROW.HOSPITAL_BREACH();
-            hospital_breach.setHospitalbreachcode(resultSet.getString("HOSPITAL_BREACH_CODE"));
-            hospital_breach.setHospitalbreachdt(resultSet.getString("HOSPITAL_BREACH_DT"));
-            if (hospital_breach.getHospitalbreachcode() != null) {
-                hospital_breach.setAttributeId("ELN_" + t_ELN + "_1_doc");
+            Rowset.Row.HospitalBreach hospitalBreach = new Rowset.Row.HospitalBreach();
+            hospitalBreach.setHospitalBreachCode(resultSet.getString("HOSPITAL_BREACH_CODE"));
+            hospitalBreach.setHospitalBreachDt(resultSet.getString("HOSPITAL_BREACH_DT"));
+            if (hospitalBreach.getHospitalBreachCode() != null) {
+                hospitalBreach.setId("ELN_" + t_ELN + "_1_doc");
             }
-            List<ROW.HOSPITAL_BREACH> hospital_breaches = new ArrayList<>();
-            hospital_breaches.add(hospital_breach);
 
             //Если документ не закрыт, то даты нет
-            if (isClose && ln_result.getMseresult() != null) {
-                if (!ln_result.getMseresult().equals("31") && !ln_result.getMseresult().equals("37")) {
+            if (isClose && ln_result.getMseResult() != null) {
+                if (!ln_result.getMseResult().equals("31") && !ln_result.getMseResult().equals("37")) {
 
-                    if (ln_result.getOtherstatedt() != null && !ln_result.getOtherstatedt().equals("")) {
-                        ln_result.setReturndatelpu(null);
+                    if (ln_result.getOtherStateDt() != null && !ln_result.getOtherStateDt().equals("")) {
+                        ln_result.setReturnDateLpu(null);
                     } else {
                         Calendar cal = Calendar.getInstance();
-                        cal.setTime(format.parse(ln_result.getReturndatelpu()));
+                        cal.setTime(format.parse(ln_result.getReturnDateLpu()));
                         cal.add(Calendar.DAY_OF_MONTH, 1);
-                        ln_result.setReturndatelpu(new java.sql.Date(cal.getTime().getTime()).toString());
+                        ln_result.setReturnDateLpu(new java.sql.Date(cal.getTime().getTime()).toString());
                     }
                 } else { //Если закрыт по причине "продолжает болеть"
-                    ln_result.setReturndatelpu(null);
-                    ln_result.setNextlncode(resultSet.getString("NEXT_LN_CODE"));
+                    ln_result.setReturnDateLpu(null);
+                    ln_result.setNextLnCode(resultSet.getString("NEXT_LN_CODE"));
                 }
-                ln_result.setAttribId("ELN_" + t_ELN + "_2_doc");
-            } else if (!isClose) ln_result.setReturndatelpu(null);
+                ln_result.setId("ELN_" + t_ELN + "_2_doc");
+            } else if (!isClose) ln_result.setReturnDateLpu(null);
 
             logger.info("Закрыт: " + isClose + "" +
-                    " Дата выхода на работу:" + ln_result.getReturndatelpu() + "");
+                    " Дата выхода на работу:" + ln_result.getReturnDateLpu() + "");
 
-            List<ROW.LN_RESULT> ln_results = new ArrayList<>();
-            ROW row = new ROW();
-            String str[];
+            Rowset.Row row = new Rowset.Row();
+
             String snils = resultSet.getString("SNILS");
-            str = snils.split("-");
-            snils = str[0] + str[1] + str[2];
-            str = snils.split(" ");
-            snils = str[0] + str[1];
+            snils = splitSnils(snils);
 
-            row.setIdDD(DDID_1);
-            row.setAttribId("ELN_" + t_ELN);
+            //row.setIdDD(DDID_1);
+            row.setHospitalDt2("ELN_" + t_ELN);
             row.setSnils(snils);
 
-            if (!GlobalVariables.hash.equals("")) {
-                row.setLnhash(GlobalVariables.hash);
+            if (!GlobalVariables.hash.isEmpty()) {
+                row.setLnHash(GlobalVariables.hash);
             }
             row.setSurname(resultSet.getString("SURNAME"));
             row.setName(resultSet.getString("NAME"));
-            row.setPatronimic(resultSet.getString("PATRONIMIC"));
-            row.setBozflag(resultSet.getInt("BOZ_FLAG"));
-            row.setLpuemployer(resultSet.getString("LPU_EMPLOYER"));
-            row.setLpuemplflag(resultSet.getInt("LPU_EMPL_FLAG"));
-            row.setLncode(resultSet.getString("LN_CODE"));
-            row.setPrevlncode(resultSet.getString("PREV_LN"));
+            row.setPatronymic(resultSet.getString("PATRONIMIC"));
 
-            row.setPrimaryflag(resultSet.getInt("PRIMARY_FLAG"));
-            row.setDuplicateflag(resultSet.getInt("DUPLICATE_FLAG"));
-            row.setLndate(resultSet.getString("LN_DATE"));
-            row.setLpuname(resultSet.getString("LPU_NAME"));
-            row.setLpuaddress(resultSet.getString("LPU_ADDRESS"));
-            row.setLpuogrn(resultSet.getString("LPU_OGRN"));
+            //row.setBozflag(resultSet.getInt("BOZ_FLAG"));
+            //row.setLpuemployer(resultSet.getString("LPU_EMPLOYER"));
+            //row.setLpuemplflag(resultSet.getInt("LPU_EMPL_FLAG"));
+            //row.setPa(resultSet.getString("PARENT_CODE"));
+            row.setLnCode(resultSet.getString("LN_CODE"));
+            row.setPrevLnCode(resultSet.getString("PREV_LN"));
+            row.setPrimaryFlag(resultSet.getBoolean("PRIMARY_FLAG"));
+            row.setDuplicateFlag(resultSet.getBoolean("DUPLICATE_FLAG"));
+            row.setLnDate(resultSet.getString("LN_DATE"));
+            row.setLpuName(resultSet.getString("LPU_NAME"));
+            row.setLpuAddress(resultSet.getString("LPU_ADDRESS"));
+            row.setLpuOgrn(resultSet.getString("LPU_OGRN"));
             row.setBirthday(resultSet.getString("BIRTHDAY"));
             row.setGender(resultSet.getInt("GENDER"));
-
-            String reason = resultSet.getString("REASON1");
-
-            if(reason!=null) {
-                if (reason.equals("1")) reason = "01";
-                if (reason.equals("2")) reason = "02";
-                if (reason.equals("3")) reason = "03";
-                if (reason.equals("4")) reason = "04";
-                if (reason.equals("5")) reason = "05";
-                if (reason.equals("6")) reason = "06";
-                if (reason.equals("7")) reason = "07";
-                if (reason.equals("8")) reason = "08";
-                if (reason.equals("9")) reason = "09";
-            }
-
-            String reason3 = resultSet.getString("REASON3");
-            if (reason3 != null) {
-                if (reason3.equals("1")) reason3 = "01";
-                if (reason3.equals("2")) reason3 = "02";
-                if (reason3.equals("3")) reason3 = "03";
-                if (reason3.equals("4")) reason3 = "04";
-                if (reason3.equals("5")) reason3 = "05";
-                if (reason3.equals("6")) reason3 = "06";
-                if (reason3.equals("7")) reason3 = "07";
-                if (reason3.equals("8")) reason3 = "08";
-                if (reason3.equals("9")) reason3 = "09";
-            }
-
-            row.setReason1(reason);
+            row.setReason1(getReason(resultSet.getString("REASON1")));
             row.setReason2(resultSet.getString("REASON2"));
-            row.setReason3(reason3);
             row.setDiagnos(resultSet.getString("DIAGNOS"));
-            row.setParentcode(resultSet.getString("PARENT_CODE"));
             row.setDate1(resultSet.getString("DATE1"));
             row.setDate2(resultSet.getString("DATE2"));
-            row.setVoucherno(resultSet.getString("VOUCHER_NO"));
-            row.setVoucherogrn(resultSet.getString("VOUCHER_OGRN"));
-            row.setServ1AGE(resultSet.getString("SERV1_AGE"));
-
-            row.setServ1RELATIONCODE(resultSet.getString("SERV1_RELATION_CODE"));
-            row.setServ1FIO(resultSet.getString("SERV1_FIO"));
-            row.setServ2AGE(resultSet.getString("SERV2_AGE"));
-            row.setServ2RELATIONCODE(resultSet.getString("SERV2_RELATION_CODE"));
-            row.setServ2FIO(resultSet.getString("SERV2_FIO"));
-            row.setPregn12WFLAG(resultSet.getString("PREGN12W_FLAG"));
-            row.setHospitaldt1(resultSet.getString("HOSPITAL_DT1"));
-            row.setHospitaldt2(resultSet.getString("HOSPITAL_DT2"));
-            row.setMsedt1(resultSet.getString("MSE_DT1"));
-            row.setMsedt2(resultSet.getString("MSE_DT2"));
-            row.setMsedt3(resultSet.getString("MSE_DT3"));
+            //row.setVoucherNo(resultSet.getString("VOUCHER_NO"));
+            //row.setVoucherOgrn(resultSet.getString("VOUCHER_OGRN"));
+            row.setPregn12WFlag(resultSet.getBoolean("PREGN12W_FLAG"));
+            row.setHospitalDt1(resultSet.getString("HOSPITAL_DT1"));
+            row.setHospitalDt2(resultSet.getString("HOSPITAL_DT2"));
+            row.setMseDt1(resultSet.getString("MSE_DT1"));
+            row.setMseDt2(resultSet.getString("MSE_DT2"));
+            row.setMseDt3(resultSet.getString("MSE_DT3"));
+            row.setWrittenAgreementFlag(true);
 
             String inv = resultSet.getString("MSE_INVALID_GROUP");
-            if (inv != null && !inv.equals("")) {
-                row.setMseinvalidgroup(Integer.valueOf(inv));
+            if (inv != null && !inv.isEmpty()) {
+                row.setMseInvalidGroup(Integer.valueOf(inv));
             }
-            row.setLnstate(resultSet.getString("LN_STATE"));
+            row.setLnState(resultSet.getString("LN_STATE"));
 
-            try {
-                if (row.getServ1AGE() != null && !row.getServ1AGE().equals("")) {
-                    LocalDate dateFrom = LocalDate.parse(row.getServ1AGE());
-                    LocalDate dateTo = LocalDate.parse(StartPeriod);
-                    int years = calculateCurrentYears(dateFrom,dateTo);
-                    if (years<1) {
-                        row.setServ1MM(calculateCurrentMonths(dateFrom, dateTo));
-                        row.setServ1AGE(null);
-                    }else {
-                        row.setServ1AGE(String.valueOf(years));
-                    }
-                }
+            //TODO проверить что тут творится
+           /* Rowset.Row.ServData.ServFullData servFullData = new Rowset.Row.ServData.ServFullData();
+            servFullData.setServRelationCode(resultSet.getString("SERV1_RELATION_CODE"));
+            servFullData.setBirthday(resultSet.getString("SERV1_AGE"));
+            servFullData.setName(resultSet.getString("SERV1_FIO"));
+            servFullData.setSurname(resultSet.getString("SERV1_FIO"));
+            servFullData.setPatronymic(resultSet.getString("SERV1_FIO"));
 
-                if (row.getServ2AGE() != null && !row.getServ2AGE().equals("")) {
-                    LocalDate dateFrom = LocalDate.parse(row.getServ2AGE());
-                    LocalDate dateTo = LocalDate.parse(StartPeriod);
-                    int years = calculateCurrentYears(dateFrom,dateTo);
-                    if (years<1) {
-                        row.setServ2MM(calculateCurrentMonths(dateFrom, dateTo));
-                    }else {
-                        row.setServ2AGE(String.valueOf(years));
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            List<Rowset.Row.ServData.ServFullData> servFullDataList = new ArrayList<>();
+            servFullDataList.add(servFullData);
+            Rowset.Row.ServData servData = new Rowset.Row.ServData();
+            servData.setServFullData(servFullDataList);
+
+            row.setServData(servData);*/
+            row.setLnResult(ln_result);
+
+            if (hospitalBreach.getId() != null) {
+                row.setHospitalBreach(hospitalBreach);
             }
 
-            ln_results.add(ln_result);
-            row.setLnresult(ln_results);
-            row.setHospitalbreach(hospital_breaches);
-            row.setTREAT_PERIODS(treat_full_periods);
+            row.setTreatPeriods(treatFullPeriod);
+            row.setId("ELN_" + t_ELN);
             rows.add(row);
         }
 
-        ROWSET rowset = new ROWSET();
-        rowset.setAuthor("R.Kurbanov");
-        rowset.setEmail("Rashgild@gmail.com");
-        rowset.setPhone("89608634440");
+        Rowset rowset = new Rowset();
+        //rowset.setAuthor("R.Kurbanov");
+        //rowset.setEmail("Rashgild@gmail.com");
+        //rowset.setPhone("89608634440");
         rowset.setSoftware("SignAndCrypt");
-        rowset.setVersion("1.1");
-        rowset.setVersionSoftware("1.1");
+        rowset.setVersion("2.0");
+        rowset.setVersionSoftware("2.0");
         rowset.setRow(rows);
-        List<ROWSET> rowsets = new ArrayList<>();
-        rowsets.add(rowset);
+        /*List<Rowset> rowsets = new ArrayList<>();
+        rowsets.add(rowset);*/
 
-        PrParseFileLnLpu.Reqest.pXmlFile pXmlFile = new PrParseFileLnLpu.Reqest.pXmlFile();
-        pXmlFile.setRowset(rowsets);
-        List<PrParseFileLnLpu.Reqest.pXmlFile> pXmlFiles = new ArrayList<>();
-        pXmlFiles.add(pXmlFile);
+        PrParseFilelnlpuRequest.PXmlFile pXmlFile = new PrParseFilelnlpuRequest.PXmlFile();
+        pXmlFile.setRowset(rowset);
+        //*List<PrParseFilelnlpuRequest.Reqest.pXmlFile> pXmlFiles = new ArrayList<>();
+        //pXmlFiles.add(pXmlFile);
 
-        PrParseFileLnLpu.Reqest request = new PrParseFileLnLpu.Reqest();
-        request.setOgrn(ogrnMo);
-        request.setpXmlFiles(pXmlFiles);
-        List<PrParseFileLnLpu.Reqest> reqests = new ArrayList<>();
-        reqests.add(request);
-        PrParseFileLnLpu prParseFilelnlpu = new PrParseFileLnLpu();
-        prParseFilelnlpu.setFil("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl");
-        prParseFilelnlpu.setRequests(reqests);
+        PrParseFilelnlpuRequest prParseFilelnlpu = new PrParseFilelnlpuRequest();
+        prParseFilelnlpu.setPXmlFile(pXmlFile);
+        prParseFilelnlpu.setOgrn(ogrnMo);
 
         try {
             GlobalVariables.parser.saveObject(GlobalVariables.file, prParseFilelnlpu);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-
         return prParseFilelnlpu;
     }
 
-    private static int calculateCurrentYears(LocalDate dateFrom, LocalDate dateTo){
-        return (int) ChronoUnit.YEARS.between(dateFrom, dateTo);
+    private static String splitSnils(String snils) {
+        String str[];
+        str = snils.split("-");
+        snils = str[0] + str[1] + str[2];
+        str = snils.split(" ");
+        return str[0] + str[1];
     }
 
-    private static int calculateCurrentMonths(LocalDate dateFrom, LocalDate dateTo){
-        return (int) ChronoUnit.MONTHS.between(dateFrom, dateTo);
+    private static String getReason(String reason) {
+        if (reason != null) {
+            switch (reason) {
+                case "1":
+                    return "01";
+                case "2":
+                    return "02";
+                case "3":
+                    return "03";
+                case "4":
+                    return "04";
+                case "5":
+                    return "05";
+                case "6":
+                    return "06";
+                case "7":
+                    return "07";
+                case "8":
+                    return "08";
+                case "9":
+                    return "09";
+                default:
+                    return null;
+            }
+        }
+        return null;
     }
 
-    public static String calculateAge(java.util.Date aDateFrom, java.util.Date aDateTo, int aFormat) {
-        /**
-         * 0 - вернуть кол-во лет
-         *  1 -
-         *  2- вернуть кол-во месяцев
-         */
-        if (aDateFrom.getTime() < aDateTo.getTime())
-            return "Дата " + aDateFrom + " не может быть позже даты " + aDateTo;
-        Calendar d1 = Calendar.getInstance();
-        Calendar d2 = Calendar.getInstance();
-        d2.setTime(aDateTo);
-        d1.setTime(aDateFrom);
-        int year1 = d1.get(Calendar.YEAR);
-        int year2 = d2.get(Calendar.YEAR);
-        int month1 = d1.get(Calendar.MONTH);
-        int month2 = d2.get(Calendar.MONTH);
-        int day1 = d1.get(Calendar.DAY_OF_MONTH);
-        int day2 = d2.get(Calendar.DAY_OF_MONTH);
-        int day = day1 - day2;
-        int tst;
-        int month;
-        tst = 0;
-        if (day < 0) {
-            Calendar d3 = Calendar.getInstance();
-            d3.setTime(d1.getTime());
-            d3.set(Calendar.MONTH, month2);
-            day = d3.getActualMaximum(Calendar.DAY_OF_MONTH) + day;
-            tst = 1;
-        }
-        month = month1 - month2 - tst;
-        tst = 0;
-        if (month < 0) {
-            month = 12 + month;
-            tst = 1;
-        }
-        int year = year1 - year2 - tst;
-        if (aFormat == 0) {
-            return String.valueOf(year);
-        }
-        if (aFormat == 2) {
-            return String.valueOf(month);
-        }
-        if (aFormat == 1) {
-            return String.valueOf(year) +
-                    "." + month +
-                    "." + day;
-        }
-        String dy = (year == 1) ? " год " :
-                ((year == 0 || year > 4) ? " лет " : " года ");
-        String dm = (month == 1) ? " месяц " :
-                (((month > 1) && (month < 5)) ? " месяца " : " месяцев ");
-        String dd = (day > 4 ? " дней " :
-                ((day == 0 || (day > 10 && (day < 15))) ? " дней " : ((day == 1) ? " день " : " дня ")));
-
-
-        return String.valueOf(year) +
-                dy + month +
-                dm + day +
-                dd;
-    }
-
-    private static SOAPMessage createSoapMessage(PrParseFileLnLpu prParseFileLnLpu) {
-
+    private static SOAPMessage createSoapMessage(PrParseFilelnlpuRequest prParseFilelnlpuRequest) {
         SOAPMessage message = null;
         try {
-
-            Document document = GlobalVariables.parser.objToSoap(prParseFileLnLpu);
+            Document document = GlobalVariables.parser.objToSoap(prParseFilelnlpuRequest);
             MessageFactory mf = MessageFactory.newInstance();
             message = mf.createMessage();
-
 
             String s = soapMessageToString(message);
             s = s.replace("SOAP-ENV", "soapenv");
@@ -428,7 +332,7 @@ public class PrParseFileLnLpu_start {
             soapEnv.addNamespaceDeclaration("wsu", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");
             soapEnv.addNamespaceDeclaration("xsd", "http://www.w3.org/2001/XMLSchema");
             soapEnv.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            soapEnv.addNamespaceDeclaration("fil", "http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl");
+            soapEnv.addNamespaceDeclaration("fil", "http://www.fss.ru/integration/types/eln/mo/v01");
 
             return request;
         } catch (Exception e) {
@@ -437,74 +341,68 @@ public class PrParseFileLnLpu_start {
         return message;
     }
 
-    private static final String gost2001="GOST2001";
-    private static final String gost2012="GOST2012";
-
-    private static SOAPMessage signation(PrParseFileLnLpu prParseFileLnLpu, SOAPMessage message) throws Exception {
-            List<ROW> rows = unPack(prParseFileLnLpu);
+    private static SOAPMessage signDocument(PrParseFilelnlpuRequest prParseFilelnlpuRequest, SOAPMessage message) throws Exception {
+        List<Rowset.Row> rows = unPack(prParseFilelnlpuRequest);
+        saveSoapToXml(signXMLFileName, message);
+        for (Rowset.Row row : rows) {
+            t_ELN = row.getLnCode();
+            message = Sign.signationByParametrs(
+                    "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getId(),
+                    "#" + row.getId(), moAlias, moPass, t_ELN, moGost.equals("2012") ? GOST_2012 : GOST_2001);
             saveSoapToXml(signXMLFileName, message);
-            for (ROW row : rows) {
 
-                t_ELN = row.getLncode();
-                message = Sign.signationByParametrs(
-                        "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
-                        "#" + row.getAttribId(), moAlias, moPass, t_ELN, moGost.equals("2012")?gost2012:gost2001);
+            Rowset.Row.HospitalBreach hospitalBreach = row.getHospitalBreach();
+            Rowset.Row.LnResult lnResult = row.getLnResult();
+
+            if (lnResult != null && lnResult.getId() != null) {
+                message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_2_doc",
+                        "#" + lnResult.getId(), docAlias, docPass, t_ELN, docGost.equals("2012") ? GOST_2012 : GOST_2001);
                 saveSoapToXml(signXMLFileName, message);
+            }
 
-                List<ROW.HOSPITAL_BREACH> hospital_breaches = row.getHospitalbreach();
-                List<ROW.LN_RESULT> ln_results = row.getLnresult();
-                ROW.LN_RESULT ln_result = ln_results.get(0);
-                ROW.HOSPITAL_BREACH hospital_breach = hospital_breaches.get(0);
+            if (hospitalBreach != null && hospitalBreach.getId() != null) {
+                message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_1_doc",
+                        "#" + hospitalBreach.getId(), docAlias, docPass, t_ELN, docGost.equals("2012") ? GOST_2012 : GOST_2001);
+                saveSoapToXml(signXMLFileName, message);
+            }
 
-                if (ln_result.getAttribId() != null) {
-                    message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_2_doc",
-                            "#" + ln_result.getAttribId(), docAlias, docPass, t_ELN, docGost.equals("2012")?gost2012:gost2001);
+            Rowset.Row.TreatPeriods treat_full_periods = row.getTreatPeriods();
+            for (TreatFullPeriodMo treatFullPeriodMo : treat_full_periods.getTreatFullPeriod()) {
+                if (treatFullPeriodMo != null && treatFullPeriodMo.getId() != null) {
+                    message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treatFullPeriodMo.getId(),
+                            "#" + treatFullPeriodMo.getId(), vkAlias, vkPass, t_ELN, vkGost.equals("2012") ? GOST_2012 : GOST_2001);
                     saveSoapToXml(signXMLFileName, message);
                 }
 
-                if (hospital_breach.getAttributeId() != null) {
-                    message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + t_ELN + "_1_doc",
-                            "#" + hospital_breach.getAttributeId(), docAlias, docPass, t_ELN, docGost.equals("2012")?gost2012:gost2001);
-                    saveSoapToXml(signXMLFileName, message);
-                }
-                TREAT_FULL_PERIOD treat_full_period;
-                List<TREAT_FULL_PERIOD> treat_full_periods = row.getTREAT_PERIODS();
-                TREAT_PERIOD treat_period;
-
-                for (TREAT_FULL_PERIOD treat_full_per : treat_full_periods) {
-                    treat_full_period = treat_full_per;
-
-                    if (treat_full_period.getAttribIdVk() != null && treat_full_period.getExport().equals("false")) {
-                        message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treat_full_period.getAttribIdVk(),
-                                "#" + treat_full_period.getAttribIdVk(), vkAlias, vkPass, t_ELN, vkGost.equals("2012")?gost2012:gost2001);
+                if (treatFullPeriodMo != null) {
+                    TreatFullPeriodMo.TreatPeriod treatPeriod = treatFullPeriodMo.getTreatPeriod();
+                    if (treatPeriod != null && treatPeriod.getId() != null) {
+                        message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treatPeriod.getId(),
+                                "#" + treatPeriod.getId(), docAlias, docPass, t_ELN, docGost.equals("2012") ? GOST_2012 : GOST_2001);
                         saveSoapToXml(signXMLFileName, message);
-                    }
-                    List<TREAT_PERIOD> treat_periods1 = treat_full_period.getTreat_period();
-
-                    for (TREAT_PERIOD num : treat_periods1) {
-                        treat_period = num;
-
-                        if (treat_period.getAttribId() != null && treat_full_period.getExport().equals("false")) {
-                            message = Sign.signationByParametrs("http://eln.fss.ru/actor/doc/" + treat_period.getAttribId(),
-                                    "#" + treat_period.getAttribId(), docAlias, docPass, t_ELN, docGost.equals("2012")?gost2012:gost2001);
-                            saveSoapToXml(signXMLFileName, message);
-                        }
                     }
                 }
             }
-            return message;
+
+            X509Certificate cert = CertificateUtils.getCertificateFromKeyStorage(GlobalVariables.moAlias);
+            SOAPEnvelope soapEnvelope = message.getSOAPPart().getEnvelope();
+            SOAPHeader header1 = soapEnvelope.getHeader();
+            SOAPElement x509Certificate = header1.addChildElement("X509Certificate", null, "http://www.w3.org/2000/09/xmldsig#");
+            x509Certificate.addTextNode(CertificateUtils.certToBase64(cert));
+            saveSoapToXml(signXMLFileName, message);
+        }
+        return message;
     }
 
     /**
      * распаковщик объекта.
      *
-     * @param prParseFileLnLpu prParseFileLnLpu
+     * @param prParseFilelnlpuRequest prParseFileLnLpu
      * @return List<ROW>
      */
-    private static List<ROW> unPack(PrParseFileLnLpu prParseFileLnLpu) {
-        List<PrParseFileLnLpu.Reqest> reqests = prParseFileLnLpu.getRequests();
-        List<PrParseFileLnLpu.Reqest.pXmlFile> pXmlFiles = reqests.get(0).getpXmlFiles();
-        List<ROWSET> rowsets = pXmlFiles.get(0).getRowset();
-        return rowsets.get(0).getRow();
+    private static List<Rowset.Row> unPack(PrParseFilelnlpuRequest prParseFilelnlpuRequest) {
+        PrParseFilelnlpuRequest.PXmlFile pXmlFiles = prParseFilelnlpuRequest.getPXmlFile();
+        Rowset rowset = pXmlFiles.getRowset();
+        return rowset.getRow();
     }
 }

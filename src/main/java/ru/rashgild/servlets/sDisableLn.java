@@ -1,19 +1,19 @@
 package ru.rashgild.servlets;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.apache.log4j.Logger;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
+import ru.rashgild.generated.v2.types.eln.mo.v01.DisableLnRequest;
+import ru.rashgild.generated.v2.types.eln.v01.WSResult;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-import org.apache.log4j.Logger;
-
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnUserDisableLnOut;
-import ru.rashgild.generated.v1.fileoperationsln.ws.SOAPException_Exception;
-import ru.rashgild.utils.GlobalVariables;
 
 @WebServlet("/sDisableLn")
 public class sDisableLn extends HttpServlet {
@@ -21,7 +21,7 @@ public class sDisableLn extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Logger logger = Logger.getLogger("simple");
-        logger.info("1) NewLnNum");
+        logger.info("1) sDisableLn");
         response.setContentType("text/html ;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
@@ -32,7 +32,6 @@ public class sDisableLn extends HttpServlet {
         String reasonCode = request.getParameter("reasonCode");
         String reason = request.getParameter("reason");
 
-        System.out.println("Ogrn:" + ogrn + ",lncode:" + lnCode + ",snils:" + snils + ",reasonCode:" + reasonCode + ",reason:" + reason);
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>" +
@@ -41,15 +40,21 @@ public class sDisableLn extends HttpServlet {
                 "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"> </head>");
 
         out.println("<body>");
-        System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
-        System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
+        //System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
+        //System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
 
-        FileOperationsLnImplService service = new FileOperationsLnImplService();
-        FileOperationsLn start = service.getFileOperationsLnPort();
+        FileOperationsLnServiceImpl service_service = new FileOperationsLnServiceImpl();
+        FileOperationsLnService start = service_service.getFileOperationsLnPort();
         try {
-            FileOperationsLnUserDisableLnOut fileOperationsLnUserDisableLnOut = start.disableLn(ogrn, lnCode, snils, reasonCode, reason);
-            out.println("<H1>Статус:" + fileOperationsLnUserDisableLnOut.getMESS() + "</H1>");
-        } catch (SOAPException_Exception e) {
+            DisableLnRequest disableLnRequest = new DisableLnRequest();
+            disableLnRequest.setLnCode(lnCode);
+            disableLnRequest.setOgrn(ogrn);
+            disableLnRequest.setSnils(snils);
+            disableLnRequest.setReason(reason);
+            disableLnRequest.setReasonCode(reasonCode);
+            WSResult wsResult = start.disableLn(disableLnRequest);
+            out.println("<H1>Статус:" + wsResult.getMess() + "</H1>");
+        } catch (InternalException e) {
             e.printStackTrace();
         }
         out.println("</body></html>");

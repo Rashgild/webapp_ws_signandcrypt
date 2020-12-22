@@ -3,17 +3,9 @@ package ru.rashgild.generated.v2.types.eln.mo.v01;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementRef;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import ru.rashgild.generated.v2.types.eln.v01.HospitalBreachInfo;
 import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
@@ -141,6 +133,7 @@ import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
  * 
  * 
  */
+@XmlRootElement(name = "rowset")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Rowset", propOrder = {
     "row"
@@ -189,6 +182,10 @@ public class Rowset {
             row = new ArrayList<Rowset.Row>();
         }
         return this.row;
+    }
+
+    public void setRow(List<Row> row) {
+        this.row = row;
     }
 
     /**
@@ -352,7 +349,7 @@ public class Rowset {
      *         &lt;element name="name" type="{http://www.fss.ru/integration/types/eln/v01}name"/>
      *         &lt;element name="patronymic" type="{http://www.fss.ru/integration/types/eln/v01}patronymic" minOccurs="0"/>
      *         &lt;element name="lnCode" type="{http://www.fss.ru/integration/types/eln/v01}lnCode"/>
-     *         &lt;element name="prevLnCode" type="{http://www.fss.ru/integration/types/eln/v01}lnCode" minOccurs="0"/>
+     *         &lt;element name="prevLnCode" type="{http://www.fss.ru/integration/types/eln/v01}lnCode"/>
      *         &lt;element name="primaryFlag" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
      *         &lt;element name="duplicateFlag" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
      *         &lt;element name="lnDate" type="{http://www.fss.ru/integration/types/eln/v01}simpleDate"/>
@@ -440,10 +437,49 @@ public class Rowset {
      * 
      * 
      */
+    @XmlRootElement(name = "row")
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-
-    })
+    /*@XmlType(name = "", propOrder = {
+            "unconditional",
+            "snils",
+            "surname",
+            "name",
+            "patronymic",
+            "lnCode",
+            "prevLnCode",
+            "primaryFlag",
+            "duplicateFlag",
+            "lnDate",
+            "idMo",
+            "lpuName",
+            "lpuAddress",
+            "lpuOgrn",
+            "birthday",
+            "gender",
+            "reason1",
+            "reason2",
+            "diagnos",
+            "date1",
+            "date2",
+            "voucherNo",
+            "voucherOgrn",
+            "servData",
+            "pregn12WFlag",
+            "hospitalDt1",
+            "hospitalDt2",
+            "hospitalBreach",
+            "mseDt1",
+            "mseDt2",
+            "mseDt3",
+            "mseInvalidGroup",
+            "treatPeriods",
+            "lnResult",
+            "lnState",
+            "lnHash",
+            "previouslyIssuedCode",
+            "writtenAgreementFlag",
+            "intermittentMethodFlag"
+    })*/
     public static class Row {
 
         protected boolean unconditional;
@@ -461,7 +497,7 @@ public class Rowset {
         protected boolean duplicateFlag;
         @XmlElement(required = true)
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar lnDate;
+        protected String lnDate;
         protected String idMo;
         @XmlElement(required = true)
         protected String lpuName;
@@ -471,44 +507,44 @@ public class Rowset {
         protected String lpuOgrn;
         @XmlElement(required = true)
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar birthday;
+        protected String birthday;
         protected int gender;
         protected String reason1;
         protected String reason2;
         protected String diagnos;
         @XmlElement(required = true, nillable = true)
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar date1;
+        protected String date1;
         @XmlElement(required = true, nillable = true)
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar date2;
+        protected String date2;
         protected String voucherNo;
         protected String voucherOgrn;
         protected Rowset.Row.ServData servData;
         @XmlElement(name = "pregn12wFlag")
         protected Boolean pregn12WFlag;
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar hospitalDt1;
+        protected String hospitalDt1;
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar hospitalDt2;
+        protected String hospitalDt2;
         protected Rowset.Row.HospitalBreach hospitalBreach;
         @XmlElement(required = true, nillable = true)
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar mseDt1;
+        protected String mseDt1;
         @XmlElement(required = true, nillable = true)
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar mseDt2;
+        protected String mseDt2;
         @XmlElement(required = true, nillable = true)
         @XmlSchemaType(name = "date")
-        protected XMLGregorianCalendar mseDt3;
+        protected String mseDt3;
         @XmlElement(required = true, type = Integer.class, nillable = true)
         protected Integer mseInvalidGroup;
         protected Rowset.Row.TreatPeriods treatPeriods;
         protected Rowset.Row.LnResult lnResult;
         @XmlElement(required = true)
         protected String lnState;
-        @XmlElementRef(name = "lnHash", namespace = "http://www.fss.ru/integration/types/eln/mo/v01", type = JAXBElement.class, required = false)
-        protected JAXBElement<String> lnHash;
+        //@XmlElementRef(name = "lnHash", namespace = "http://www.fss.ru/integration/types/eln/mo/v01", required = false)
+        protected String lnHash;
         protected String previouslyIssuedCode;
         protected boolean writtenAgreementFlag;
         protected Boolean intermittentMethodFlag;
@@ -715,10 +751,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getLnDate() {
+        public String getLnDate() {
             return lnDate;
         }
 
@@ -727,10 +763,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setLnDate(XMLGregorianCalendar value) {
+        public void setLnDate(String value) {
             this.lnDate = value;
         }
 
@@ -835,10 +871,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getBirthday() {
+        public String getBirthday() {
             return birthday;
         }
 
@@ -847,10 +883,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setBirthday(XMLGregorianCalendar value) {
+        public void setBirthday(String value) {
             this.birthday = value;
         }
 
@@ -947,10 +983,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getDate1() {
+        public String getDate1() {
             return date1;
         }
 
@@ -959,10 +995,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setDate1(XMLGregorianCalendar value) {
+        public void setDate1(String value) {
             this.date1 = value;
         }
 
@@ -971,10 +1007,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getDate2() {
+        public String getDate2() {
             return date2;
         }
 
@@ -983,10 +1019,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setDate2(XMLGregorianCalendar value) {
+        public void setDate2(String value) {
             this.date2 = value;
         }
 
@@ -1091,10 +1127,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getHospitalDt1() {
+        public String getHospitalDt1() {
             return hospitalDt1;
         }
 
@@ -1103,10 +1139,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setHospitalDt1(XMLGregorianCalendar value) {
+        public void setHospitalDt1(String value) {
             this.hospitalDt1 = value;
         }
 
@@ -1115,10 +1151,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getHospitalDt2() {
+        public String getHospitalDt2() {
             return hospitalDt2;
         }
 
@@ -1127,10 +1163,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setHospitalDt2(XMLGregorianCalendar value) {
+        public void setHospitalDt2(String value) {
             this.hospitalDt2 = value;
         }
 
@@ -1163,10 +1199,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getMseDt1() {
+        public String getMseDt1() {
             return mseDt1;
         }
 
@@ -1175,10 +1211,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setMseDt1(XMLGregorianCalendar value) {
+        public void setMseDt1(String value) {
             this.mseDt1 = value;
         }
 
@@ -1187,10 +1223,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getMseDt2() {
+        public String getMseDt2() {
             return mseDt2;
         }
 
@@ -1199,10 +1235,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setMseDt2(XMLGregorianCalendar value) {
+        public void setMseDt2(String value) {
             this.mseDt2 = value;
         }
 
@@ -1211,10 +1247,10 @@ public class Rowset {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getMseDt3() {
+        public String getMseDt3() {
             return mseDt3;
         }
 
@@ -1223,10 +1259,10 @@ public class Rowset {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setMseDt3(XMLGregorianCalendar value) {
+        public void setMseDt3(String value) {
             this.mseDt3 = value;
         }
 
@@ -1334,7 +1370,7 @@ public class Rowset {
          *     {@link JAXBElement }{@code <}{@link String }{@code >}
          *     
          */
-        public JAXBElement<String> getLnHash() {
+        public String getLnHash() {
             return lnHash;
         }
 
@@ -1346,7 +1382,7 @@ public class Rowset {
          *     {@link JAXBElement }{@code <}{@link String }{@code >}
          *     
          */
-        public void setLnHash(JAXBElement<String> value) {
+        public void setLnHash(String value) {
             this.lnHash = value;
         }
 
@@ -1617,6 +1653,9 @@ public class Rowset {
                 return this.servFullData;
             }
 
+            public void setServFullData(List<ServFullData> servFullData) {
+                this.servFullData = servFullData;
+            }
 
             /**
              * <p>Java class for anonymous complex type.
@@ -1733,6 +1772,9 @@ public class Rowset {
                 return this.treatFullPeriod;
             }
 
+            public void setTreatFullPeriod(List<TreatFullPeriodMo> treatFullPeriod) {
+                this.treatFullPeriod = treatFullPeriod;
+            }
         }
 
     }

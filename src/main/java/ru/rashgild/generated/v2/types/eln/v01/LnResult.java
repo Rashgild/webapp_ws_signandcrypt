@@ -44,10 +44,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class LnResult {
 
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar returnDateLpu;
+    protected String returnDateLpu;
     protected String mseResult;
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar otherStateDt;
+    protected String otherStateDt;
     protected String nextLnCode;
 
     /**
@@ -58,7 +58,7 @@ public class LnResult {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getReturnDateLpu() {
+    public String getReturnDateLpu() {
         return returnDateLpu;
     }
 
@@ -70,7 +70,7 @@ public class LnResult {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setReturnDateLpu(XMLGregorianCalendar value) {
+    public void setReturnDateLpu(String value) {
         this.returnDateLpu = value;
     }
 
@@ -106,7 +106,7 @@ public class LnResult {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getOtherStateDt() {
+    public String getOtherStateDt() {
         return otherStateDt;
     }
 
@@ -118,7 +118,7 @@ public class LnResult {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setOtherStateDt(XMLGregorianCalendar value) {
+    public void setOtherStateDt(String value) {
         this.otherStateDt = value;
     }
 

@@ -2,7 +2,7 @@ package ru.rashgild.utils;
 
 import java.io.File;
 
-import ru.rashgild.entities.PrParseFileLnLpu;
+import ru.rashgild.generated.v2.types.eln.mo.v01.PrParseFilelnlpuRequest;
 import ru.rashgild.utils.Jaxb.JaxbParser;
 import ru.rashgild.utils.Jaxb.Parser;
 
@@ -44,7 +44,7 @@ public class GlobalVariables {
 
     //internal Global Temp Variables
     public static String t_ELN = "";
-    public static PrParseFileLnLpu prparse;
+    public static PrParseFilelnlpuRequest prparse;
     public static String Request = "";
     public static String Response = "";
     public static String DisabilityDocument_id = "";
