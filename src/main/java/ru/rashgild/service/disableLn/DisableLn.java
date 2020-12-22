@@ -1,6 +1,6 @@
-package ru.rashgild.service_operations.existingLNNum;
+package ru.rashgild.service.disableLn;
 
-import ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
+import ru.rashgild.service.newLNNumRange.NewLnNumRange_start;
 import ru.rashgild.signAndCrypt.Encrypt;
 import ru.rashgild.signAndCrypt.Sign;
 import ru.rashgild.utils.GlobalVariables;
@@ -9,7 +9,9 @@ import ru.rashgild.utils.XmlUtils;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPMessage;
 
-public class ExistingLNNumRange {
+import static ru.rashgild.utils.CertificateUtils.addCertificateToHeader;
+
+public class DisableLn {
 
     /**
      * Меняет перехваченное сообщение под нужный шаблон
@@ -20,13 +22,13 @@ public class ExistingLNNumRange {
         try {
             NewLnNumRange_start.Create(soapMsg);
             soapMsg = Sign.signation();
-
-            XmlUtils.saveSoapToXml("ExistingLNNumRange.xml", soapMsg);
+            soapMsg = addCertificateToHeader(soapMsg);
+            XmlUtils.saveSoapToXml("DisableLn.xml", soapMsg);
             GlobalVariables.Request = XmlUtils.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();
 
             SOAPMessage NewMessg = mf.createMessage();
-            NewMessg = Encrypt.createXmlAndEncrypt(NewMessg, "ExistingLNNumRange.xml");
+            NewMessg = Encrypt.createXmlAndEncrypt(NewMessg, "DisableLn.xml");
 
             return NewMessg;
         } catch (Exception e) {

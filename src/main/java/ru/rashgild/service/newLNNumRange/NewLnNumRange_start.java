@@ -1,4 +1,4 @@
-package ru.rashgild.service_operations.newLNNumRange;
+package ru.rashgild.service.newLNNumRange;
 
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.Name;

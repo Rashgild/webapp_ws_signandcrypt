@@ -1,4 +1,4 @@
-package ru.rashgild.service_operations.xmlFileLnLpu;
+package ru.rashgild.service.xmlFileLnLpu;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;

@@ -1,6 +1,6 @@
-package ru.rashgild.service_operations.disableLn;
+package ru.rashgild.service.LNDate;
 
-import ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
+import ru.rashgild.service.newLNNumRange.NewLnNumRange_start;
 import ru.rashgild.signAndCrypt.Encrypt;
 import ru.rashgild.signAndCrypt.Sign;
 import ru.rashgild.utils.GlobalVariables;
@@ -11,26 +11,22 @@ import javax.xml.soap.SOAPMessage;
 
 import static ru.rashgild.utils.CertificateUtils.addCertificateToHeader;
 
-public class DisableLn {
+public class LnDate_start {
 
-    /**
-     * Меняет перехваченное сообщение под нужный шаблон
-     *
-     * @param soapMsg передается из Инъектера
-     */
     public static SOAPMessage Start(SOAPMessage soapMsg) {
         try {
             NewLnNumRange_start.Create(soapMsg);
             soapMsg = Sign.signation();
             soapMsg = addCertificateToHeader(soapMsg);
-            XmlUtils.saveSoapToXml("DisableLn.xml", soapMsg);
+            XmlUtils.saveSoapToXml("GetLnDate.xml", soapMsg);
             GlobalVariables.Request = XmlUtils.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();
 
-            SOAPMessage NewMessg = mf.createMessage();
-            NewMessg = Encrypt.createXmlAndEncrypt(NewMessg, "DisableLn.xml");
+            SOAPMessage message = mf.createMessage();
+            message = Encrypt.createXmlAndEncrypt(message, "GetLnDate.xml");
 
-            return NewMessg;
+            return message;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
