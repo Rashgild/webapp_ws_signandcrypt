@@ -1,13 +1,14 @@
 package ru.rashgild.servlets;
 
 import org.apache.log4j.Logger;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
-import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
 import ru.rashgild.generated.v2.types.eln.mo.v01.FileOperationsLnUserGetLNDataOut;
 import ru.rashgild.generated.v2.types.eln.mo.v01.GetLNDataRequest;
 import ru.rashgild.generated.v2.types.eln.mo.v01.ResponseRow;
 import ru.rashgild.generated.v2.types.eln.v01.LnResult;
 import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
+import ru.rashgild.service.DependencyInjection;
 import ru.rashgild.utils.SQL;
 
 import javax.servlet.annotation.WebServlet;
@@ -84,6 +85,7 @@ public class sImportLNN extends HttpServlet {
             String eln = request.getParameter("eln");
             String snils = request.getParameter("snils");
             String pid = request.getParameter("pid");
+            Boolean isTest = Boolean.parseBoolean(request.getParameter("test"));
 
             String outString = "";
             outString += "<html><head><meta charset=\"UTF-8\"/><title>SignAndCrypt</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head><body>";
@@ -94,11 +96,8 @@ public class sImportLNN extends HttpServlet {
             out.print("<H1> eln=" + eln + "</H1>");
             out.print("<H1> snils=" + snils + "</H1>");
 
-            //System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
-            //System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
-
-            FileOperationsLnServiceImpl service_service = new FileOperationsLnServiceImpl();
-            FileOperationsLnService start = service_service.getFileOperationsLnPort();
+            FIleOperationService service = DependencyInjection.getImplementation(isTest);
+            FileOperationsLnService start = service.getFileOperationsLnPort();
 
             try {
                 GetLNDataRequest request1 = new GetLNDataRequest();

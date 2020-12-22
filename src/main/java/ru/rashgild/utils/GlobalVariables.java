@@ -18,6 +18,7 @@ public class GlobalVariables {
     public static String dbdriver = "";
     public static String passwordCertStor = "";
     public static String aliasCert = "";
+    public static String aliasTestCert = "";
     public static String pathToCert = "";
     public static String nameKstorage = "";
     public static String vkAlias = "";

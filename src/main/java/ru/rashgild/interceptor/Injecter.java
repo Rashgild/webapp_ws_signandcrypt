@@ -5,12 +5,12 @@ import org.apache.log4j.Logger;
 import ru.rashgild.utils.GlobalVariables;
 import ru.rashgild.utils.SQL;
 import ru.rashgild.utils.XmlUtils;
-import ru.rashgild.service_operations.LNDate.LnDate_start;
-import ru.rashgild.service_operations.disableLn.DisableLn;
-import ru.rashgild.service_operations.existingLNNum.ExistingLNNumRange;
-import ru.rashgild.service_operations.newLNNum.NewLNNum;
-import ru.rashgild.service_operations.newLNNumRange.NewLnNumRange_start;
-import ru.rashgild.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start;
+import ru.rashgild.service.LnDate_start;
+import ru.rashgild.service.DisableLn;
+import ru.rashgild.service.ExistingLNNumRange;
+import ru.rashgild.service.NewLNNum;
+import ru.rashgild.service.NewLnNumRange;
+import ru.rashgild.service.PrParseFileLnLpu;
 import ru.rashgild.signAndCrypt.VerifyAndDecrypt;
 
 import javax.xml.namespace.QName;
@@ -38,11 +38,11 @@ public class Injecter implements SOAPHandler<SOAPMessageContext> {
 
                 if (whatTheFunc(soapMsg) == 1) {
                     logger.info("2.1) initialized PrParseFileLnLpu_start!");
-                    soapMsg = PrParseFileLnLpu_start.start(GlobalVariables.requestParam);
+                    soapMsg = PrParseFileLnLpu.start(GlobalVariables.requestParam);
                 }
                 if (whatTheFunc(soapMsg) == 2) {
                     logger.info("2.1) initialized NewLNNumRange_start!");
-                    soapMsg = NewLnNumRange_start.Start(soapMsg);
+                    soapMsg = NewLnNumRange.Start(soapMsg);
                 }
 
                 if (whatTheFunc(soapMsg) == 3) {

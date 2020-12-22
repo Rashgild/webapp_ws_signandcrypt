@@ -1,11 +1,12 @@
 package ru.rashgild.servlets;
 
 import org.apache.log4j.Logger;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
-import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
 import ru.rashgild.generated.v2.types.eln.mo.v01.FileOperationsLnUserGetLNDataOut;
 import ru.rashgild.generated.v2.types.eln.mo.v01.GetLNDataRequest;
+import ru.rashgild.service.DependencyInjection;
 import ru.rashgild.utils.ResponseBuilderUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -27,21 +28,21 @@ public class sLnDate extends HttpServlet {
             String ogrn = request.getParameter("ogrn");
             String eln = request.getParameter("eln");
             String snils = request.getParameter("snils");
+            Boolean isTest = Boolean.parseBoolean(request.getParameter("test"));
 
             snils = snils.replace("-", "").replace(" ", "");
             PrintWriter out = response.getWriter();
             out.print(ResponseBuilderUtil.createHtmlTemplate(ogrn, eln, snils));
 
-            FileOperationsLnServiceImpl service_service = new FileOperationsLnServiceImpl();
-            FileOperationsLnService start = service_service.getFileOperationsLnPort();
-            GetLNDataRequest request1 = new GetLNDataRequest();
-            request1.setOgrn(ogrn);
-            request1.setLnCode(eln);
-            request1.setSnils(snils);
+            FIleOperationService service = DependencyInjection.getImplementation(isTest);
+            FileOperationsLnService start = service.getFileOperationsLnPort();
+            GetLNDataRequest getLNDataRequest = new GetLNDataRequest();
+            getLNDataRequest.setOgrn(ogrn);
+            getLNDataRequest.setLnCode(eln);
+            getLNDataRequest.setSnils(snils);
 
-            FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = new FileOperationsLnUserGetLNDataOut();
             try {
-                fileOperationsLnUserGetLNDataOut = start.getLNData(request1);
+                FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(getLNDataRequest);
                 String responseOut = ResponseBuilderUtil.createResponseLnData(fileOperationsLnUserGetLNDataOut);
                 out.print(responseOut);
             } catch (InternalException e) {

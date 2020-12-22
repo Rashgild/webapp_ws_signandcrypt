@@ -1,4 +1,4 @@
-package ru.rashgild.service.xmlFileLnLpu;
+package ru.rashgild.service;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -30,7 +30,7 @@ import static ru.rashgild.utils.StoredQuery.PrParse_Query2;
 import static ru.rashgild.utils.XmlUtils.saveSoapToXml;
 import static ru.rashgild.utils.XmlUtils.soapMessageToString;
 
-public class PrParseFileLnLpu_start {
+public class PrParseFileLnLpu {
 
     private static final String GOST_2001 = "GOST2001";
     private static final String GOST_2012 = "GOST2012";

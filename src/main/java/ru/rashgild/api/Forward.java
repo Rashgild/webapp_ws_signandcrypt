@@ -58,7 +58,6 @@ public class Forward {
         }
     }
 
-
     private static void forward(HttpServletRequest request, HttpServletResponse response, String forwardString) {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");

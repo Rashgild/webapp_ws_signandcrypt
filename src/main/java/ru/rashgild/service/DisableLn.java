@@ -1,6 +1,5 @@
-package ru.rashgild.service.disableLn;
+package ru.rashgild.service;
 
-import ru.rashgild.service.newLNNumRange.NewLnNumRange_start;
 import ru.rashgild.signAndCrypt.Encrypt;
 import ru.rashgild.signAndCrypt.Sign;
 import ru.rashgild.utils.GlobalVariables;
@@ -20,7 +19,7 @@ public class DisableLn {
      */
     public static SOAPMessage Start(SOAPMessage soapMsg) {
         try {
-            NewLnNumRange_start.Create(soapMsg);
+            NewLnNumRange.Create(soapMsg);
             soapMsg = Sign.signation();
             soapMsg = addCertificateToHeader(soapMsg);
             XmlUtils.saveSoapToXml("DisableLn.xml", soapMsg);

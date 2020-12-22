@@ -1,11 +1,13 @@
 package ru.rashgild.servlets;
 
 import org.apache.log4j.Logger;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
 import ru.rashgild.generated.v2.types.eln.mo.v01.DisableLnRequest;
 import ru.rashgild.generated.v2.types.eln.v01.WSResult;
+import ru.rashgild.service.DependencyInjection;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +33,7 @@ public class sDisableLn extends HttpServlet {
         String snils = request.getParameter("snils");
         String reasonCode = request.getParameter("reasonCode");
         String reason = request.getParameter("reason");
+        Boolean isTest = Boolean.parseBoolean(request.getParameter("test"));
 
         PrintWriter out = response.getWriter();
         out.println("<html>");
@@ -40,11 +43,9 @@ public class sDisableLn extends HttpServlet {
                 "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"> </head>");
 
         out.println("<body>");
-        //System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
-        //System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
 
-        FileOperationsLnServiceImpl service_service = new FileOperationsLnServiceImpl();
-        FileOperationsLnService start = service_service.getFileOperationsLnPort();
+        FIleOperationService service = DependencyInjection.getImplementation(isTest);
+        FileOperationsLnService start = service.getFileOperationsLnPort();
         try {
             DisableLnRequest disableLnRequest = new DisableLnRequest();
             disableLnRequest.setLnCode(lnCode);

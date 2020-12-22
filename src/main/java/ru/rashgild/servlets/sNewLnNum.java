@@ -1,10 +1,12 @@
 package ru.rashgild.servlets;
 
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
 import ru.rashgild.generated.v2.types.eln.mo.v01.FileOperationsLnUserGetNewLNNumOut;
 import ru.rashgild.generated.v2.types.eln.mo.v01.GetNewLNNumRequest;
+import ru.rashgild.service.DependencyInjection;
 import ru.rashgild.utils.GlobalVariables;
 
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +25,7 @@ public class sNewLnNum extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html ;charset=UTF-8");
         String ogrn = request.getParameter("ogrn");
+        Boolean isTest = Boolean.parseBoolean(request.getParameter("test"));
         GlobalVariables.requestParam = ogrn;
 
         PrintWriter out = response.getWriter();
@@ -38,7 +41,7 @@ public class sNewLnNum extends HttpServlet {
         //System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
         //System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
 
-        FileOperationsLnServiceImpl service = new FileOperationsLnServiceImpl();
+        FIleOperationService service = DependencyInjection.getImplementation(isTest);
         FileOperationsLnService start = service.getFileOperationsLnPort();
 
         try {

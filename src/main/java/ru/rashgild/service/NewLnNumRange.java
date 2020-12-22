@@ -1,4 +1,4 @@
-package ru.rashgild.service.newLNNumRange;
+package ru.rashgild.service;
 
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.Name;
@@ -17,7 +17,7 @@ import ru.rashgild.signAndCrypt.Sign;
 
 import static ru.rashgild.utils.CertificateUtils.addCertificateToHeader;
 
-public class NewLnNumRange_start {
+public class NewLnNumRange {
 
     /**
      * Меняет перехваченное сообщение под нужный шаблон

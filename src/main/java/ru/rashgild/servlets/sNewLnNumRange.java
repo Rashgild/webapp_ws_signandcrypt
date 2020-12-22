@@ -1,11 +1,12 @@
 package ru.rashgild.servlets;
 
 import org.apache.log4j.Logger;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
-import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
 import ru.rashgild.generated.v2.types.eln.mo.v01.FileOperationsLnUserGetNewLNNumRangeOut;
 import ru.rashgild.generated.v2.types.eln.mo.v01.GetNewLNNumRangeRequest;
+import ru.rashgild.service.DependencyInjection;
 import ru.rashgild.utils.GlobalVariables;
 
 import javax.servlet.annotation.WebServlet;
@@ -24,12 +25,14 @@ public class sNewLnNumRange extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        Logger logger = Logger.getLogger("simple");
+        Logger logger = Logger.getLogger("sNewLnNumRange");
         logger.info("1) NewLnNumRange");
         response.setContentType("text/html ;charset=UTF-8");
 
         String ogrn = request.getParameter("ogrn");
         int count = Integer.parseInt(request.getParameter("count"));
+        Boolean isTest = Boolean.parseBoolean(request.getParameter("test"));
+
         GlobalVariables.requestParam = ogrn;
         GlobalVariables.requestParam2 = count;
         PrintWriter out = response.getWriter();
@@ -42,8 +45,9 @@ public class sNewLnNumRange extends HttpServlet {
         out.print("<H1> ogrn=" + ogrn + "</H1>");
         out.print("<H1> count=" + count + "</H1>");
 
-        FileOperationsLnServiceImpl service = new FileOperationsLnServiceImpl();
+        FIleOperationService service = DependencyInjection.getImplementation(isTest);
         FileOperationsLnService start = service.getFileOperationsLnPort();
+
         try {
             GetNewLNNumRangeRequest getNewLNNumRangeRequest = new GetNewLNNumRangeRequest();
             getNewLNNumRangeRequest.setCntLnNumbers(count);

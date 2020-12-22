@@ -1,12 +1,13 @@
 package ru.rashgild.servlets;
 
 import org.apache.log4j.Logger;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
-import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
 import ru.rashgild.generated.v2.types.eln.mo.v01.*;
 import ru.rashgild.generated.v2.types.eln.v01.Info;
 import ru.rashgild.generated.v2.types.eln.v01.WSResult;
+import ru.rashgild.service.DependencyInjection;
 import ru.rashgild.utils.GlobalVariables;
 import ru.rashgild.utils.SQL;
 import ru.rashgild.utils.StoredQuery;
@@ -24,16 +25,17 @@ public class sPrParseFileLnLpu extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
+            Boolean isTest = Boolean.parseBoolean(request.getParameter("test"));
             long start = System.currentTimeMillis();
             response.setContentType("text/html ;charset=UTF-8");
             String id = request.getParameter("id");
             GlobalVariables.requestParam = id;
             request.setAttribute("id", id);
 
-            boolean f = getLnHash(id);
+            boolean f = getLnHash(id, isTest);
             request.setAttribute("snils", f);
             if (f) {
-                WSResult result = setRequest();
+                WSResult result = setRequest(isTest);
                 List<Info.InfoRowset.InfoRow> rows = result.getInfo().getInfoRowset().getInfoRow();
                 StringBuilder saveResult = new StringBuilder();
                 String state = "", hash = "", status = "";
@@ -82,10 +84,8 @@ public class sPrParseFileLnLpu extends HttpServlet {
         }
     }
 
-    private static WSResult setRequest() {
-        //System.setProperty("javax.net.ssl.trustStore", pathandnameSSL);
-        //System.setProperty("javax.net.ssl.trustStorePassword", passwordSSL);
-        FileOperationsLnServiceImpl service = new FileOperationsLnServiceImpl();
+    private static WSResult setRequest(Boolean isTest) {
+        FIleOperationService service = DependencyInjection.getImplementation(isTest);
         FileOperationsLnService start = service.getFileOperationsLnPort();
         Rowset rowset = new Rowset();
         PrParseFilelnlpuRequest prParseFilelnlpuRequest = new PrParseFilelnlpuRequest();
@@ -100,7 +100,7 @@ public class sPrParseFileLnLpu extends HttpServlet {
         return null;
     }
 
-    private static boolean getLnHash(String id) {
+    private static boolean getLnHash(String id, Boolean isTest) {
         Logger logger = Logger.getLogger("");
         logger.info("Get Hash");
         String snils = "", eln = "";
@@ -131,9 +131,7 @@ public class sPrParseFileLnLpu extends HttpServlet {
             logger.info("Snils: " + snils);
             logger.info("Eln: " + eln);
             try {
-                System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
-                System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
-                FileOperationsLnServiceImpl service = new FileOperationsLnServiceImpl();
+                FIleOperationService service = DependencyInjection.getImplementation(isTest);
                 FileOperationsLnService start = service.getFileOperationsLnPort();
 
                 GetLNDataRequest request = new GetLNDataRequest();
