@@ -4,60 +4,58 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.w3c.dom.Document;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
+import ru.rashgild.generated.v2.types.eln.mo.v01.PrParseFilelnlpuRequest;
+import ru.rashgild.generated.v2.types.eln.mo.v01.Rowset;
+import ru.rashgild.generated.v2.types.eln.v01.Info;
+import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
+import ru.rashgild.generated.v2.types.eln.v01.WSResult;
+import ru.rashgild.service.DependencyInjection;
+import ru.rashgild.signAndCrypt.Sign;
+import ru.rashgild.utils.CertificateUtils;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.XmlUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.MessageFactory;
-import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.*;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.security.cert.X509Certificate;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Document;
-
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import ru.rashgild.generated.v1.fileoperationsln.ws.INFO;
-import ru.rashgild.generated.v1.fileoperationsln.ws.PrParseFilelnlpuElement;
-import ru.rashgild.generated.v1.fileoperationsln.ws.WSResult;
-import ru.rashgild.entities.PrParseFileLnLpu;
-import ru.rashgild.entities.TREAT_FULL_PERIOD;
-import ru.rashgild.entities.TREAT_PERIOD;
-import ru.rashgild.signAndCrypt.Sign;
-import ru.rashgild.utils.GlobalVariables;
-import ru.rashgild.generated.v1.fileoperationsln.ws.ROWSET;
-
-import static ru.rashgild.api.ApiUtils.get;
-import static ru.rashgild.service_operations.xmlFileLnLpu.PrParseFileLnLpu_start.calculateAge;
+import static ru.rashgild.api.ApiUtils.*;
 import static ru.rashgild.signAndCrypt.Encrypt.createXmlAndEncrypt;
-import static ru.rashgild.utils.GlobalVariables.moAlias;
-import static ru.rashgild.utils.GlobalVariables.moPass;
-import static ru.rashgild.utils.GlobalVariables.ogrnMo;
-import static ru.rashgild.utils.GlobalVariables.passwordSSL;
-import static ru.rashgild.utils.GlobalVariables.pathandnameSSL;
-import static ru.rashgild.utils.GlobalVariables.setUp;
-import static ru.rashgild.utils.GlobalVariables.t_ELN;
+import static ru.rashgild.utils.GlobalVariables.*;
 import static ru.rashgild.utils.XmlUtils.saveSoapToXml;
 import static ru.rashgild.utils.XmlUtils.soapMessageToString;
+
 
 @Path("/export")
 public class Export {
@@ -65,9 +63,11 @@ public class Export {
     @POST
     @Path("/exportDisabilityDocument")
     public String getJsonDisabilityDoc(String data,
+                                       @QueryParam("isTest") Boolean isTest,
                                        @Context HttpServletRequest request,
                                        @Context HttpServletResponse response) throws Exception {
 
+        System.out.println("exportDisabilityDocument");
         SOAPMessage message = createDisabilityXml(data);
         try {
             String mess = soapMessageToString(message);
@@ -75,51 +75,56 @@ public class Export {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sendRequest();
+        return sendRequest(isTest);
     }
 
-    private String sendRequest() {
+    private String sendRequest(Boolean isTest) {
         JSONObject resultJson = new JSONObject();
 
         try {
-            System.setProperty("javax.net.ssl.trustStore", pathandnameSSL);
-            System.setProperty("javax.net.ssl.trustStorePassword", passwordSSL);
-            FileOperationsLnImplService service = new FileOperationsLnImplService();
-            FileOperationsLn start = service.getFileOperationsLnPort();
-            ROWSET rowset = new ROWSET();
+            FIleOperationService service = DependencyInjection.getImplementation(isTest);
+            FileOperationsLnService start = service.getFileOperationsLnPort();
 
+            Rowset rowset = createTestData();
             rowset.setAuthor("ThisIsNewSender");
-            PrParseFilelnlpuElement prParseFilelnlpuElement = new PrParseFilelnlpuElement();
-            PrParseFilelnlpuElement.PXmlFile pXmlFile = new PrParseFilelnlpuElement.PXmlFile();
-            pXmlFile.setROWSET(rowset);
-            prParseFilelnlpuElement.setPXmlFile(pXmlFile);
-            WSResult result;
 
-            result = start.prParseFilelnlpu(prParseFilelnlpuElement);
+            PrParseFilelnlpuRequest.PXmlFile pXmlFile = new PrParseFilelnlpuRequest.PXmlFile();
+            pXmlFile.setRowset(rowset);
+            PrParseFilelnlpuRequest request = new PrParseFilelnlpuRequest();
+            request.setOgrn("1053000627690");
+            request.setPXmlFile(pXmlFile);
 
-            resultJson.put("message", result.getMESS());
-            resultJson.put("status", result.getSTATUS());
-            resultJson.put("requestId", result.getREQUESTID());
+            WSResult result = null;
+            try {
+                result = start.prParseFilelnlpu(request);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
 
-            List<INFO.ROWSET.ROW> rows = result.getINFO().getROWSET().getROW();
+
+            resultJson.put("message", result.getMess());
+            resultJson.put("status", result.getStatus());
+            resultJson.put("requestId", result.getRequestId());
+
+            List<Info.InfoRowset.InfoRow> rows = result.getInfo().getInfoRowset().getInfoRow();
             if (rows != null && rows.size() > 0) {
-                for (INFO.ROWSET.ROW row : rows) {
+                for (Info.InfoRowset.InfoRow row : rows) {
 
-                    if (row.getLNCODE() != null && !row.getLNCODE().equals("")) {
-                        resultJson.put("hash", row.getLNHASH());
+                    if (row.getLnCode() != null && !row.getLnCode().isEmpty()) {
+                        resultJson.put("hash", row.getLnHash());
                     }
 
-                    if (row.getLNSTATE() != null && !row.getLNSTATE().equals("")) {
-                        resultJson.put("lnstate", row.getLNSTATE());
+                    if (row.getLnState() != null && !row.getLnState().isEmpty()) {
+                        resultJson.put("lnstate", row.getLnState());
                     }
-                    resultJson.put("lncode", row.getLNCODE());
+                    resultJson.put("lncode", row.getLnCode());
                     JSONArray jsonArray = new JSONArray();
                     try {
-                        if (row.getERRORS() != null && row.getERRORS().getERROR().size() > 0) {
-                            List<INFO.ROWSET.ROW.ERRORS.ERROR> errors = row.getERRORS().getERROR();
-                            for (INFO.ROWSET.ROW.ERRORS.ERROR errs : errors) {
+                        if (row.getErrors() != null && !row.getErrors().getError().isEmpty()) {
+                            List<Info.InfoRowset.InfoRow.Errors.Error> errors = row.getErrors().getError();
+                            for (Info.InfoRowset.InfoRow.Errors.Error errs : errors) {
                                 JSONObject arrjs = new JSONObject();
-                                arrjs.put("errmess", errs.getERRMESS()).put("errcode", errs.getERRCODE());
+                                arrjs.put("errmess", errs.getErrMess()).put("errcode", errs.getErrCode());
                                 jsonArray.put(arrjs);
                             }
                             resultJson.put("errors", jsonArray);
@@ -143,21 +148,15 @@ public class Export {
         JsonArray treats = jparsr.getAsJsonArray("treats");
         JsonArray signclose = jparsr.getAsJsonArray("close");
         String StartPeriod = null;
-        List<TREAT_FULL_PERIOD> treat_full_periods = new ArrayList<>();
-        List<ru.rashgild.entities.ROW> rows = new ArrayList<>();
+        //List<TREAT_FULL_PERIOD> treat_full_periods = new ArrayList<>();
+        List<Rowset.Row> rows = new ArrayList<>();
         int DDID_1 = 0;
 
         JsonObject jrow = parser.parse(json).getAsJsonObject();
         GlobalVariables.t_ELN = get(jrow, "ln_code");
         DDID_1 = Integer.parseInt(get(jrow, "ddid"));
 
-        ru.rashgild.entities.ROW.LN_RESULT ln_result = new ru.rashgild.entities.ROW.LN_RESULT();
-        Boolean isClose = (get(jrow, "is_close")).equals("1") ? true : false;
-        ln_result.setMseresult(get(jrow, "mse_result"));
-        ln_result.setOtherstatedt(get(jrow, "other_state_dt"));
-
-        List<ru.rashgild.entities.ROW.LN_RESULT> ln_results = new ArrayList<>();
-        ru.rashgild.entities.ROW row = new ru.rashgild.entities.ROW();
+        Rowset.Row row = new Rowset.Row();
         String str[];
         String snils = get(jrow, "snils");
         str = snils.split("-");
@@ -165,106 +164,112 @@ public class Export {
         str = snils.split(" ");
         snils = str[0] + str[1];
 
-        row.setIdDD(DDID_1);
-        row.setAttribId("ELN_" + t_ELN);
+        row.setId("ELN_" + t_ELN);
         row.setSnils(snils);
         row.setSurname(get(jrow, "surname"));
         row.setName(get(jrow, "name"));
-        row.setPatronimic(get(jrow, "patronimic"));
-        row.setBozflag(Integer.parseInt(get(jrow, "boz_flag")));
-        row.setLpuemployer(get(jrow, "lpu_employer"));
-        row.setLpuemplflag(Integer.parseInt(get(jrow, "lpu_empl_flag")));
-        row.setLncode(get(jrow, "ln_code"));
-        row.setPrevlncode(get(jrow, "prev_ln"));
-        row.setPrimaryflag(Integer.parseInt(get(jrow, "primary_flag")));
-        row.setDuplicateflag(Integer.parseInt(get(jrow, "duplicate_flag")));
-        row.setLndate(get(jrow, "ln_date"));
-        row.setLpuname(get(jrow, "lpu_name"));
-        row.setLpuaddress(get(jrow, "lpu_address"));
-        row.setLpuogrn(get(jrow, "lpu_ogrn"));
-        row.setBirthday(get(jrow, "birthday"));
+        row.setPatronymic(get(jrow, "patronimic"));
+
+        row.setLnCode(get(jrow, "ln_code"));
+        //row.setLnCode("123456789012");
+        if (isNotNullOrEmpty(get(jrow, "prev_ln"))) {
+            row.setPrevLnCode(get(jrow, "prev_ln"));
+        }
+        row.setPrimaryFlag(Boolean.parseBoolean(get(jrow, "primary_flag")));
+        row.setDuplicateFlag(Boolean.parseBoolean(get(jrow, "duplicate_flag")));
+        row.setLnDate(getDate(jrow, "ln_date"));
+        //row.setIdMo("0");
+        //TODO
+        row.setLpuName(isNotNullOrEmpty(get(jrow, "lpu_name")) ? get(jrow, "lpu_name") : "ГБУЗ АО АМОКБ");
+        row.setLpuAddress(isNotNullOrEmpty(get(jrow, "lpu_address")) ? get(jrow, "lpu_address") : "ГДЕ-ТО");
+        row.setLpuOgrn(get(jrow, "lpu_ogrn").isEmpty() ? ogrnMo : get(jrow, "lpu_ogrn"));
+        row.setBirthday(getDate(jrow, "birthday"));
         row.setGender(Integer.parseInt(get(jrow, "gender")));
-        row.setReason1(get(jrow, "reason1"));
+
+
+        //row.setReason1(get(jrow, "reason1"));
+        row.setReason1("01");
+
         row.setReason2(get(jrow, "reason2"));
-        row.setReason3(get(jrow, "reason3"));
         row.setDiagnos(get(jrow, "diagnos"));
-        row.setParentcode(get(jrow, "parent_code"));
-        row.setDate1(get(jrow, "date1"));
-        row.setDate2(get(jrow, "date2"));
-        row.setVoucherno(get(jrow, "voucher_no"));
-        row.setVoucherogrn(get(jrow, "voucher_ogrn"));
-        row.setServ1AGE(get(jrow, "serv1_age"));
-        row.setServ1RELATIONCODE(get(jrow, "serv1_relation_code"));
-        row.setServ1FIO(get(jrow, "serv1_fio"));
-        row.setServ2AGE(get(jrow, "serv2_age"));
-        row.setServ2RELATIONCODE(get(jrow, "serv2_relation_code"));
-        row.setServ2FIO(get(jrow, "serv2_fio"));
-        row.setPregn12WFLAG(get(jrow, "pregn12w_flag"));
-        row.setHospitaldt1(get(jrow, "hospital_dt1"));
-        row.setHospitaldt2(get(jrow, "hospital_dt2"));
-        row.setMsedt1(get(jrow, "mse_dt1"));
-        row.setMsedt2(get(jrow, "mse_dt2"));
-        row.setMsedt3(get(jrow, "mse_dt3"));
-        if (!get(jrow, "ln_hash").equals("null")) {
-            row.setLnhash(get(jrow, "ln_hash"));
-        }
+        row.setDate1(getDate(jrow, "date1"));
+        row.setDate2(getDate(jrow, "date2"));
 
-        String inv = get(jrow, "mse_invalid_group");
+        //row.setPregn12WFlag(getBoolean(jrow, "pregn12w_flag"));
+        row.setHospitalDt1(getDate(jrow, "hospital_dt1"));
+        row.setHospitalDt2(getDate(jrow, "hospital_dt2"));
+
+        //row.setMseDt1(getDate(jrow, "mse_dt1"));
+        //row.setMseDt2(getDate(jrow, "mse_dt2"));
+        //row.setMseDt3(getDate(jrow, "mse_dt3"));
+       /* String inv = get(jrow, "mse_invalid_group");
         if (inv != null && !inv.equals("")) {
-            row.setMseinvalidgroup(Integer.valueOf(inv));
-        }
-        row.setLnstate(get(jrow, "ln_state"));
+            row.setMseInvalidGroup(Integer.valueOf(inv));
+        }*/
 
-        ln_results.add(ln_result);
-        row.setLnresult(ln_results);
+        row.setLnState(get(jrow, "ln_state"));
+        row.setWrittenAgreementFlag(true);
+        row.setIntermittentMethodFlag(false);
+
+        if (isNotNullOrEmpty(get(jrow, "voucher_no")) && isNotNullOrEmpty(get(jrow, "voucher_ogrn"))) {
+            row.setVoucherNo(get(jrow, "voucher_no"));
+            row.setVoucherOgrn(get(jrow, "voucher_ogrn"));
+        }
+        /*if (!get(jrow, "ln_hash").equals("null")) {
+            row.setLnHash(get(jrow, "ln_hash"));
+        }*/
+
 
         /** HOSPITAL_BREACH **/
-        if (get(jrow, "hospital_breach_code") != null) {
-            ru.rashgild.entities.ROW.HOSPITAL_BREACH hospital_breach = new ru.rashgild.entities.ROW.HOSPITAL_BREACH();
-            hospital_breach.setHospitalbreachcode(get(jrow, "hospital_breach_code"));
-            hospital_breach.setHospitalbreachdt(get(jrow, "hospital_breach_dt"));
-            if (hospital_breach.getHospitalbreachcode() != null) {
-                hospital_breach.setAttributeId("ELN_" + t_ELN + "_1_doc");
+        if (isNotNullOrEmpty(get(jrow, "hospital_breach_code"))) {
+            //Row.HOSPITAL_BREACH hospital_breach = new Row.HOSPITAL_BREACH();
+            Rowset.Row.HospitalBreach hospitalBreach = new Rowset.Row.HospitalBreach();
+            //hospital_breach.setHospitalBreachDt(get(jrow, "hospital_breach_code"));
+            //hospital_breach.setHospitalBreachDt(get(jrow, "hospital_breach_dt"));
+            if (hospitalBreach.getHospitalBreachCode() != null) {
+                hospitalBreach.setId("ELN_" + t_ELN + "_1_doc");
             }
-            List<ru.rashgild.entities.ROW.HOSPITAL_BREACH> hospital_breaches = new ArrayList<>();
-            hospital_breaches.add(hospital_breach);
-            row.setHospitalbreach(hospital_breaches);
+            //List<Rowset.Row.HospitalBreach> hospital_breaches = new ArrayList<>();
+            //hospital_breaches.add(hospital_breach);
+            row.setHospitalBreach(hospitalBreach);
         }
 
         /** TREAT */
+        List<TreatFullPeriodMo> treatFullPeriodMoList = new ArrayList<>();
         for (JsonElement el : treats) {
-
             JsonObject jtreat = el.getAsJsonObject();
             String isexport = get(jtreat, "isexport");
             int DDID_2 = Integer.parseInt(get(jtreat, "ddid"));
 
             if (DDID_1 == DDID_2) {
-                TREAT_PERIOD treat_period = new TREAT_PERIOD();
-                treat_period.setTreatdt1(get(jtreat, "treat_dt1"));
+                TreatFullPeriodMo.TreatPeriod treatPeriod = new TreatFullPeriodMo.TreatPeriod();
+                treatPeriod.setTreatDt1(get(jtreat, "treat_dt1"));
                 if (StartPeriod == null) {
                     StartPeriod = get(jtreat, "treat_dt1");
                 }
 
-                treat_period.setTreatdt2(get(jtreat, "treat_dt2"));
-                treat_period.setTreatdoctorrole(get(jtreat, "treat_doctor_role"));
-                treat_period.setTreatdoctor(get(jtreat, "treat_doctor"));
-                /*String counterdoc = get(jtreat, "counterdoc");
-                String countervk = get(jtreat, "countervk");*/
-                treat_period.setAttribId("ELN_" + t_ELN + "_" + per + "_doc");
+                treatPeriod.setTreatDt2(get(jtreat, "treat_dt2"));
+                treatPeriod.setTreatDoctorRole(get(jtreat, "treat_doctor_role"));
+                treatPeriod.setTreatDoctor(get(jtreat, "treat_doctor"));
 
-                List<TREAT_PERIOD> treat_periods = new ArrayList<>();
-                treat_periods.add(treat_period);
-                TREAT_FULL_PERIOD treat_full_period = new TREAT_FULL_PERIOD();
-                treat_full_period.setTreatchairmanrole(get(jtreat, "treat_chairman_role"));
-                treat_full_period.setTreatchairman(get(jtreat, "treat_chairman"));
+                String counterdoc = get(jtreat, "counterdoc");
+                String countervk = get(jtreat, "countervk");
+                treatPeriod.setId("ELN_" + t_ELN + "_" + per + "_doc");
 
-                if (treat_full_period.getTreatchairmanrole() != null && !treat_full_period.getTreatchairmanrole().equals("")) {
-                    treat_full_period.setAttribIdVk("ELN_" + t_ELN + "_" + per + "_vk");
+                TreatFullPeriodMo treat_period = new TreatFullPeriodMo();
+
+                //List<TREAT_PERIOD> treat_periods = new ArrayList<>();
+                //treat_periods.add(treat_period);
+                //TREAT_FULL_PERIOD treat_full_period = new TREAT_FULL_PERIOD();
+                treat_period.setTreatChairmanRole(get(jtreat, "treat_chairman_role"));
+                treat_period.setTreatChairman(get(jtreat, "treat_chairman"));
+
+                if (treat_period.getTreatChairmanRole() != null && !treat_period.getTreatChairmanRole().equals("")) {
+                    treat_period.setId("ELN_" + t_ELN + "_" + per + "_vk");
                 }
 
                 if (isexport == null || isexport.equals("") || (!isexport.equals("true") && !isexport.equals("t"))) {
-
-                    if (treat_full_period.getTreatchairmanrole() != null && !treat_full_period.getTreatchairmanrole().equals("")) {
+                    if (treat_period.getTreatChairmanRole() != null && !treat_period.getTreatChairmanRole().equals("")) {
                         head += createHead(
                                 get(jtreat, "certvk"),
                                 get(jtreat, "digvk"),
@@ -286,12 +291,27 @@ public class Export {
                             get(jtreat, "typesigndoc"));
                 }
 
-                treat_full_period.setTreat_period(treat_periods);
-                treat_full_periods.add(treat_full_period);
+                treat_period.setTreatPeriod(treatPeriod);
+                treatFullPeriodMoList.add(treat_period);
                 per++;
             }
         }
+        Rowset.Row.TreatPeriods treatPeriods = new Rowset.Row.TreatPeriods();
+        treatPeriods.setTreatFullPeriod(treatFullPeriodMoList);
+        row.setTreatPeriods(treatPeriods);
 
+
+        //Rowset.Row.ServData servData = new Rowset.Row.ServData();
+        //row.setServData(servData);
+        /*row.setServ1AGE(get(jrow, "serv1_age"));
+        row.setServ1RELATIONCODE(get(jrow, "serv1_relation_code"));
+        row.setServ1FIO(get(jrow, "serv1_fio"));
+        row.setServ2AGE(get(jrow, "serv2_age"));
+        row.setServ2RELATIONCODE(get(jrow, "serv2_relation_code"));
+        row.setServ2FIO(get(jrow, "serv2_fio"));*/
+
+       /*
+        if(get(jrow, "serv1_age"))
         try {
             if (row.getServ1AGE() != null && !row.getServ1AGE().equals("")) {
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -315,17 +335,21 @@ public class Export {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
         /** LN_RESULT */
+        boolean isClose = (get(jrow, "is_close")).equals("1");
         if (isClose) {
-            ln_result.setAttribId("ELN_" + t_ELN + "_2_doc");
+            Rowset.Row.LnResult lnResult = new Rowset.Row.LnResult();
+            lnResult.setMseResult(get(jrow, "mse_result"));
+            lnResult.setOtherStateDt(get(jrow, "other_state_dt"));
 
+            lnResult.setId("ELN_" + t_ELN + "_2_doc");
             for (JsonElement el : signclose) {
 
                 JsonObject jtreat = el.getAsJsonObject();
                 //Для даты выхода на работу
-                ln_result.setReturndatelpu(get(jtreat, "returndt"));
+                lnResult.setReturnDateLpu(get(jtreat, "returndt"));
                 head += createHead(
                         get(jtreat, "certclose"),
                         get(jtreat, "digclose"),
@@ -336,50 +360,44 @@ public class Export {
                         "doc",
                         get(jtreat, "typesignclose"));
             }
-        }
 
-        if (isClose && ln_result.getMseresult() != null) {
-            if (!ln_result.getMseresult().equals("31") && !ln_result.getMseresult().equals("37")) {
 
-                if (ln_result.getOtherstatedt() != null && !ln_result.getOtherstatedt().equals("")) {
-                    ln_result.setReturndatelpu(null);
+            if (lnResult.getMseResult() != null) {
+                if (!lnResult.getMseResult().equals("31") && !lnResult.getMseResult().equals("37")) {
+
+                    if (lnResult.getOtherStateDt() != null && !lnResult.getOtherStateDt().equals("")) {
+                        lnResult.setReturnDateLpu(null);
+                    } else {
+                        lnResult.setReturnDateLpu(getReturnWorkDate(lnResult.getReturnDateLpu()));
+                    }
                 } else {
-                    ln_result.setReturndatelpu(getReturnWorkDate(ln_result.getReturndatelpu()));
+                    lnResult.setReturnDateLpu(null);
+                    lnResult.setNextLnCode(isNotNullOrEmpty(get(jrow, "next_ln_code")) ? "0" : get(jrow, "next_ln_code"));
                 }
-            } else {
-                ln_result.setReturndatelpu(null);
-                ln_result.setNextlncode(get(jrow, "next_ln_code"));
-            }
-        } else if (!isClose) {
-            ln_result.setReturndatelpu(null);
+            } /*else if (!isClose) {
+                lnResult.setReturnDateLpu(null);
+            }*/
+            row.setLnResult(lnResult);
         }
 
         /** ---- */
-        row.setTREAT_PERIODS(treat_full_periods);
         rows.add(row);
-
-        ru.rashgild.entities.ROWSET rowset = new ru.rashgild.entities.ROWSET();
-        rowset.setAuthor("R.Kurbanov");
-        rowset.setEmail("Rashgild@gmail.com");
-        rowset.setPhone("89608634440");
-        rowset.setSoftware("SignAndCrypt");
-        rowset.setVersion("1.1");
+        Rowset rowset = new Rowset();
+        rowset.setAuthor("Rashgild");
+        rowset.setEmail("rashgild@gmail.com");
+        rowset.setPhone("9999");
+        rowset.setVersion("2.0");
+        rowset.setSoftware("sign-and-crypt");
         rowset.setVersionSoftware("2.0");
         rowset.setRow(rows);
-        List<ru.rashgild.entities.ROWSET> rowsets = new ArrayList<>();
-        rowsets.add(rowset);
-        PrParseFileLnLpu.Reqest.pXmlFile pXmlFile = new PrParseFileLnLpu.Reqest.pXmlFile();
-        pXmlFile.setRowset(rowsets);
-        List<PrParseFileLnLpu.Reqest.pXmlFile> pXmlFiles = new ArrayList<>();
-        pXmlFiles.add(pXmlFile);
-        PrParseFileLnLpu.Reqest request = new PrParseFileLnLpu.Reqest();
-        request.setOgrn(ogrnMo);
-        request.setpXmlFiles(pXmlFiles);
-        List<PrParseFileLnLpu.Reqest> reqests = new ArrayList<>();
-        reqests.add(request);
-        PrParseFileLnLpu prParseFilelnlpu = new PrParseFileLnLpu();
-        prParseFilelnlpu.setFil("http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl");
-        prParseFilelnlpu.setRequests(reqests);
+
+        //rowset = createTestData();
+
+        PrParseFilelnlpuRequest.PXmlFile pXmlFile = new PrParseFilelnlpuRequest.PXmlFile();
+        pXmlFile.setRowset(rowset);
+        PrParseFilelnlpuRequest prParseFilelnlpu = new PrParseFilelnlpuRequest();
+        prParseFilelnlpu.setOgrn(ogrnMo);
+        prParseFilelnlpu.setPXmlFile(pXmlFile);
 
         String finalXml = createXml(prParseFilelnlpu).replace("[Head]", head);
 
@@ -390,10 +408,38 @@ public class Export {
         saveSoapToXml("MyTempFile.xml", message);
 
         message = Sign.signationByParametrs(message,
-                "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getAttribId(),
-                "#" + row.getAttribId(), moAlias, moPass, t_ELN);
+                "http://eln.fss.ru/actor/mo/" + ogrnMo + "/" + row.getId(),
+                "#" + row.getId(), moAlias, moPass, t_ELN);
+
+        X509Certificate cert = CertificateUtils.getCertificateFromKeyStorage(GlobalVariables.moAlias);
+        SOAPEnvelope soapEnvelope = message.getSOAPPart().getEnvelope();
+        SOAPHeader header1 = soapEnvelope.getHeader();
+        SOAPElement x509Certificate = header1.addChildElement("X509Certificate", null, "http://www.w3.org/2000/09/xmldsig#");
+        x509Certificate.addTextNode(CertificateUtils.certToBase64(cert));
+
+        System.out.println(XmlUtils.soapMessageToString(message));
 
         return message;
+    }
+
+    private XMLGregorianCalendar toNewXMLGregorianCalendar(String date) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date newDate = null;
+        try {
+            newDate = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(newDate);
+
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private String createHead(String cert, String dig, String sig, String eln, String ogrn, String counter, String type, String signatureType) {
@@ -436,11 +482,11 @@ public class Export {
                                 : "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256");
     }
 
-    private String createXml(PrParseFileLnLpu prParseFilelnlpu) {
+    private String createXml(PrParseFilelnlpuRequest prParseFilelnlpu) {
         setUp();
         String signThis = "";
         String xmlTemplate = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
-                "xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:fil=\"http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl\" " +
+                "xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:fil=\"http://www.fss.ru/integration/types/eln/mo/v01\" " +
                 "xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\" " +
                 "xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\" " +
                 "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" +
@@ -467,5 +513,88 @@ public class Export {
 
     private String getReturnWorkDate(String date) {
         return String.valueOf(LocalDate.parse(date).plusDays(1));
+    }
+
+    private Rowset createTestData() {
+        Rowset.Row row = new Rowset.Row();
+
+        row.setId("ELN_" + t_ELN);
+        row.setUnconditional(false);
+        row.setSnils("12345394243");
+        row.setName("ТЕСТ");
+        row.setSurname("ТЕСТ");
+        row.setPatronymic("ТЕСТ");
+        row.setLnCode(t_ELN);
+        row.setPrimaryFlag(true);//row.setPrimaryFlag("1");
+        row.setDuplicateFlag(false);//row.setPrimaryFlag("1");
+        row.setLnDate("2020-08-24");
+        row.setLpuName("ГБУЗ ЦРБ №1");
+        row.setLpuAddress("Г.НИЖНИЙ НОВГОРОД, УЛ. ГОРЬКОГО 117");
+        row.setLpuOgrn("1021900520410");
+        row.setBirthday("2020-08-24");
+        row.setGender(1);
+        row.setReason1("");
+        row.setReason2("");
+        row.setDiagnos("");
+        row.setDate1(null);
+        row.setDate2(null);
+        row.setMseDt1(null);
+        row.setMseDt2(null);
+        row.setMseDt3(null);
+        row.setMseInvalidGroup(null);
+        row.setLnState("20");
+        row.setLnHash("3BE67F22A716F7922E63E01838DD3409");
+        row.setWrittenAgreementFlag(true);
+
+        Rowset.Row.ServData.ServFullData servFullData = new Rowset.Row.ServData.ServFullData();
+        servFullData.setServRelationCode("39");
+        servFullData.setServDt1("2020-08-24");
+        servFullData.setServDt2("2020-08-24");
+        servFullData.setTreatmentType("0");
+        servFullData.setName("ТЕСТ");
+        servFullData.setSurname("ТЕСТ");
+        servFullData.setPatronymic("ТЕСТ");
+        servFullData.setBirthday("2020-08-24");
+        servFullData.setReason1("09");
+        servFullData.setSnils("12345394243");
+        servFullData.setDiagnosis("A00.9");
+
+        List<Rowset.Row.ServData.ServFullData> servFullDataList = new ArrayList<>();
+        servFullDataList.add(servFullData);
+        Rowset.Row.ServData servData = new Rowset.Row.ServData();
+        servData.setServFullData(servFullDataList);
+
+        row.setServData(servData);
+
+        // Периоды
+        TreatFullPeriodMo treatFullPeriodMo = new TreatFullPeriodMo();
+
+        TreatFullPeriodMo.TreatPeriod treatPeriod = new TreatFullPeriodMo.TreatPeriod();
+        treatPeriod.setTreatDoctor("ГАБЕЕВА ИЧ");
+        treatPeriod.setTreatDoctorRole("ПЕДИАТР");
+        treatPeriod.setTreatDt1("2020-08-20");
+        treatPeriod.setTreatDt2("2020-08-20");
+        treatFullPeriodMo.setTreatChairman("");
+        treatFullPeriodMo.setTreatChairmanRole("");
+        treatFullPeriodMo.setTreatPeriod(treatPeriod);
+
+        List<TreatFullPeriodMo> fullPeriodMoList = new ArrayList<>();
+        fullPeriodMoList.add(treatFullPeriodMo);
+
+        Rowset.Row.TreatPeriods treatPeriods = new Rowset.Row.TreatPeriods();
+        treatPeriods.setTreatFullPeriod(fullPeriodMoList);
+        row.setTreatPeriods(treatPeriods);
+
+        List<Rowset.Row> rowsList = new ArrayList<>();
+        rowsList.add(row);
+        Rowset rowset = new Rowset();
+        rowset.setRow(rowsList);
+        rowset.setAuthor("Test");
+        rowset.setEmail("rashgild@gmail.com");
+        rowset.setPhone("9999");
+        rowset.setVersion("2.0");
+        rowset.setSoftware("fss");
+        rowset.setVersionSoftware("2.0");
+        return rowset;
     }
 }
