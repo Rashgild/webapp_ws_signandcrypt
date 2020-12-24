@@ -1,9 +1,6 @@
 package ru.rashgild.generated.v2.types.eln.mo.v01;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -38,6 +35,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  * 
  */
+@XmlRootElement(name = "prParseFilelnlpuRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PrParseFilelnlpuRequest", propOrder = {
     "ogrn",

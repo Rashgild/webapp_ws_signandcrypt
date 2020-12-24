@@ -1,62 +1,65 @@
 package ru.rashgild.servlets;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import org.apache.log4j.Logger;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
+import ru.rashgild.generated.v2.types.eln.mo.v01.*;
+import ru.rashgild.generated.v2.types.eln.v01.Info;
+import ru.rashgild.generated.v2.types.eln.v01.WSResult;
+import ru.rashgild.service.DependencyInjection;
+import ru.rashgild.utils.GlobalVariables;
+import ru.rashgild.utils.SQL;
+import ru.rashgild.utils.StoredQuery;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
-import ru.rashgild.utils.GlobalVariables;
-import ru.rashgild.utils.SQL;
-import ru.rashgild.utils.StoredQuery;
-import ru.rashgild.generated.v1.fileoperationsln.ws.*;
-
-import static ru.rashgild.utils.GlobalVariables.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/SetLnData")
 public class sPrParseFileLnLpu extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
+            Boolean isTest = Boolean.parseBoolean(request.getParameter("test"));
             long start = System.currentTimeMillis();
             response.setContentType("text/html ;charset=UTF-8");
             String id = request.getParameter("id");
             GlobalVariables.requestParam = id;
             request.setAttribute("id", id);
 
-            boolean f = getLnHash(id);
+            boolean f = getLnHash(id, isTest);
             request.setAttribute("snils", f);
             if (f) {
-                WSResult result = setRequest();
-                List<INFO.ROWSET.ROW> rows = result.getINFO().getROWSET().getROW();
+                WSResult result = setRequest(isTest);
+                List<Info.InfoRowset.InfoRow> rows = result.getInfo().getInfoRowset().getInfoRow();
                 StringBuilder saveResult = new StringBuilder();
                 String state = "", hash = "", status = "";
 
                 if (rows != null && rows.size() > 0) {
-                    for (INFO.ROWSET.ROW row : rows) {
-
-                        state = row.getLNSTATE();
-                        hash = row.getLNHASH();
+                    for (Info.InfoRowset.InfoRow row : rows) {
+                        state = row.getLnState();
+                        hash = row.getLnHash();
                         if (state.equals("") && hash.equals("")) {
                             hash = GlobalVariables.hash;
                             state = GlobalVariables.state;
                         }
-                        status = String.valueOf(row.getSTATUS());
+                        status = String.valueOf(row.getStatus());
 
                         request.setAttribute("row", row);
                         request.setAttribute("result", result);
 
-                        saveResult.append(result.getMESS());
+                        saveResult.append(result.getMess());
                         try {
-                            if (row.getERRORS() != null && row.getERRORS().getERROR().size() > 0) {
-                                List<INFO.ROWSET.ROW.ERRORS.ERROR> errors = row.getERRORS().getERROR();
+                            if (row.getErrors() != null && row.getErrors().getError().size() > 0) {
+                                List<Info.InfoRowset.InfoRow.Errors.Error> errors = row.getErrors().getError();
                                 request.setAttribute("errors", errors);
-                                for (INFO.ROWSET.ROW.ERRORS.ERROR errs : errors) {
-                                    saveResult.append(":".concat(errs.getERRMESS()));
+                                for (Info.InfoRowset.InfoRow.Errors.Error errs : errors) {
+                                    saveResult.append(":".concat(errs.getErrMess()));
                                 }
                             }
                         } catch (Exception e) {
@@ -72,7 +75,7 @@ public class sPrParseFileLnLpu extends HttpServlet {
                         SQL.sqlUpdIns(StoredQuery.updateDisRecord(id));
                     }
                 }
-                SQL.saveInBaseDate(saveResult.toString(), result.getSTATUS());
+                SQL.saveInBaseDate(saveResult.toString(), result.getStatus());
             }
             request.getRequestDispatcher("/WEB-INF/prParseFileLnLpu.jsp").forward(request, response);
 
@@ -81,34 +84,30 @@ public class sPrParseFileLnLpu extends HttpServlet {
         }
     }
 
-    private static WSResult setRequest() {
-        System.setProperty("javax.net.ssl.trustStore", pathandnameSSL);
-        System.setProperty("javax.net.ssl.trustStorePassword", passwordSSL);
-        FileOperationsLnImplService service = new FileOperationsLnImplService();
-        FileOperationsLn start = service.getFileOperationsLnPort();
-        ROWSET rowset = new ROWSET();
-        PrParseFilelnlpuElement prParseFilelnlpuElement = new PrParseFilelnlpuElement();
-        PrParseFilelnlpuElement.PXmlFile pXmlFile = new PrParseFilelnlpuElement.PXmlFile();
-        pXmlFile.setROWSET(rowset);
-        prParseFilelnlpuElement.setPXmlFile(pXmlFile);
-        WSResult result = null;
+    private static WSResult setRequest(Boolean isTest) {
+        FIleOperationService service = DependencyInjection.getImplementation(isTest);
+        FileOperationsLnService start = service.getFileOperationsLnPort();
+        Rowset rowset = new Rowset();
+        PrParseFilelnlpuRequest prParseFilelnlpuRequest = new PrParseFilelnlpuRequest();
+        PrParseFilelnlpuRequest.PXmlFile pXmlFile = new PrParseFilelnlpuRequest.PXmlFile();
+        pXmlFile.setRowset(rowset);
+        prParseFilelnlpuRequest.setPXmlFile(pXmlFile);
         try {
-            result = start.prParseFilelnlpu(prParseFilelnlpuElement);
-            return result;
-        } catch (SOAPException_Exception e) {
+            return start.prParseFilelnlpu(prParseFilelnlpuRequest);
+        } catch (InternalException e) {
             e.printStackTrace();
         }
-        return result;
+        return null;
     }
 
-    private static boolean getLnHash(String id) {
+    private static boolean getLnHash(String id, Boolean isTest) {
         Logger logger = Logger.getLogger("");
         logger.info("Get Hash");
         String snils = "", eln = "";
         ResultSet rs = SQL.select(StoredQuery.getLnHash(id));
         String hash = null;
         try {
-            while (rs.next()){
+            while (rs.next()) {
                 hash = rs.getString("lasthash");
                 System.out.println(GlobalVariables.hash + ">>>>from base hash");
             }
@@ -116,7 +115,7 @@ public class sPrParseFileLnLpu extends HttpServlet {
             e.printStackTrace();
         }
 
-        if(hash==null) {
+        if (hash == null) {
             ResultSet resultSet = SQL.select(StoredQuery.getLNandSnils(id));
             try {
                 while (resultSet.next()) {
@@ -132,16 +131,19 @@ public class sPrParseFileLnLpu extends HttpServlet {
             logger.info("Snils: " + snils);
             logger.info("Eln: " + eln);
             try {
-                System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
-                System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
-                FileOperationsLnImplService service = new FileOperationsLnImplService();
-                FileOperationsLn start = service.getFileOperationsLnPort();
-                FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(GlobalVariables.ogrnMo, eln, snils);
-                for (ROW row : fileOperationsLnUserGetLNDataOut.getDATA().getOUTROWSET().getROW()) {
-                    GlobalVariables.hash = row.getLNHASH();
-                    System.out.println(GlobalVariables.hash + ">>>>has");
-                    GlobalVariables.state = row.getLNSTATE();
-                }
+                FIleOperationService service = DependencyInjection.getImplementation(isTest);
+                FileOperationsLnService start = service.getFileOperationsLnPort();
+
+                GetLNDataRequest request = new GetLNDataRequest();
+                request.setOgrn(GlobalVariables.ogrnMo);
+                request.setLnCode(eln);
+                request.setSnils(snils);
+
+                FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(request);
+                ResponseRow responseRow = fileOperationsLnUserGetLNDataOut.getData().getOutRowset().getResponseRow();
+                GlobalVariables.hash = responseRow.getLnHash();
+                System.out.println(GlobalVariables.hash + ">>>>has");
+                GlobalVariables.state = responseRow.getLnState();
 
             } catch (Exception e) {
                 e.printStackTrace();

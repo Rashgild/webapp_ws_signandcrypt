@@ -1,5 +1,20 @@
 package ru.rashgild.servlets;
 
+import org.apache.log4j.Logger;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
+import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
+import ru.rashgild.generated.v2.types.eln.mo.v01.FileOperationsLnUserGetLNDataOut;
+import ru.rashgild.generated.v2.types.eln.mo.v01.GetLNDataRequest;
+import ru.rashgild.generated.v2.types.eln.mo.v01.ResponseRow;
+import ru.rashgild.generated.v2.types.eln.v01.LnResult;
+import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
+import ru.rashgild.service.DependencyInjection;
+import ru.rashgild.utils.SQL;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -7,21 +22,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnUserGetLNDataOut;
-import ru.rashgild.generated.v1.fileoperationsln.ws.ROW;
-import ru.rashgild.generated.v1.fileoperationsln.ws.SOAPException_Exception;
-import ru.rashgild.generated.v1.fileoperationsln.ws.TREATFULLPERIOD;
-import ru.rashgild.utils.GlobalVariables;
-import ru.rashgild.utils.SQL;
 
 import static ru.rashgild.utils.GlobalVariables.ogrnMo;
 
@@ -76,7 +76,6 @@ public class sImportLNN extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
-
         try {
             Logger logger = Logger.getLogger("simple");
             logger.info("Start Import>>>");
@@ -86,6 +85,7 @@ public class sImportLNN extends HttpServlet {
             String eln = request.getParameter("eln");
             String snils = request.getParameter("snils");
             String pid = request.getParameter("pid");
+            Boolean isTest = Boolean.parseBoolean(request.getParameter("test"));
 
             String outString = "";
             outString += "<html><head><meta charset=\"UTF-8\"/><title>SignAndCrypt</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head><body>";
@@ -96,126 +96,125 @@ public class sImportLNN extends HttpServlet {
             out.print("<H1> eln=" + eln + "</H1>");
             out.print("<H1> snils=" + snils + "</H1>");
 
-            System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
-            System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
-            FileOperationsLnImplService service = new FileOperationsLnImplService();
-            FileOperationsLn start = service.getFileOperationsLnPort();
+            FIleOperationService service = DependencyInjection.getImplementation(isTest);
+            FileOperationsLnService start = service.getFileOperationsLnPort();
 
             try {
-                FileOperationsLnUserGetLNDataOut fget = start.getLNData(ogrn, eln, snils);
-                ROW row = fget.getDATA().getOUTROWSET().getROW().get(0);
+                GetLNDataRequest request1 = new GetLNDataRequest();
+                request1.setOgrn(ogrn);
+                request1.setLnCode(eln);
+                request1.setSnils(snils);
+
+                FileOperationsLnUserGetLNDataOut fileOperationsLnUserGetLNDataOut = start.getLNData(request1);
+                ResponseRow row = fileOperationsLnUserGetLNDataOut.getData().getOutRowset().getResponseRow();
                 if (!isExistNumber(eln)) {
-                    Map<String, String> SQLrequest = new HashMap<String, String>();
+                    Map<String, String> SQLrequest = new HashMap<>();
 
                     SQL.sqlUpdIns("INSERT into disabilitycase (patient_id, createdate,createusername) values (" + pid + ", current_date, 'Importer')");
                     String idDisCase = SQL.insertReturning("select max(id) as id from disabilitycase");
-                    String lpuOGRN = row.getLPUOGRN();
+                    String lpuOGRN = row.getLpuOgrn();
 
                     if (ogrnMo.equals(lpuOGRN)) {
                         System.out.println("lpuOGRN>>>>" + lpuOGRN);
-
                     } else {
-                        SQLrequest.put("anotherlpuaddress", con(row.getLPUADDRESS()));
-                        SQLrequest.put("anotherlpuogrn", con(row.getLPUOGRN()));
-                        SQLrequest.put("anotherlpuname", con(row.getLPUNAME()));
+                        SQLrequest.put("anotherlpuaddress", con(row.getLpuAddress()));
+                        SQLrequest.put("anotherlpuogrn", con(row.getLpuOgrn()));
+                        SQLrequest.put("anotherlpuname", con(row.getLpuName()));
                     }
 
-                    if (row.getPREVLNCODE() != null && !row.getPREVLNCODE().equals("")) {
-                        SQLrequest.put("pervelnnumber", con(row.getPREVLNCODE()));
+                    if (row.getPrevLnCode() != null && !row.getPrevLnCode().isEmpty()) {
+                        SQLrequest.put("pervelnnumber", con(row.getPrevLnCode()));
+                        SQLrequest.put("anotherprevln", "'" + row.getPrevLnCode() + "'");
                     }
 
-                    if (row.getDUPLICATEFLAG() != 0) {
+                    /*if (row.getDuplicate() != 0) {
                         SQLrequest.put("elnduplicate", con(String.valueOf(row.getDUPLICATEFLAG())));
-                    }
-                    SQLrequest.put("number", con(row.getLNCODE()));
-                    SQLrequest.put("issuedate", con(row.getLNDATE().toString()));
+                    }*/
+
+                    SQLrequest.put("number", con(row.getLnCode()));
+                    SQLrequest.put("issuedate", con(row.getLnDate().toString()));
                     SQLrequest.put("noactuality", "false");
                     SQLrequest.put("patient_id", pid);
 
-                    if (row.getREASON1() != null && row.getREASON1().equals("01")) {
+                    if (row.getReason1() != null && row.getReason1().equals("01")) {
                         SQLrequest.put("disabilityreason_id", "1");
                     }
                     SQLrequest.put("disabilitycase_id", idDisCase);
 
-
-                    if (row.getPREVLNCODE() != null && !row.getPREVLNCODE().equals("")) {
-                        SQLrequest.put("anotherprevln", "'" + row.getPREVLNCODE() + "'");
-                    }
-                    if (row.getPRIMARYFLAG() == 1) {
-                        SQLrequest.put("primarity_id", "1");
-                    } else {
+                    //if (row.getPRIMARYFLAG() == 1) {
+                    SQLrequest.put("primarity_id", "1");
+                    /*} else {
                         SQLrequest.put("primarity_id", "2");
-                    }
-                    SQLrequest.put("job", "'" + row.getLPUEMPLOYER() + "'");
+                    }*/
+                    //SQLrequest.put("job", "'" + row.getLPUEMPLOYER() + "'");
 
-                    if (row.getHOSPITALDT1() != null && !row.getHOSPITALDT1().toString().equals("")) {
-                        SQLrequest.put("hospitalizedfrom", "'" + row.getHOSPITALDT1() + "'");
+                    if (row.getHospitalDt1() != null && !row.getHospitalDt1().toString().isEmpty()) {
+                        SQLrequest.put("hospitalizedfrom", "'" + row.getHospitalDt1().toString() + "'");
                     }
-                    if (row.getHOSPITALDT2() != null && !row.getHOSPITALDT2().toString().equals("")) {
-                        SQLrequest.put("hospitalizedto", "'" + row.getHOSPITALDT2() + "'");
+                    if (row.getHospitalDt2() != null && !row.getHospitalDt2().toString().isEmpty()) {
+                        SQLrequest.put("hospitalizedto", "'" + row.getHospitalDt2().toString() + "'");
                     }
 
-                    if (row.getDIAGNOS() != null && !row.getDIAGNOS().equals("")) {
-                        String id10 = SQL.insertReturning("select id from vocidc10 where code = '" + row.getDIAGNOS() + "'");
-                        if (id10 != null && !id10.equals("")) {
+                    if (isNotNullOrEmpty(row.getDiagnos())) {
+                        String id10 = SQL.insertReturning("select id from vocidc10 where code = '" + row.getDiagnos() + "'");
+                        if (isNotNullOrEmpty(id10)) {
                             SQLrequest.put("idc10_id", id10);
                             SQLrequest.put("idc10final_id", id10);
                         } else {
-                            SQLrequest.put("diagnos", "'" + row.getDIAGNOS() + "'");
+                            SQLrequest.put("diagnos", "'" + row.getDiagnos() + "'");
                         }
                     }
 
-                    ROW.LNRESULT lnresult = row.getLNRESULT();
+                    LnResult lnresult = row.getLnResult();
                     if (lnresult != null) {
                         SQLrequest.put("isclose", "true");
-                        if (lnresult.getMSERESULT() != null && !lnresult.getMSERESULT().equals("")) {
-                            String reasonId = SQL.insertReturning("select id from vocdisabilitydocumentclosereason where codef = '" + lnresult.getMSERESULT() + "'");
+                        if (lnresult.getMseResult() != null && !lnresult.getMseResult().isEmpty()) {
+                            String reasonId = SQL.insertReturning("select id from vocdisabilitydocumentclosereason where codef = '" + lnresult.getMseResult() + "'");
                             SQLrequest.put("closereason_id", reasonId);
                         } else {
                             SQLrequest.put("closereason_id", "1");
                         }
-                        if (lnresult.getOTHERSTATEDT() != null && !lnresult.getOTHERSTATEDT().equals("")) {
-                            SQLrequest.put("otherclosedate", "'" + lnresult.getOTHERSTATEDT() + "'");
+                        if (lnresult.getOtherStateDt() != null && !lnresult.getOtherStateDt().isEmpty()) {
+                            SQLrequest.put("otherclosedate", "'" + lnresult.getOtherStateDt() + "'");
                         }
-                        if (lnresult.getRETURNDATELPU() != null && !lnresult.getRETURNDATELPU().equals("")) {
-                            SQLrequest.put("beginworkdate", "'" + lnresult.getRETURNDATELPU() + "'");
+                        if (lnresult.getReturnDateLpu() != null && !lnresult.getReturnDateLpu().equals("")) {
+                            SQLrequest.put("beginworkdate", "'" + lnresult.getReturnDateLpu() + "'");
                         }
                     }
                     SQLrequest.put("createdate", "current_date");
                     SQLrequest.put("createusername", "'Importer'");
                     SQLrequest.put("documenttype_id", "1");
-                    SQLrequest.put("closeexport","false");
+                    SQLrequest.put("closeexport", "false");
 
                     SQLrequest.put("status_id", "1");
                     String req = buildRequest(SQLrequest, "disabilitydocument");
                     SQL.sqlUpdIns(req);
-                    String DisabilityDocumentId = SQL.insertReturning("Select max(id) as id from disabilitydocument");
-                    List<TREATFULLPERIOD> treatfullperiods = row.getTREATPERIODS().getTREATFULLPERIOD();
-                    for (TREATFULLPERIOD treatfullperiod : treatfullperiods) {
 
+                    String disabilityDocumentId = SQL.insertReturning("Select max(id) as id from disabilitydocument");
+                    List<TreatFullPeriodMo> treatFullPeriods = row.getTreatPeriods().getTreatFullPeriod();
+                    for (TreatFullPeriodMo treatFullPeriodMo : treatFullPeriods) {
+
+                        TreatFullPeriodMo.TreatPeriod fullPeriod = treatFullPeriodMo.getTreatPeriod();
                         SQLrequest = new HashMap<>();
-                        if (isNotNull(treatfullperiod.getTREATPERIOD().getTREATDT1())) {
-                            SQLrequest.put("datefrom", "'" + treatfullperiod.getTREATPERIOD().getTREATDT1() + "'");
+                        if (isNotNull(fullPeriod.getTreatDt1())) {
+                            SQLrequest.put("datefrom", "'" + fullPeriod.getTreatDt1() + "'");
                         }
 
-                        if (isNotNull(treatfullperiod.getTREATPERIOD().getTREATDT2())) {
-                            SQLrequest.put("dateto", "'" + treatfullperiod.getTREATPERIOD().getTREATDT2() + "'");
+                        if (isNotNull(fullPeriod.getTreatDt2())) {
+                            SQLrequest.put("dateto", "'" + fullPeriod.getTreatDt2() + "'");
                         }
 
-                        if (isNotNull(treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE())) {
-                            SQLrequest.put("docrole", "'" + treatfullperiod.getTREATPERIOD().getTREATDOCTORROLE() + "'");
+                        if (isNotNull(fullPeriod.getTreatDoctorRole()) && isNotNull(fullPeriod.getTreatDoctor())) {
+                            SQLrequest.put("docrole", "'" + fullPeriod.getTreatDoctorRole() + "'");
+                            SQLrequest.put("docname", "'" + fullPeriod.getTreatDoctor() + "'");
                         }
 
-                        if (isNotNull(treatfullperiod.getTREATPERIOD().getTREATDOCTOR())) {
-                            SQLrequest.put("docname", "'" + treatfullperiod.getTREATPERIOD().getTREATDOCTOR() + "'");
+                        if (isNotNull(treatFullPeriodMo.getTreatChairman()) && isNotNull(treatFullPeriodMo.getTreatChairmanRole())) {
+                            SQLrequest.put("vkname", "'" + treatFullPeriodMo.getTreatChairman() + "'");
+                            SQLrequest.put("vkrole", "'" + treatFullPeriodMo.getTreatChairmanRole() + "'");
                         }
 
-                        if (isNotNull(treatfullperiod.getTREATCHAIRMAN()) && isNotNull(treatfullperiod.getTREATCHAIRMANROLE())) {
-                            SQLrequest.put("vkname", "'" + treatfullperiod.getTREATCHAIRMAN() + "'");
-                            SQLrequest.put("vkrole", "'" + treatfullperiod.getTREATCHAIRMANROLE() + "'");
-                        }
-
-                        SQLrequest.put("disabilitydocument_id", DisabilityDocumentId.toString());
+                        SQLrequest.put("disabilitydocument_id", disabilityDocumentId);
                         SQLrequest.put("isexport", "true");
                         req = buildRequest(SQLrequest, "disabilityrecord");
                         SQL.sqlUpdIns(req);
@@ -224,14 +223,14 @@ public class sImportLNN extends HttpServlet {
                     out.print("<br>");
                     out.print("Создано! <a href=\"/riams/entityParentView-dis_case.do?id=" + idDisCase + "\">Перейти</a>");
                     out.print("<br>");
-                    out.print("<H1> info=" + fget.getINFO() + "</H1>");
-                    out.print("<H1> mess=" + fget.getMESS() + "</H1>");
-                    out.print("<H1> status=" + fget.getSTATUS() + "</H1>");
+                    out.print("<H1> info=" + fileOperationsLnUserGetLNDataOut.getInfo() + "</H1>");
+                    out.print("<H1> mess=" + fileOperationsLnUserGetLNDataOut.getMess() + "</H1>");
+                    out.print("<H1> status=" + fileOperationsLnUserGetLNDataOut.getStatus() + "</H1>");
                     out.print("</body></html>");
                 } else {
                     request.getRequestDispatcher("/sLnDate").forward(request, response);
                 }
-            } catch (SOAPException_Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } catch (Exception e) {
@@ -243,12 +242,20 @@ public class sImportLNN extends HttpServlet {
         return obj != null && !obj.equals("");
     }
 
-    private static String buildRequest(Map<String, String> SQLrequest, String tablename) {
-        StringBuilder header = new StringBuilder().append("insert into " + tablename + " (");
+    private static Boolean isNotNullOrEmpty(String str) {
+        return str != null && !str.isEmpty();
+    }
+
+    private static String buildRequest(Map<String, String> sqlRequest, String tableName) {
+        StringBuilder header = new StringBuilder()
+                .append("insert into ")
+                .append(tableName)
+                .append(" (");
+
         StringBuilder body = new StringBuilder().append(" values (");
 
-        int size = SQLrequest.size(), i = 0;
-        for (Map.Entry entry : SQLrequest.entrySet()) {
+        int size = sqlRequest.size(), i = 0;
+        for (Map.Entry entry : sqlRequest.entrySet()) {
 
             header.append(entry.getKey());
             body.append(entry.getValue());

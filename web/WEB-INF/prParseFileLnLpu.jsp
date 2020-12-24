@@ -36,23 +36,23 @@
 <c:choose>
     <c:when test="${row!=null}">
 
-        <c:if test="${row.getSTATUS()==0}">
+        <c:if test="${row.getStatus()==0}">
             <p class="ex2">
         <span style="font-size: medium; color: #2d2d2b; ">
 Id:${id} <br>
-#ЭЛН:${row.getLNCODE()} <br>
-Ответ: ${result.getMESS()} <br>
+#ЭЛН:${row.getLnCode()} <br>
+Ответ: ${result.getMess()} <br>
         <c:forEach items="${errors}" var="errors">
-            Ошибка: ${errors.getERRMESS()} <br>
+            Ошибка: ${errors.getErrMess()} <br>
         </c:forEach>
         </span>
             </p>
         </c:if>
-        <c:if test="${row.getSTATUS()==1}">
+        <c:if test="${row.getStatus()==1}">
             <p class="ex">
         <span style="font-size: medium; color: #2d2d2b; ">
 Id:${id} <br>
-#ЭЛН:${row.getLNCODE()} <br>
+#ЭЛН:${row.getLnCode()} <br>
 Ответ: ЛН успешно выгружен
         </span>
             </p>

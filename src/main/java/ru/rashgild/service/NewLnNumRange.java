@@ -1,4 +1,4 @@
-package ru.rashgild.service_operations.newLNNumRange;
+package ru.rashgild.service;
 
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.Name;
@@ -15,7 +15,9 @@ import ru.rashgild.utils.XmlUtils;
 import ru.rashgild.signAndCrypt.Encrypt;
 import ru.rashgild.signAndCrypt.Sign;
 
-public class NewLnNumRange_start {
+import static ru.rashgild.utils.CertificateUtils.addCertificateToHeader;
+
+public class NewLnNumRange {
 
     /**
      * Меняет перехваченное сообщение под нужный шаблон
@@ -30,6 +32,8 @@ public class NewLnNumRange_start {
             Create(soapMsg);
             logger.info("SigningMessage");
             soapMsg = Sign.signation();
+            soapMsg = addCertificateToHeader(soapMsg);
+
             XmlUtils.saveSoapToXml("GetNumSigned.xml", soapMsg);
             GlobalVariables.Request = XmlUtils.soapMessageToString(soapMsg);
             MessageFactory mf = MessageFactory.newInstance();

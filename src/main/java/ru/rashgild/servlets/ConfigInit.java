@@ -69,6 +69,11 @@ public class ConfigInit implements ServletContextListener {
 
         passwordCertStor = resource.getString("passwordCertStor");
         aliasCert = resource.getString("aliasCert");
+        aliasTestCert = resource.getString("aliasTestCert");
+        if (!aliasTestCert.isEmpty()) {
+            aliasCert = aliasTestCert;
+        }
+
         pathToCert = resource.getString("pathToCert");
         nameKstorage = resource.getString("nameKstorage");
 
@@ -143,9 +148,5 @@ public class ConfigInit implements ServletContextListener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) {
-        create();
     }
 }

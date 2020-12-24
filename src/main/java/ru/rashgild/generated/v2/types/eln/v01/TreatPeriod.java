@@ -45,9 +45,9 @@ public class TreatPeriod {
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar treatDt1;
+    protected String treatDt1;
     @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar treatDt2;
+    protected String treatDt2;
     protected String idDoctor;
     protected String treatDoctorRole;
     protected String treatDoctor;
@@ -60,7 +60,7 @@ public class TreatPeriod {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getTreatDt1() {
+    public String getTreatDt1() {
         return treatDt1;
     }
 
@@ -72,7 +72,7 @@ public class TreatPeriod {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setTreatDt1(XMLGregorianCalendar value) {
+    public void setTreatDt1(String value) {
         this.treatDt1 = value;
     }
 
@@ -84,7 +84,7 @@ public class TreatPeriod {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getTreatDt2() {
+    public String getTreatDt2() {
         return treatDt2;
     }
 
@@ -96,7 +96,7 @@ public class TreatPeriod {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setTreatDt2(XMLGregorianCalendar value) {
+    public void setTreatDt2(String value) {
         this.treatDt2 = value;
     }
 

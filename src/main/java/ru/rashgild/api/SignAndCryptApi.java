@@ -29,9 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
-import ru.rashgild.entities.ROW;
-import ru.rashgild.entities.TREAT_FULL_PERIOD;
-import ru.rashgild.entities.TREAT_PERIOD;
+import ru.rashgild.generated.v2.types.eln.mo.v01.Rowset;
+import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
 import ru.rashgild.utils.GlobalVariables;
 
 import static ru.rashgild.api.ApiUtils.cretePostRequest;
@@ -49,7 +48,7 @@ public class SignAndCryptApi {
                         @Context HttpServletRequest req,
                         @Context HttpServletResponse response) throws IOException, ServletException, ParseException {
 
-        ROW row = parseJson(data);
+        Rowset.Row row = parseJson(data);
         String xml = createXML(row);
 
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -114,9 +113,9 @@ public class SignAndCryptApi {
     }
 
     //Парс json -> возврат ROW (xml)
-    private ROW parseJson(String json) {
+    private Rowset.Row parseJson(String json) {
 
-        ROW row = new ROW();
+        Rowset.Row row = new Rowset.Row();
         JsonParser parser = new JsonParser();
         JsonObject jparse = parser.parse(json).getAsJsonObject();
         JsonArray treats = jparse.getAsJsonArray("data");
@@ -131,24 +130,24 @@ public class SignAndCryptApi {
                 String elncode = get(jtreat, "ddnum");
                 String number = get(jtreat, "num");
 
-                ROW.LN_RESULT ln_result = new ROW.LN_RESULT();
-                ln_result.setAttribId("ELN_" + elncode + "_" + number + "_doc");
-                ln_result.setMseresult(get(jtreat, "mse_result"));
-                ln_result.setNextlncode(get(jtreat, "NEXT_LN_CODE"));
-                ln_result.setOtherstatedt(get(jtreat, "other_state_dt"));
+                Rowset.Row.LnResult lnResult = new Rowset.Row.LnResult();
+                lnResult.setId("ELN_" + elncode + "_" + number + "_doc");
+                lnResult.setMseResult(get(jtreat, "mse_result"));
+                lnResult.setNextLnCode(get(jtreat, "NEXT_LN_CODE"));
+                lnResult.setOtherStateDt(get(jtreat, "other_state_dt"));
 
-                ln_result.setReturndatelpu(get(jtreat, "returndt"));
+                lnResult.setReturnDateLpu(get(jtreat, "returndt"));
 
                 row.setDiagnos(get(jtreat, "ddid"));
-                row.setLnhash(get(jtreat, "doctype"));
+                row.setLnHash(get(jtreat, "doctype"));
 
-                System.out.println("getReturndatelpu>>>>>>" + ln_result.getReturndatelpu());
+                System.out.println("getReturndatelpu>>>>>>" + lnResult.getReturnDateLpu());
                 String isClose = get(jtreat, "is_close");
-                if (isClose.equals("1") && ln_result.getMseresult() != null) {
-                    if (!ln_result.getMseresult().equals("31") && !ln_result.getMseresult().equals("37")) {
+                if (isClose.equals("1") && lnResult.getMseResult() != null) {
+                    if (!lnResult.getMseResult().equals("31") && !lnResult.getMseResult().equals("37")) {
 
-                        if (ln_result.getOtherstatedt() != null && !ln_result.getOtherstatedt().equals("")) {
-                            ln_result.setReturndatelpu(null);
+                        if (lnResult.getOtherStateDt() != null && !lnResult.getOtherStateDt().equals("")) {
+                            lnResult.setReturnDateLpu(null);
                         } else {
                           /* Calendar cal = Calendar.getInstance();
                            cal.setTime(format.parse(ln_result.getReturndatelpu()));
@@ -156,71 +155,77 @@ public class SignAndCryptApi {
                            ln_result.setReturndatelpu(new java.sql.Date(cal.getTime().getTime()).toString());*/
                         }
                     } else { //Если закрыт по причине "продолжает болеть"
-                        ln_result.setReturndatelpu(null);
-                        ln_result.setNextlncode(get(jtreat, "next_ln_code"));
+                        lnResult.setReturnDateLpu(null);
+                        lnResult.setNextLnCode(get(jtreat, "next_ln_code"));
                     }
 
-                } else if (!isClose.equals("1")) ln_result.setReturndatelpu(null);
+                } else if (!isClose.equals("1")) lnResult.setReturnDateLpu(null);
 
 
-                List<ROW.LN_RESULT> ln_results = new ArrayList<>();
-                ln_results.add(ln_result);
+                /*List<Rowset.Row.LnResult> lnResultList = new ArrayList<>();
+                lnResultList.add(lnResult);*/
 
+                row.setLnResult(lnResult);
                 row.setBirthday(get(jtreat, "num"));
                 row.setDiagnos(get(jtreat, "ddid"));
-                row.setLnhash("doc");
-                row.setLncode(elncode);
-                row.setAttribId(number);
-                row.setLnresult(ln_results);
+                row.setLnHash("doc");
+                row.setLnCode(elncode);
+                row.setId(number);
+
 
             } else {
-                String isexport = get(jtreat, "isexport");
-                if (isexport.equals("t")) {
+                String isExport = get(jtreat, "isexport");
+                if (isExport.equals("t")) {
                     continue;
                 }
 
                 String elncode = get(jtreat, "ddnum");
                 String number = get(jtreat, "num");
 
-                TREAT_PERIOD treat_period = new TREAT_PERIOD();
-                treat_period.setTreatdt1(get(jtreat, "treat_dt1"));
-                treat_period.setTreatdt2(get(jtreat, "treat_dt2"));
-                treat_period.setTreatdoctor(get(jtreat, "treat_doctor"));
-                treat_period.setTreatdoctorrole(get(jtreat, "treat_doctor_role"));
-                treat_period.setAttribId("ELN_" + elncode + "_" + number + "_doc");
-                List<TREAT_PERIOD> treat_periods = new ArrayList<>();
-                treat_periods.add(treat_period);
+                TreatFullPeriodMo.TreatPeriod treatPeriod = new TreatFullPeriodMo.TreatPeriod();
+                //TREAT_PERIOD treat_period = new TREAT_PERIOD();
+                treatPeriod.setTreatDt1(get(jtreat, "treat_dt1"));
+                treatPeriod.setTreatDt2(get(jtreat, "treat_dt2"));
+                treatPeriod.setTreatDoctor(get(jtreat, "treat_doctor"));
+                treatPeriod.setTreatDoctorRole(get(jtreat, "treat_doctor_role"));
+                treatPeriod.setId("ELN_" + elncode + "_" + number + "_doc");
+                /*List<TreatFullPeriodMo.TreatPeriod> treat_periods = new ArrayList<>();
+                treat_periods.add(treatPeriod);*/
 
-                TREAT_FULL_PERIOD treat_full_period = new TREAT_FULL_PERIOD();
-                treat_full_period.setTreat_period(treat_periods);
-                treat_full_period.setTreatchairman(get(jtreat, "treat_chairman"));
-                treat_full_period.setTreatchairmanrole(get(jtreat, "treat_chairman_role"));
-                if (treat_full_period.getTreatchairman() != null)
-                    treat_full_period.setAttribIdVk("ELN_" + elncode + "_" + number + "_vk");
+                TreatFullPeriodMo treatFullPeriodMo = new TreatFullPeriodMo();
+                //TREAT_FULL_PERIOD treat_full_period = new TREAT_FULL_PERIOD();
+                treatFullPeriodMo.setTreatPeriod(treatPeriod);
+                treatFullPeriodMo.setTreatChairman(get(jtreat, "treat_chairman"));
+                treatFullPeriodMo.setTreatChairmanRole(get(jtreat, "treat_chairman_role"));
+                if (treatFullPeriodMo.getTreatChairmanRole() != null) {
+                    treatFullPeriodMo.setId("ELN_" + elncode + "_" + number + "_vk");
+                }
 
-                List<TREAT_FULL_PERIOD> treat_full_periods = new ArrayList<>();
-                treat_full_periods.add(treat_full_period);
+                List<TreatFullPeriodMo> treatFullPeriodMoList = new ArrayList<>();
+                treatFullPeriodMoList.add(treatFullPeriodMo);
 
+                Rowset.Row.TreatPeriods treatPeriods = new Rowset.Row.TreatPeriods();
+                treatPeriods.setTreatFullPeriod(treatFullPeriodMoList);
 
                 row.setBirthday(get(jtreat, "num"));
                 row.setSnils(get(jtreat, "recordid"));
                 row.setDiagnos(get(jtreat, "ddid"));
-                row.setLncode(elncode);
-                row.setAttribId(number);
-                row.setLnhash(get(jtreat, "doctype"));
-                row.setTREAT_PERIODS(treat_full_periods);
+                row.setLnCode(elncode);
+                row.setId(number);
+                row.setLnHash(get(jtreat, "doctype"));
+                row.setTreatPeriods(treatPeriods);
             }
         }
         return row;
     }
 
-    private String createXML(ROW row) {
+    private String createXML(Rowset.Row row) {
 
         setUp();
         String signThis = "";
-        String number = row.getAttribId();
-        String elnNumber = row.getLncode();
-        String type = row.getLnhash();
+        String number = row.getId();
+        String elnNumber = row.getLnCode();
+        String type = row.getLnHash();
 
         try {
             Document document = GlobalVariables.parser.objToSoap(row);
@@ -249,7 +254,7 @@ public class SignAndCryptApi {
         return signThis;
     }
 
-    private static String xmlTemplate = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:fil=\"http://ru/ibs/fss/ln/ws/FileOperationsLn.wsdl\" xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\" xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
+    private static String xmlTemplate = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:fil=\"http://www.fss.ru/integration/types/eln/mo/v01\" xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\" xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
             "<soapenv:Header>\n" +
             "<wsse:Security soapenv:actor=\"http://eln.fss.ru/actor/<someAdd1>\"\n" + // doc/ELN_306742020070_3_doc
             "xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">\n" +

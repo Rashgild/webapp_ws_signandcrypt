@@ -1,20 +1,14 @@
 package ru.rashgild.servlets;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import org.apache.log4j.Logger;
+import ru.rashgild.utils.GlobalVariables;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLn;
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnImplService;
-import ru.rashgild.generated.v1.fileoperationsln.ws.FileOperationsLnUserGetExistingLNNumRangeOut;
-import ru.rashgild.generated.v1.fileoperationsln.ws.LnNumList;
-import ru.rashgild.utils.GlobalVariables;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/sExistingLNNumRange")
 public class sExistingLNNumRange extends HttpServlet {
@@ -38,7 +32,7 @@ public class sExistingLNNumRange extends HttpServlet {
 
         System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
         System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
-        FileOperationsLnImplService service = new FileOperationsLnImplService();
+        /*FileOperationsLnImplService service = new FileOperationsLnImplService();
         FileOperationsLn start = service.getFileOperationsLnPort();
 
         try {
@@ -58,7 +52,7 @@ public class sExistingLNNumRange extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         out.println("</body>");
         out.println("</html>");
     }
