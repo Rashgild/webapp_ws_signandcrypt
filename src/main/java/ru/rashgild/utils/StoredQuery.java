@@ -24,7 +24,7 @@ public class StoredQuery {
                 "and dd.id =" + disabilityId;
     }
 
-    public static String PrParse_Query1(String disabilityId) {
+    public static String prParseQuery1(String disabilityId) {
         return "select\n" +
                 "dd.issuedate,\n" +
                 "dd.id as DDID,\n" +
@@ -40,6 +40,7 @@ public class StoredQuery {
                 ",dd.number as LN_CODE\n" +
                 ",case when dd.pervelnnumber is not null then dd.pervelnnumber else (select dd2.number from disabilitydocument dd2 where dd2.id = dd.prevdocument_id) end as PREV_LN\n" +
                 ",case when (vddp.code ='2') then '0' else '1' end as PRIMARY_FLAG\n" +
+                ",dd.previouslyissuedcode as PREVIOUS_ISSUE_CODE\n" +
                 ",case when dd.elnduplicate is not null or dd.elnduplicate = '1' then '1' else case when (select count(a.id) from disabilitydocument a where a.duplicate_id=dd.id) >0 then '1' else '0'end  end as DUPLICATE_FLAG\n" +
                 ",dd.issuedate as LN_DATE\n" +
                 ",case when dd.anotherlpu_id is not null then dd.anotherlpuname else lpu.name end as LPU_NAME\n" +
@@ -109,7 +110,7 @@ public class StoredQuery {
                 "and dd.id =" + disabilityId;
     }
 
-    public static String PrParse_Query2(String disabilityId) {
+    public static String prParseQuery2(String disabilityId) {
         return "select\n" +
                 "dd.id as DDID    \n" +
                 ",p.lastname as SURNAME\n" +
@@ -137,11 +138,11 @@ public class StoredQuery {
                 "order by treat_dt1 asc \n";
     }
 
-    public static String getLnHash(String disabilityId){
-        return "select lasthash from ElectronicDisabilityDocumentNumber where disabilitydocument_id="+disabilityId;
+    public static String getLnHash(String disabilityId) {
+        return "select lasthash from ElectronicDisabilityDocumentNumber where disabilitydocument_id=" + disabilityId;
     }
 
-    protected static String QueryToSave(String result, Integer status) {
+    protected static String queryToSave(String result, Integer status) {
         return "INSERT INTO exportfsslog" +
                 "(result, responsecode, status, disabilitydocument, disabilitynumber, requestcode, requestdate, requesttime, requesttype)" +
                 "VALUES" +
@@ -151,7 +152,7 @@ public class StoredQuery {
                 + GlobalVariables.Type + "')";
     }
 
-    public static String SaveStatusAndHash(String status, String hash, String ELN) {
+    public static String updateStatusAndHash(String status, String hash, String ELN) {
         java.sql.Date curDate = new java.sql.Date(System.currentTimeMillis());
         return "update ElectronicDisabilityDocumentNumber " +
                 "set status_id=(select id from VocDisabilityDocumentExportStatus where code='" + status + "')," +
@@ -166,10 +167,16 @@ public class StoredQuery {
                 " where disabilitydocument_id=" + id;
     }
 
-    public static String SaveNumber(String number) {
+    public static String updateDisabilityDocument(String id) {
+        return "update disabilitydocument " +
+                "set closeexport = true " +
+                " where id =" + id;
+    }
+
+    public static String saveNumber(String number) {
         Date curTime = new Date();
-        DateFormat dtfrm = DateFormat.getDateInstance();
-        String dateTime = dtfrm.format(curTime);
+        DateFormat dateFormat = DateFormat.getDateInstance();
+        String dateTime = dateFormat.format(curTime);
         return "INSERT INTO electronicdisabilitydocumentnumber\n" +
                 "(number, createdate) values ('" + number + "',to_date('" + dateTime + "','dd.MM.yyyy'))";
     }

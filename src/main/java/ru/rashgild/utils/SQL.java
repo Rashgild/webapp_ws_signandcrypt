@@ -74,7 +74,7 @@ public class SQL {
         if (GlobalVariables.Response != null && !GlobalVariables.Response.equals("")) {
             GlobalVariables.Response = split(GlobalVariables.Response);
         }
-        sqlUpdIns(StoredQuery.QueryToSave(result, status));
+        sqlUpdIns(StoredQuery.queryToSave(result, status));
     }
 
     private static String split(String str) {

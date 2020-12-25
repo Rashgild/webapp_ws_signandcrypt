@@ -20,6 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static ru.rashgild.api.ApiUtils.isNotNullOrEmpty;
+
 @WebServlet("/SetLnData")
 public class sPrParseFileLnLpu extends HttpServlet {
 
@@ -69,10 +71,11 @@ public class sPrParseFileLnLpu extends HttpServlet {
                 }
 
                 request.setAttribute("time", ((System.currentTimeMillis() - start) / 1000));
-                if (state != null && !state.equals("") || hash != null && !hash.equals("")) {
-                    SQL.sqlUpdIns(StoredQuery.SaveStatusAndHash(state, hash, GlobalVariables.t_ELN));
+                if (isNotNullOrEmpty(state) || isNotNullOrEmpty(hash)) {
+                    SQL.sqlUpdIns(StoredQuery.updateStatusAndHash(state, hash, GlobalVariables.t_ELN));
                     if (status.equals("1")) {
                         SQL.sqlUpdIns(StoredQuery.updateDisRecord(id));
+                        SQL.sqlUpdIns(StoredQuery.updateDisabilityDocument(id));
                     }
                 }
                 SQL.saveInBaseDate(saveResult.toString(), result.getStatus());

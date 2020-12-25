@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import static ru.rashgild.utils.SQL.sqlUpdIns;
-import static ru.rashgild.utils.StoredQuery.SaveNumber;
+import static ru.rashgild.utils.StoredQuery.saveNumber;
 
 @WebServlet("/sNewLnNumRange")
 public class sNewLnNumRange extends HttpServlet {
@@ -59,7 +59,7 @@ public class sNewLnNumRange extends HttpServlet {
             int index = 0;
             for (String lnNumber : lnNumbers) {
                 out.println("<H1>" + (++index) + ") " + lnNumber + "</H1>");
-                sqlUpdIns(SaveNumber(lnNumber));
+                sqlUpdIns(saveNumber(lnNumber));
                 index++;
             }
 

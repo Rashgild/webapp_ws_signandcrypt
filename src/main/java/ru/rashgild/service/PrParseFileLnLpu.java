@@ -24,9 +24,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static ru.rashgild.utils.CertificateUtils.addCertificateToHeader;
 import static ru.rashgild.utils.GlobalVariables.*;
-import static ru.rashgild.utils.StoredQuery.PrParse_Query1;
-import static ru.rashgild.utils.StoredQuery.PrParse_Query2;
+import static ru.rashgild.utils.StoredQuery.prParseQuery1;
+import static ru.rashgild.utils.StoredQuery.prParseQuery2;
 import static ru.rashgild.utils.XmlUtils.saveSoapToXml;
 import static ru.rashgild.utils.XmlUtils.soapMessageToString;
 
@@ -42,7 +43,7 @@ public class PrParseFileLnLpu {
         logger.info("1)Formation skeleton");
         PrParseFilelnlpuRequest prParseFilelnlpuRequest = null;
         try {
-            prParseFilelnlpuRequest = createSkeleton(PrParse_Query1(disabilityId), PrParse_Query2(disabilityId));
+            prParseFilelnlpuRequest = createSkeleton(prParseQuery1(disabilityId), prParseQuery2(disabilityId));
         } catch (SQLException | ParseException e) {
             logger.error(e);
         }
@@ -50,13 +51,10 @@ public class PrParseFileLnLpu {
         logger.info("2)Create message");
         SOAPMessage message = createSoapMessage(prParseFilelnlpuRequest);
         logger.info("3)Signing");
+
         try {
             message = signDocument(prParseFilelnlpuRequest, message);
-            X509Certificate cert = CertificateUtils.getCertificateFromKeyStorage(GlobalVariables.moAlias);
-            SOAPEnvelope soapEnvelope = message.getSOAPPart().getEnvelope();
-            SOAPHeader header1 = soapEnvelope.getHeader();
-            SOAPElement x509Certificate = header1.addChildElement("X509Certificate", null, "http://www.w3.org/2000/09/xmldsig#");
-            x509Certificate.addTextNode(CertificateUtils.certToBase64(cert));
+            message = addCertificateToHeader(message);
         } catch (Exception e) {
             logger.error(e);
         }
@@ -195,6 +193,7 @@ public class PrParseFileLnLpu {
             row.setLnCode(resultSet.getString("LN_CODE"));
             row.setPrevLnCode(resultSet.getString("PREV_LN"));
             row.setPrimaryFlag(resultSet.getBoolean("PRIMARY_FLAG"));
+            row.setPreviouslyIssuedCode(resultSet.getString("PREVIOUS_ISSUE_CODE"));
             row.setDuplicateFlag(resultSet.getBoolean("DUPLICATE_FLAG"));
             row.setLnDate(resultSet.getString("LN_DATE"));
             row.setLpuName(resultSet.getString("LPU_NAME"));

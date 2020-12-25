@@ -127,6 +127,10 @@ public class sImportLNN extends HttpServlet {
                         SQLrequest.put("anotherprevln", "'" + row.getPrevLnCode() + "'");
                     }
 
+                    if(row.getPreviouslyIssuedCode() != null && !row.getPreviouslyIssuedCode().isEmpty()) {
+                        SQLrequest.put("previouslyissuedcode", con(row.getPreviouslyIssuedCode()));
+                    }
+
                     /*if (row.getDuplicate() != 0) {
                         SQLrequest.put("elnduplicate", con(String.valueOf(row.getDUPLICATEFLAG())));
                     }*/
