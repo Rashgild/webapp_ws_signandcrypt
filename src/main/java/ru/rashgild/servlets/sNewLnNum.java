@@ -2,7 +2,6 @@ package ru.rashgild.servlets;
 
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
-import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
 import ru.rashgild.generated.v2.types.eln.mo.v01.FileOperationsLnUserGetNewLNNumOut;
 import ru.rashgild.generated.v2.types.eln.mo.v01.GetNewLNNumRequest;
@@ -17,7 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import static ru.rashgild.utils.SQL.sqlUpdIns;
-import static ru.rashgild.utils.StoredQuery.SaveNumber;
+import static ru.rashgild.utils.StoredQuery.saveNumber;
 
 @WebServlet("/sNewLnNum")
 public class sNewLnNum extends HttpServlet {
@@ -51,7 +50,7 @@ public class sNewLnNum extends HttpServlet {
             out.println("<H1>" + lnNum.getMess() + "</H1>");
             out.println("<H1> Получен номер: </H1>");
             out.println("<H1>1)" + lnNum.getData() + "</H1>");
-            sqlUpdIns(SaveNumber(lnNum.getData()));
+            sqlUpdIns(saveNumber(lnNum.getData()));
 
         } catch (InternalException e) {
             e.printStackTrace();

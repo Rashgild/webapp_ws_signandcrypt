@@ -176,6 +176,8 @@ public class Export {
             row.setPrevLnCode(get(jrow, "prev_ln"));
         }
         row.setPrimaryFlag(Boolean.parseBoolean(get(jrow, "primary_flag")));
+        //TODO check if not null
+        row.setPreviouslyIssuedCode(get(jrow, "previously_issued_code"));
         row.setDuplicateFlag(Boolean.parseBoolean(get(jrow, "duplicate_flag")));
         row.setLnDate(getDate(jrow, "ln_date"));
         //row.setIdMo("0");
