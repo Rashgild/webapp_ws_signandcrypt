@@ -1,29 +1,15 @@
 package ru.rashgild.interceptor;
 
 import org.apache.log4j.Logger;
-
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import ru.rashgild.service.LnDateService;
-import ru.rashgild.service.LnDateServiceImpl;
+import ru.rashgild.service.*;
+import ru.rashgild.signAndCrypt.VerifyAndDecrypt;
 import ru.rashgild.utils.GlobalVariables;
 import ru.rashgild.utils.SQL;
 import ru.rashgild.utils.XmlUtils;
-import ru.rashgild.service.LnDate_start;
-import ru.rashgild.service.DisableLn;
-import ru.rashgild.service.ExistingLNNumRange;
-import ru.rashgild.service.NewLNNum;
-import ru.rashgild.service.NewLnNumRange;
-import ru.rashgild.service.PrParseFileLnLpu;
-import ru.rashgild.signAndCrypt.VerifyAndDecrypt;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
@@ -36,28 +22,21 @@ import java.util.Set;
 
 import static ru.rashgild.utils.XmlUtils.stringToSoap;
 
+@Component
 public class Injecter extends SpringBeanAutowiringSupport implements SOAPHandler<SOAPMessageContext> {
 
-    @Autowired
-    private LnDateService lnDateService;
 
     @Resource
     WebServiceContext wsContext;
 
-   /* public Injecter(LnDateService lnDateService) {
+    private static LnDateService lnDateService;
+
+    @Autowired
+    public void init(LnDateService lnDateService) {
         this.lnDateService = lnDateService;
-    }*/
+    }
 
-   /* @Override
-    @PostConstruct
-    public void afterPropertiesSet() throws Exception {
-        Logger logger = Logger.getLogger(Injecter.class);
-        logger.info("AuthenticationHandler - PostConstruct");
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }*/
-
-
-    @Override
+    //@Override
     public boolean handleMessage(SOAPMessageContext context) {
 
         Logger logger = Logger.getLogger(Injecter.class);
@@ -129,7 +108,7 @@ public class Injecter extends SpringBeanAutowiringSupport implements SOAPHandler
         }
     }
 
-    @Override
+    //@Override
     public boolean handleFault(SOAPMessageContext context) {
         SOAPMessage msg = context.getMessage();
         Logger logger = Logger.getLogger("simple");
@@ -138,11 +117,11 @@ public class Injecter extends SpringBeanAutowiringSupport implements SOAPHandler
         return true;
     }
 
-    @Override
+    //@Override
     public void close(MessageContext context) {
     }
 
-    @Override
+    //@Override
     public Set<QName> getHeaders() {
         return null;
     }

@@ -26,7 +26,7 @@ public class ConfigInit implements ServletContextListener {
     }
 
     public static void Configure() {
-        ResourceBundle resource = ResourceBundle.getBundle("config", new UTF8Control());
+        ResourceBundle resource = ResourceBundle.getBundle("application", new UTF8Control());
         dbhost = resource.getString("dbhost");
         dblogin = resource.getString("dblogin");
         dbpassword = resource.getString("dbpassword");

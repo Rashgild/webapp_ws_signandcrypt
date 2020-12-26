@@ -1,6 +1,8 @@
 
 package ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01;
 
+import org.springframework.stereotype.Component;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.jws.HandlerChain;
@@ -18,6 +20,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
+@Component
 @WebServiceClient(name = "FileOperationsLnService", targetNamespace = "http://www.fss.ru/integration/ws/eln/mo/v01", wsdlLocation = "https://docs.fss.ru/WSLnCryptoV20/FileOperationsLnService?WSDL")
 @HandlerChain(file = "ru/rashgild/interceptor/handler-chain.xml")
 public class FileOperationsLnServiceImpl extends Service implements FIleOperationService {

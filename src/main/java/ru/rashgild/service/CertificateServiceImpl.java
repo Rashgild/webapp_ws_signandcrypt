@@ -62,7 +62,6 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @Override
     public X509Certificate getCertificateFromKeyStorage(String alias) throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
-
         JCPXMLDSigInit.init();
         HDImageStore.setDir(GlobalVariables.HDImageStorePath);
         KeyStore ks = KeyStore.getInstance("HDImageStore");

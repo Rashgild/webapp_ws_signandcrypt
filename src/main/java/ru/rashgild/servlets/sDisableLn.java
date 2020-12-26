@@ -3,7 +3,6 @@ package ru.rashgild.servlets;
 import org.apache.log4j.Logger;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FIleOperationService;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnService;
-import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.FileOperationsLnServiceImpl;
 import ru.rashgild.generated.v2.fss.integration.ws.eln.mo.v01.InternalException;
 import ru.rashgild.generated.v2.types.eln.mo.v01.DisableLnRequest;
 import ru.rashgild.generated.v2.types.eln.v01.WSResult;
