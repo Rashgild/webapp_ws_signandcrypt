@@ -1,67 +1,32 @@
 package ru.rashgild.servlets;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import ru.rashgild.utils.GlobalVariables;
 import ru.rashgild.utils.SQL;
 import ru.rashgild.utils.StoredQuery;
 import ru.rashgild.utils.UTF8Control;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.io.*;
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 import static ru.rashgild.utils.GlobalVariables.*;
 
 public class ConfigInit implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
-        try {
-            Configure();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Configure();
     }
 
     public void contextDestroyed(ServletContextEvent event) {
     }
 
-    public static void Configure() throws IOException {
-
-        System.out.println("INITIALIZE!!!!!!!!!!!!!!!!!");
-        ResourceBundle res = ResourceBundle.getBundle("update", new UTF8Control());
-
-        InputStream input;
-        ResourceBundle resource = null;
-
-        if (!res.getString("configType").equals("default")) {
-
-            if (res.getString("configType").equals("tomcat")) {
-
-                input = new FileInputStream(res.getString("defaultPath"));
-            } else {
-                input = new FileInputStream(new File(res.getString("absPath")));
-            }
-            Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
-            resource = new PropertyResourceBundle(reader);
-
-        } else {
-            resource = ResourceBundle.getBundle("config", new UTF8Control());
-        }
-
+    public static void Configure() {
+        ResourceBundle resource = ResourceBundle.getBundle("config", new UTF8Control());
         dbhost = resource.getString("dbhost");
         dblogin = resource.getString("dblogin");
         dbpassword = resource.getString("dbpassword");
@@ -100,7 +65,7 @@ public class ConfigInit implements ServletContextListener {
         vkGost = resource.getString("vkGost");
         moGost = resource.getString("moGost");
 
-       ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
+        ResultSet resultSet = SQL.select(StoredQuery.getDefultLPU());
         try {
             while (resultSet.next()) {
                 GlobalVariables.DefaultLPU = resultSet.getString("keyvalue");
