@@ -201,14 +201,15 @@ public class PrParseFileLnLpu {
             row.setLpuOgrn(resultSet.getString("LPU_OGRN"));
             row.setBirthday(resultSet.getString("BIRTHDAY"));
             row.setGender(resultSet.getInt("GENDER"));
-            row.setReason1(getReason(resultSet.getString("REASON1")));
+            row.setReason1(resultSet.getString("REASON1"));
             row.setReason2(resultSet.getString("REASON2"));
             row.setDiagnos(resultSet.getString("DIAGNOS"));
             row.setDate1(resultSet.getString("DATE1"));
             row.setDate2(resultSet.getString("DATE2"));
             //row.setVoucherNo(resultSet.getString("VOUCHER_NO"));
             //row.setVoucherOgrn(resultSet.getString("VOUCHER_OGRN"));
-            row.setPregn12WFlag(resultSet.getBoolean("PREGN12W_FLAG"));
+
+            //row.setPregn12WFlag(resultSet.getBoolean("PREGN12W_FLAG"));
             row.setHospitalDt1(resultSet.getString("HOSPITAL_DT1"));
             row.setHospitalDt2(resultSet.getString("HOSPITAL_DT2"));
             row.setMseDt1(resultSet.getString("MSE_DT1"));
