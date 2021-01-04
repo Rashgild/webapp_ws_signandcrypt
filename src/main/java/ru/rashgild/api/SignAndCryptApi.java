@@ -75,24 +75,24 @@ public class SignAndCryptApi {
         String xml = data;
 
         JSONObject jsonObject = new JSONObject();
-        String counter = parseXML(xml, "<fil:BIRTHDAY>");
+        String counter = parseXML(xml, "<birthday>");
         if (counter.equals("2")) {
             jsonObject
                     .put("Code", "close");
 
         } else {
             jsonObject
-                    .put("Code", parseXML(xml, "<fil:LN_HASH>"))
-                    .put("AnotherId", parseXML(xml, "<fil:SNILS>"));
+                    .put("Code", parseXML(xml, "<lnHash>"))
+                    .put("AnotherId", parseXML(xml, "<snils>"));
         }
 
         jsonObject
                 .put("Certificate", parseXML(xml, "<X509Certificate>"))
                 .put("SignatureValue", parseXML(xml, "<SignatureValue>"))
                 .put("DigestValue", parseXML(xml, "<DigestValue>"))
-                .put("ELN", parseXML(xml, "<fil:LN_CODE>"))
-                .put("Counter", parseXML(xml, "<fil:BIRTHDAY>"))
-                .put("DisabilityId", parseXML(xml, "<fil:DIAGNOS>"))
+                .put("ELN", parseXML(xml, "<lnCode>"))
+                .put("Counter", parseXML(xml, "<birthday>"))
+                .put("DisabilityId", parseXML(xml, "<diagnos>"))
                 .put("SignatureType", parseXML(xml, "SignatureMethod Algorithm=").contains("gostr34102012")
                         ? "gostr34102012"
                         : "gostr34102001");
