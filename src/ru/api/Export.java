@@ -67,6 +67,8 @@ public class Export {
                                        @Context HttpServletRequest request,
                                        @Context HttpServletResponse response) throws Exception {
 
+        System.out.println("exportDisabilityDocument");
+        System.out.println(data);
         SOAPMessage message = createDisabilityXml(data);
         try {
             String mess = soapMessageToString(message);

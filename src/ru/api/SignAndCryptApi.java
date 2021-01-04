@@ -49,6 +49,8 @@ public class SignAndCryptApi {
                         @Context HttpServletRequest req,
                         @Context HttpServletResponse response) throws IOException, ServletException, ParseException {
 
+        System.out.println("getJSON");
+        System.out.println(data);
         ROW row = parseJson(data);
         String xml = createXML(row);
 
@@ -71,6 +73,8 @@ public class SignAndCryptApi {
                          @Context HttpServletRequest req,
                          @Context HttpServletResponse response) throws JSONException {
 
+        System.out.println("getXML");
+        System.out.println(data);
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST");
         String xml = data;

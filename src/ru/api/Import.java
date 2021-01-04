@@ -20,6 +20,7 @@ public class Import {
                       @QueryParam("eln") String eln,
                       @QueryParam("snils") String snils) {
 
+        System.out.println("Import");
         System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
         System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
         FileOperationsLnImplService service = new FileOperationsLnImplService();
