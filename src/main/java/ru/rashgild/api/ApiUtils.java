@@ -29,13 +29,18 @@ public class ApiUtils {
 
     public static String get(JsonObject obj, String name) {
         if (obj.has(name)) {
-            if (obj != null && obj.get(name) != null && !obj.get(name).getAsString().equals("")) {
+            if (obj != null && obj.get(name) != null && !obj.get(name).getAsString().isEmpty()) {
                 return obj.get(name).getAsString();
             } else {
                 return "";
             }
         }
         return "";
+    }
+
+    public static String getOrNull(JsonObject obj, String name) {
+        String result = get(obj, name);
+        return isNotNullOrEmpty(result)? result : null;
     }
 
     public static Boolean isNotNullOrEmpty(String string) {
@@ -52,8 +57,8 @@ public class ApiUtils {
 
     public static Boolean getBoolean(JsonObject obj, String name) {
         String value = get(obj, name);
-        if (value != null && !value.isEmpty()) {
-            return Boolean.parseBoolean(obj.get(name).getAsString());
+        if (isNotNullOrEmpty(value) && !"null".equals(value)) {
+            return Boolean.parseBoolean(value);
         }
         return null;
     }

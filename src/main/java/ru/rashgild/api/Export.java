@@ -176,8 +176,7 @@ public class Export {
             row.setPrevLnCode(get(jrow, "prev_ln"));
         }
         row.setPrimaryFlag(Boolean.parseBoolean(get(jrow, "primary_flag")));
-        //TODO check if not null
-        row.setPreviouslyIssuedCode(get(jrow, "previously_issued_code"));
+        row.setPreviouslyIssuedCode(getOrNull(jrow, "previously_issued_code"));
         row.setDuplicateFlag(Boolean.parseBoolean(get(jrow, "duplicate_flag")));
         row.setLnDate(getDate(jrow, "ln_date"));
         //row.setIdMo("0");
@@ -188,16 +187,13 @@ public class Export {
         row.setBirthday(getDate(jrow, "birthday"));
         row.setGender(Integer.parseInt(get(jrow, "gender")));
 
-
-        //row.setReason1(get(jrow, "reason1"));
-        row.setReason1("01");
-
+        row.setReason1(get(jrow, "reason1"));
         row.setReason2(get(jrow, "reason2"));
         row.setDiagnos(get(jrow, "diagnos"));
         row.setDate1(getDate(jrow, "date1"));
         row.setDate2(getDate(jrow, "date2"));
 
-        //row.setPregn12WFlag(getBoolean(jrow, "pregn12w_flag"));
+        row.setPregn12WFlag(getBoolean(jrow, "pregn12w_flag"));
         row.setHospitalDt1(getDate(jrow, "hospital_dt1"));
         row.setHospitalDt2(getDate(jrow, "hospital_dt2"));
 
@@ -383,15 +379,17 @@ public class Export {
         }
 
         /** ---- */
-        rows.add(row);
+
+        //rows.add(row);
         Rowset rowset = new Rowset();
-        rowset.setAuthor("Rashgild");
-        rowset.setEmail("rashgild@gmail.com");
-        rowset.setPhone("9999");
+        //rowset.setAuthor("Rashgild");
+        //rowset.setEmail("rashgild@gmail.com");
+        //rowset.setPhone("9999");
         rowset.setVersion("2.0");
         rowset.setSoftware("sign-and-crypt");
         rowset.setVersionSoftware("2.0");
-        rowset.setRow(rows);
+        rowset.getRow().add(row);
+        //rowset.setRow(rows);
 
         //rowset = createTestData();
 
