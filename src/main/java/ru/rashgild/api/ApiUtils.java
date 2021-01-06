@@ -58,7 +58,7 @@ public class ApiUtils {
     public static Boolean getBoolean(JsonObject obj, String name) {
         String value = get(obj, name);
         if (isNotNullOrEmpty(value) && !"null".equals(value)) {
-            return Boolean.parseBoolean(value);
+            return "1".equals(value) ? true : Boolean.parseBoolean(value);
         }
         return null;
     }
