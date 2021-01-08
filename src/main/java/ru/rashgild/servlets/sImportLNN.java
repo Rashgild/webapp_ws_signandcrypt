@@ -145,11 +145,11 @@ public class sImportLNN extends HttpServlet {
                     }
                     SQLrequest.put("disabilitycase_id", idDisCase);
 
-                    //if (row.getPRIMARYFLAG() == 1) {
-                    SQLrequest.put("primarity_id", "1");
-                    /*} else {
+                    if (row.isPrimaryFlag()) {
+                        SQLrequest.put("primarity_id", "1");
+                    } else {
                         SQLrequest.put("primarity_id", "2");
-                    }*/
+                    }
                     //SQLrequest.put("job", "'" + row.getLPUEMPLOYER() + "'");
 
                     if (row.getHospitalDt1() != null && !row.getHospitalDt1().toString().isEmpty()) {
