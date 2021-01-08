@@ -41,7 +41,7 @@ public class StoredQuery {
                 ",case when dd.pervelnnumber is not null then dd.pervelnnumber else (select dd2.number from disabilitydocument dd2 where dd2.id = dd.prevdocument_id) end as PREV_LN\n" +
                 ",case when (vddp.code ='2') then '0' else '1' end as PRIMARY_FLAG\n" +
                 ",dd.previouslyissuedcode as PREVIOUS_ISSUE_CODE\n" +
-                ",case when dd.elnduplicate is not null or dd.elnduplicate = '1' then '1' else case when (select count(a.id) from disabilitydocument a where a.duplicate_id=dd.id) >0 then '1' else '0'end  end as DUPLICATE_FLAG\n" +
+                ",case when dd.elnduplicate = '1' then '1' else case when dd.elnduplicate = '0' OR (select count(a.id) from disabilitydocument a where a.duplicate_id=dd.id) = 0 then '0' else '1' end end as DUPLICATE_FLAG\n" +
                 ",dd.issuedate as LN_DATE\n" +
                 ",case when dd.anotherlpu_id is not null then dd.anotherlpuname else lpu.name end as LPU_NAME\n" +
                 ",case when dd.anotherlpu_id is not null then dd.anotherlpuaddress else lpu.printaddress end as LPU_ADDRESS\n" +
