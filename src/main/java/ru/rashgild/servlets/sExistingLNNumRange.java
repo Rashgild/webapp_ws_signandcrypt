@@ -30,8 +30,6 @@ public class sExistingLNNumRange extends HttpServlet {
         out.println("<body>");
         out.print("<H1> ogrn=" + ogrn + "</H1>");
 
-        System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);//КОНФ
-        System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
         /*FileOperationsLnImplService service = new FileOperationsLnImplService();
         FileOperationsLn start = service.getFileOperationsLnPort();
 

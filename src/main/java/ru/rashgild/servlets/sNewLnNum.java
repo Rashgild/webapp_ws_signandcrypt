@@ -37,9 +37,6 @@ public class sNewLnNum extends HttpServlet {
         out.println("<body>");
         out.print("<H1> ogrn=" + ogrn + "</H1>");
 
-        //System.setProperty("javax.net.ssl.trustStore", GlobalVariables.pathandnameSSL);
-        //System.setProperty("javax.net.ssl.trustStorePassword", GlobalVariables.passwordSSL);
-
         FIleOperationService service = DependencyInjection.getImplementation(isTest);
         FileOperationsLnService start = service.getFileOperationsLnPort();
 
