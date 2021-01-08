@@ -33,8 +33,7 @@ import ru.rashgild.generated.v2.types.eln.mo.v01.Rowset;
 import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
 import ru.rashgild.utils.GlobalVariables;
 
-import static ru.rashgild.api.ApiUtils.cretePostRequest;
-import static ru.rashgild.api.ApiUtils.get;
+import static ru.rashgild.api.ApiUtils.*;
 import static ru.rashgild.utils.GlobalVariables.setUp;
 import static ru.rashgild.utils.GlobalVariables.urlApi;
 
@@ -132,9 +131,9 @@ public class SignAndCryptApi {
 
                 Rowset.Row.LnResult lnResult = new Rowset.Row.LnResult();
                 lnResult.setId("ELN_" + elncode + "_" + number + "_doc");
-                lnResult.setMseResult(get(jtreat, "mse_result"));
-                lnResult.setNextLnCode(get(jtreat, "NEXT_LN_CODE"));
-                lnResult.setOtherStateDt(get(jtreat, "other_state_dt"));
+                lnResult.setMseResult(getOrNull(jtreat, "mse_result"));
+                lnResult.setOtherStateDt(getOrNull(jtreat, "other_state_dt"));
+                lnResult.setNextLnCode(getOrNull(jtreat, "NEXT_LN_CODE"));
 
                 lnResult.setReturnDateLpu(get(jtreat, "returndt"));
 

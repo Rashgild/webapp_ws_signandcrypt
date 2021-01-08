@@ -109,31 +109,33 @@ public class Export {
             resultJson.put("status", result.getStatus());
             resultJson.put("requestId", result.getRequestId());
 
-            List<Info.InfoRowset.InfoRow> rows = result.getInfo().getInfoRowset().getInfoRow();
-            if (rows != null && rows.size() > 0) {
-                for (Info.InfoRowset.InfoRow row : rows) {
+            if (result.getInfo() != null) {
+                List<Info.InfoRowset.InfoRow> rows = result.getInfo().getInfoRowset().getInfoRow();
+                if (rows != null && rows.size() > 0) {
+                    for (Info.InfoRowset.InfoRow row : rows) {
 
-                    if (row.getLnCode() != null && !row.getLnCode().isEmpty()) {
-                        resultJson.put("hash", row.getLnHash());
-                    }
-
-                    if (row.getLnState() != null && !row.getLnState().isEmpty()) {
-                        resultJson.put("lnstate", row.getLnState());
-                    }
-                    resultJson.put("lncode", row.getLnCode());
-                    JSONArray jsonArray = new JSONArray();
-                    try {
-                        if (row.getErrors() != null && !row.getErrors().getError().isEmpty()) {
-                            List<Info.InfoRowset.InfoRow.Errors.Error> errors = row.getErrors().getError();
-                            for (Info.InfoRowset.InfoRow.Errors.Error errs : errors) {
-                                JSONObject arrjs = new JSONObject();
-                                arrjs.put("errmess", errs.getErrMess()).put("errcode", errs.getErrCode());
-                                jsonArray.put(arrjs);
-                            }
-                            resultJson.put("errors", jsonArray);
+                        if (row.getLnCode() != null && !row.getLnCode().isEmpty()) {
+                            resultJson.put("hash", row.getLnHash());
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                        if (row.getLnState() != null && !row.getLnState().isEmpty()) {
+                            resultJson.put("lnstate", row.getLnState());
+                        }
+                        resultJson.put("lncode", row.getLnCode());
+                        JSONArray jsonArray = new JSONArray();
+                        try {
+                            if (row.getErrors() != null && !row.getErrors().getError().isEmpty()) {
+                                List<Info.InfoRowset.InfoRow.Errors.Error> errors = row.getErrors().getError();
+                                for (Info.InfoRowset.InfoRow.Errors.Error errs : errors) {
+                                    JSONObject arrjs = new JSONObject();
+                                    arrjs.put("errmess", errs.getErrMess()).put("errcode", errs.getErrCode());
+                                    jsonArray.put(arrjs);
+                                }
+                                resultJson.put("errors", jsonArray);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -329,8 +331,8 @@ public class Export {
         boolean isClose = (get(jrow, "is_close")).equals("1");
         if (isClose) {
             Rowset.Row.LnResult lnResult = new Rowset.Row.LnResult();
-            lnResult.setMseResult(get(jrow, "mse_result"));
-            lnResult.setOtherStateDt(get(jrow, "other_state_dt"));
+            lnResult.setMseResult(getOrNull(jrow, "mse_result"));
+            lnResult.setOtherStateDt(getOrNull(jrow, "other_state_dt"));
 
             lnResult.setId(elnPrefix + "_2_doc");
             for (JsonElement el : signclose) {
