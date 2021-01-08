@@ -131,9 +131,9 @@ public class sImportLNN extends HttpServlet {
                         SQLrequest.put("previouslyissuedcode", con(row.getPreviouslyIssuedCode()));
                     }
 
-                    /*if (row.getDuplicate() != 0) {
-                        SQLrequest.put("elnduplicate", con(String.valueOf(row.getDUPLICATEFLAG())));
-                    }*/
+                    if (row.isDuplicateFlag()) {
+                        SQLrequest.put("elnduplicate", con(String.valueOf(row.isDuplicateFlag())));
+                    }
 
                     SQLrequest.put("number", con(row.getLnCode()));
                     SQLrequest.put("issuedate", con(row.getLnDate().toString()));

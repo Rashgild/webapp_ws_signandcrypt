@@ -200,9 +200,9 @@ public class Export {
             row.setVoucherOgrn(get(jrow, "voucher_ogrn"));
         }
 
-        /*if (!get(jrow, "ln_hash").equals("null")) {
+        if (!get(jrow, "ln_hash").equals("null")) {
             row.setLnHash(get(jrow, "ln_hash"));
-        }*/
+        }
 
         /*row.setMseDt1(getDate(jrow, "mse_dt1"));
         row.setMseDt2(getDate(jrow, "mse_dt2"));
@@ -406,8 +406,6 @@ public class Export {
         SOAPHeader header1 = soapEnvelope.getHeader();
         SOAPElement x509Certificate = header1.addChildElement("X509Certificate", null, "http://www.w3.org/2000/09/xmldsig#");
         x509Certificate.addTextNode(CertificateUtils.certToBase64(cert));
-
-        System.out.println(XmlUtils.soapMessageToString(message));
 
         return message;
     }

@@ -203,7 +203,8 @@ public class PrParseFileLnLpu {
             row.setGender(resultSet.getInt("GENDER"));
             row.setReason1(resultSet.getString("REASON1"));
             row.setReason2(resultSet.getString("REASON2"));
-            row.setDiagnos(resultSet.getString("DIAGNOS"));
+            String diag = resultSet.getString("DIAGNOS");
+            row.setDiagnos(diag == null ? "0000000000" : diag);
             row.setDate1(resultSet.getString("DATE1"));
             row.setDate2(resultSet.getString("DATE2"));
             //row.setVoucherNo(resultSet.getString("VOUCHER_NO"));
