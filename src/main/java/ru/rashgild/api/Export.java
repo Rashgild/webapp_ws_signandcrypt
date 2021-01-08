@@ -53,12 +53,15 @@ import java.util.List;
 import static ru.rashgild.api.ApiUtils.*;
 import static ru.rashgild.signAndCrypt.Encrypt.createXmlAndEncrypt;
 import static ru.rashgild.utils.GlobalVariables.*;
+import static ru.rashgild.utils.Utils.parseSnils;
 import static ru.rashgild.utils.XmlUtils.saveSoapToXml;
 import static ru.rashgild.utils.XmlUtils.soapMessageToString;
 
 
 @Path("/export")
 public class Export {
+
+    private static final String ELN = "ELN_";
 
     @POST
     @Path("/exportDisabilityDocument")
@@ -106,31 +109,33 @@ public class Export {
             resultJson.put("status", result.getStatus());
             resultJson.put("requestId", result.getRequestId());
 
-            List<Info.InfoRowset.InfoRow> rows = result.getInfo().getInfoRowset().getInfoRow();
-            if (rows != null && rows.size() > 0) {
-                for (Info.InfoRowset.InfoRow row : rows) {
+            if (result.getInfo() != null) {
+                List<Info.InfoRowset.InfoRow> rows = result.getInfo().getInfoRowset().getInfoRow();
+                if (rows != null && rows.size() > 0) {
+                    for (Info.InfoRowset.InfoRow row : rows) {
 
-                    if (row.getLnCode() != null && !row.getLnCode().isEmpty()) {
-                        resultJson.put("hash", row.getLnHash());
-                    }
-
-                    if (row.getLnState() != null && !row.getLnState().isEmpty()) {
-                        resultJson.put("lnstate", row.getLnState());
-                    }
-                    resultJson.put("lncode", row.getLnCode());
-                    JSONArray jsonArray = new JSONArray();
-                    try {
-                        if (row.getErrors() != null && !row.getErrors().getError().isEmpty()) {
-                            List<Info.InfoRowset.InfoRow.Errors.Error> errors = row.getErrors().getError();
-                            for (Info.InfoRowset.InfoRow.Errors.Error errs : errors) {
-                                JSONObject arrjs = new JSONObject();
-                                arrjs.put("errmess", errs.getErrMess()).put("errcode", errs.getErrCode());
-                                jsonArray.put(arrjs);
-                            }
-                            resultJson.put("errors", jsonArray);
+                        if (row.getLnCode() != null && !row.getLnCode().isEmpty()) {
+                            resultJson.put("hash", row.getLnHash());
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                        if (row.getLnState() != null && !row.getLnState().isEmpty()) {
+                            resultJson.put("lnstate", row.getLnState());
+                        }
+                        resultJson.put("lncode", row.getLnCode());
+                        JSONArray jsonArray = new JSONArray();
+                        try {
+                            if (row.getErrors() != null && !row.getErrors().getError().isEmpty()) {
+                                List<Info.InfoRowset.InfoRow.Errors.Error> errors = row.getErrors().getError();
+                                for (Info.InfoRowset.InfoRow.Errors.Error errs : errors) {
+                                    JSONObject arrjs = new JSONObject();
+                                    arrjs.put("errmess", errs.getErrMess()).put("errcode", errs.getErrCode());
+                                    jsonArray.put(arrjs);
+                                }
+                                resultJson.put("errors", jsonArray);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -148,79 +153,66 @@ public class Export {
         JsonArray treats = jparsr.getAsJsonArray("treats");
         JsonArray signclose = jparsr.getAsJsonArray("close");
         String StartPeriod = null;
-        //List<TREAT_FULL_PERIOD> treat_full_periods = new ArrayList<>();
-        List<Rowset.Row> rows = new ArrayList<>();
         int DDID_1 = 0;
 
         JsonObject jrow = parser.parse(json).getAsJsonObject();
         GlobalVariables.t_ELN = get(jrow, "ln_code");
         DDID_1 = Integer.parseInt(get(jrow, "ddid"));
 
-        Rowset.Row row = new Rowset.Row();
-        String str[];
-        String snils = get(jrow, "snils");
-        str = snils.split("-");
-        snils = str[0] + str[1] + str[2];
-        str = snils.split(" ");
-        snils = str[0] + str[1];
+        String snils = parseSnils(get(jrow, "snils"));
+        String elnPrefix = ELN + t_ELN;
 
-        row.setId("ELN_" + t_ELN);
+
+        Rowset.Row row = new Rowset.Row();
+        row.setId(elnPrefix);
         row.setSnils(snils);
         row.setSurname(get(jrow, "surname"));
         row.setName(get(jrow, "name"));
         row.setPatronymic(get(jrow, "patronimic"));
-
         row.setLnCode(get(jrow, "ln_code"));
-        //row.setLnCode("123456789012");
-        if (isNotNullOrEmpty(get(jrow, "prev_ln"))) {
-            row.setPrevLnCode(get(jrow, "prev_ln"));
-        }
-        row.setPrimaryFlag(Boolean.parseBoolean(get(jrow, "primary_flag")));
-        //TODO check if not null
-        row.setPreviouslyIssuedCode(get(jrow, "previously_issued_code"));
+        row.setPrimaryFlag(getBoolean(jrow, "primary_flag"));
+        row.setPreviouslyIssuedCode(getOrNull(jrow, "previously_issued_code"));
         row.setDuplicateFlag(Boolean.parseBoolean(get(jrow, "duplicate_flag")));
         row.setLnDate(getDate(jrow, "ln_date"));
         //row.setIdMo("0");
-        //TODO
         row.setLpuName(isNotNullOrEmpty(get(jrow, "lpu_name")) ? get(jrow, "lpu_name") : "ГБУЗ АО АМОКБ");
         row.setLpuAddress(isNotNullOrEmpty(get(jrow, "lpu_address")) ? get(jrow, "lpu_address") : "ГДЕ-ТО");
         row.setLpuOgrn(get(jrow, "lpu_ogrn").isEmpty() ? ogrnMo : get(jrow, "lpu_ogrn"));
         row.setBirthday(getDate(jrow, "birthday"));
         row.setGender(Integer.parseInt(get(jrow, "gender")));
-
-
-        //row.setReason1(get(jrow, "reason1"));
-        row.setReason1("01");
-
+        row.setReason1(get(jrow, "reason1"));
         row.setReason2(get(jrow, "reason2"));
         row.setDiagnos(get(jrow, "diagnos"));
         row.setDate1(getDate(jrow, "date1"));
         row.setDate2(getDate(jrow, "date2"));
 
-        //row.setPregn12WFlag(getBoolean(jrow, "pregn12w_flag"));
+        row.setPregn12WFlag(getBoolean(jrow, "pregn12w_flag"));
         row.setHospitalDt1(getDate(jrow, "hospital_dt1"));
         row.setHospitalDt2(getDate(jrow, "hospital_dt2"));
-
-        //row.setMseDt1(getDate(jrow, "mse_dt1"));
-        //row.setMseDt2(getDate(jrow, "mse_dt2"));
-        //row.setMseDt3(getDate(jrow, "mse_dt3"));
-       /* String inv = get(jrow, "mse_invalid_group");
-        if (inv != null && !inv.equals("")) {
-            row.setMseInvalidGroup(Integer.valueOf(inv));
-        }*/
-
         row.setLnState(get(jrow, "ln_state"));
         row.setWrittenAgreementFlag(true);
         row.setIntermittentMethodFlag(false);
+
+        if (isNotNullOrEmpty(get(jrow, "prev_ln"))) {
+            row.setPrevLnCode(get(jrow, "prev_ln"));
+        }
 
         if (isNotNullOrEmpty(get(jrow, "voucher_no")) && isNotNullOrEmpty(get(jrow, "voucher_ogrn"))) {
             row.setVoucherNo(get(jrow, "voucher_no"));
             row.setVoucherOgrn(get(jrow, "voucher_ogrn"));
         }
-        /*if (!get(jrow, "ln_hash").equals("null")) {
-            row.setLnHash(get(jrow, "ln_hash"));
-        }*/
 
+        if (!get(jrow, "ln_hash").equals("null")) {
+            row.setLnHash(get(jrow, "ln_hash"));
+        }
+
+        /*row.setMseDt1(getDate(jrow, "mse_dt1"));
+        row.setMseDt2(getDate(jrow, "mse_dt2"));
+        row.setMseDt3(getDate(jrow, "mse_dt3"));
+        String inv = get(jrow, "mse_invalid_group");
+        if (inv != null && !inv.equals("")) {
+            row.setMseInvalidGroup(Integer.valueOf(inv));
+        }*/
 
         /** HOSPITAL_BREACH **/
         if (isNotNullOrEmpty(get(jrow, "hospital_breach_code"))) {
@@ -229,7 +221,7 @@ public class Export {
             //hospital_breach.setHospitalBreachDt(get(jrow, "hospital_breach_code"));
             //hospital_breach.setHospitalBreachDt(get(jrow, "hospital_breach_dt"));
             if (hospitalBreach.getHospitalBreachCode() != null) {
-                hospitalBreach.setId("ELN_" + t_ELN + "_1_doc");
+                hospitalBreach.setId(elnPrefix + "_1_doc");
             }
             //List<Rowset.Row.HospitalBreach> hospital_breaches = new ArrayList<>();
             //hospital_breaches.add(hospital_breach);
@@ -256,18 +248,14 @@ public class Export {
 
                 String counterdoc = get(jtreat, "counterdoc");
                 String countervk = get(jtreat, "countervk");
-                treatPeriod.setId("ELN_" + t_ELN + "_" + per + "_doc");
+                treatPeriod.setId(elnPrefix + "_" + per + "_doc");
 
                 TreatFullPeriodMo treat_period = new TreatFullPeriodMo();
-
-                //List<TREAT_PERIOD> treat_periods = new ArrayList<>();
-                //treat_periods.add(treat_period);
-                //TREAT_FULL_PERIOD treat_full_period = new TREAT_FULL_PERIOD();
                 treat_period.setTreatChairmanRole(get(jtreat, "treat_chairman_role"));
                 treat_period.setTreatChairman(get(jtreat, "treat_chairman"));
 
                 if (treat_period.getTreatChairmanRole() != null && !treat_period.getTreatChairmanRole().equals("")) {
-                    treat_period.setId("ELN_" + t_ELN + "_" + per + "_vk");
+                    treat_period.setId(elnPrefix + "_" + per + "_vk");
                 }
 
                 if (isexport == null || isexport.equals("") || (!isexport.equals("true") && !isexport.equals("t"))) {
@@ -276,7 +264,7 @@ public class Export {
                                 get(jtreat, "certvk"),
                                 get(jtreat, "digvk"),
                                 get(jtreat, "signvk"),
-                                "ELN_" + t_ELN,
+                                elnPrefix,
                                 GlobalVariables.ogrnMo,
                                 get(jtreat, "countervk"),
                                 "vk",
@@ -286,7 +274,7 @@ public class Export {
                             get(jtreat, "certdoc"),
                             get(jtreat, "digdoc"),
                             get(jtreat, "signdoc"),
-                            "ELN_" + t_ELN,
+                            elnPrefix,
                             GlobalVariables.ogrnMo,
                             get(jtreat, "counterdoc"),
                             "doc",
@@ -343,10 +331,10 @@ public class Export {
         boolean isClose = (get(jrow, "is_close")).equals("1");
         if (isClose) {
             Rowset.Row.LnResult lnResult = new Rowset.Row.LnResult();
-            lnResult.setMseResult(get(jrow, "mse_result"));
-            lnResult.setOtherStateDt(get(jrow, "other_state_dt"));
+            lnResult.setMseResult(getOrNull(jrow, "mse_result"));
+            lnResult.setOtherStateDt(getOrNull(jrow, "other_state_dt"));
 
-            lnResult.setId("ELN_" + t_ELN + "_2_doc");
+            lnResult.setId(elnPrefix + "_2_doc");
             for (JsonElement el : signclose) {
 
                 JsonObject jtreat = el.getAsJsonObject();
@@ -356,7 +344,7 @@ public class Export {
                         get(jtreat, "certclose"),
                         get(jtreat, "digclose"),
                         get(jtreat, "signclose"),
-                        "ELN_" + t_ELN,
+                        elnPrefix,
                         "1053000627690",
                         get(jtreat, "counterclose"),
                         "doc",
@@ -383,15 +371,17 @@ public class Export {
         }
 
         /** ---- */
-        rows.add(row);
+
+        //rows.add(row);
         Rowset rowset = new Rowset();
-        rowset.setAuthor("Rashgild");
-        rowset.setEmail("rashgild@gmail.com");
-        rowset.setPhone("9999");
+        //rowset.setAuthor("Rashgild");
+        //rowset.setEmail("rashgild@gmail.com");
+        //rowset.setPhone("9999");
         rowset.setVersion("2.0");
         rowset.setSoftware("sign-and-crypt");
         rowset.setVersionSoftware("2.0");
-        rowset.setRow(rows);
+        rowset.getRow().add(row);
+        //rowset.setRow(rows);
 
         //rowset = createTestData();
 
@@ -419,29 +409,7 @@ public class Export {
         SOAPElement x509Certificate = header1.addChildElement("X509Certificate", null, "http://www.w3.org/2000/09/xmldsig#");
         x509Certificate.addTextNode(CertificateUtils.certToBase64(cert));
 
-        System.out.println(XmlUtils.soapMessageToString(message));
-
         return message;
-    }
-
-    private XMLGregorianCalendar toNewXMLGregorianCalendar(String date) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date newDate = null;
-        try {
-            newDate = format.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        GregorianCalendar cal = new GregorianCalendar();
-        cal.setTime(newDate);
-
-        try {
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private String createHead(String cert, String dig, String sig, String eln, String ogrn, String counter, String type, String signatureType) {
@@ -475,14 +443,21 @@ public class Export {
                 .replace("[COUNTER]", counter)
                 .replace("[TYPE]", type)
                 .replace("[SIGNATURE_TYPE]",
-                        signatureType.equals("gostr34102001")
-                                ? "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411"
-                                : "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256")
+                        GOST_34102001.equals(signatureType)
+                                ? GOST_34102001_LINK
+                                : GOST_34102012_LINK_256)
                 .replace("[DIGEST_TYPE]",
-                        signatureType.equals("gostr34102001")
-                                ? "http://www.w3.org/2001/04/xmldsig-more#gostr3411"
-                                : "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256");
+                        GOST_34102001.equals(signatureType)
+                                ? GOST_34102001_LINK_SHORT
+                                : GOST_34102012_LINK_SHORT_252);
     }
+
+    private final String GOST_34102001 = "gostr34102001";
+    private final String GOST_34102001_LINK = "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
+    private final String GOST_34102001_LINK_SHORT = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
+    private final String GOST_34102012_LINK_256 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256";
+    private final String GOST_34102012_LINK_SHORT_252 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256";
+    private final String XML_HEAD = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
     private String createXml(PrParseFilelnlpuRequest prParseFilelnlpu) {
         setUp();
@@ -504,7 +479,7 @@ public class Export {
             transformer.transform(domSource, result);
 
             String xml = writer.toString();
-            xml = xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
+            xml = xml.replace(XML_HEAD, "");
             signThis = xmlTemplate.replace("[Body]", xml);
 
         } catch (JAXBException | IOException | TransformerException | ParserConfigurationException e) {

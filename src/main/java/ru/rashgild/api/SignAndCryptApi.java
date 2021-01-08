@@ -33,8 +33,7 @@ import ru.rashgild.generated.v2.types.eln.mo.v01.Rowset;
 import ru.rashgild.generated.v2.types.eln.v01.TreatFullPeriodMo;
 import ru.rashgild.utils.GlobalVariables;
 
-import static ru.rashgild.api.ApiUtils.cretePostRequest;
-import static ru.rashgild.api.ApiUtils.get;
+import static ru.rashgild.api.ApiUtils.*;
 import static ru.rashgild.utils.GlobalVariables.setUp;
 import static ru.rashgild.utils.GlobalVariables.urlApi;
 
@@ -75,24 +74,24 @@ public class SignAndCryptApi {
         String xml = data;
 
         JSONObject jsonObject = new JSONObject();
-        String counter = parseXML(xml, "<fil:BIRTHDAY>");
+        String counter = parseXML(xml, "<birthday>");
         if (counter.equals("2")) {
             jsonObject
                     .put("Code", "close");
 
         } else {
             jsonObject
-                    .put("Code", parseXML(xml, "<fil:LN_HASH>"))
-                    .put("AnotherId", parseXML(xml, "<fil:SNILS>"));
+                    .put("Code", parseXML(xml, "<lnHash>"))
+                    .put("AnotherId", parseXML(xml, "<snils>"));
         }
 
         jsonObject
                 .put("Certificate", parseXML(xml, "<X509Certificate>"))
                 .put("SignatureValue", parseXML(xml, "<SignatureValue>"))
                 .put("DigestValue", parseXML(xml, "<DigestValue>"))
-                .put("ELN", parseXML(xml, "<fil:LN_CODE>"))
-                .put("Counter", parseXML(xml, "<fil:BIRTHDAY>"))
-                .put("DisabilityId", parseXML(xml, "<fil:DIAGNOS>"))
+                .put("ELN", parseXML(xml, "<lnCode>"))
+                .put("Counter", parseXML(xml, "<birthday>"))
+                .put("DisabilityId", parseXML(xml, "<diagnos>"))
                 .put("SignatureType", parseXML(xml, "SignatureMethod Algorithm=").contains("gostr34102012")
                         ? "gostr34102012"
                         : "gostr34102001");
@@ -132,9 +131,9 @@ public class SignAndCryptApi {
 
                 Rowset.Row.LnResult lnResult = new Rowset.Row.LnResult();
                 lnResult.setId("ELN_" + elncode + "_" + number + "_doc");
-                lnResult.setMseResult(get(jtreat, "mse_result"));
-                lnResult.setNextLnCode(get(jtreat, "NEXT_LN_CODE"));
-                lnResult.setOtherStateDt(get(jtreat, "other_state_dt"));
+                lnResult.setMseResult(getOrNull(jtreat, "mse_result"));
+                lnResult.setOtherStateDt(getOrNull(jtreat, "other_state_dt"));
+                lnResult.setNextLnCode(getOrNull(jtreat, "NEXT_LN_CODE"));
 
                 lnResult.setReturnDateLpu(get(jtreat, "returndt"));
 

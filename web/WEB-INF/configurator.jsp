@@ -34,8 +34,6 @@
 <label>Logs save path: <input name="title" value="<%=GlobalVariables.pathtosave%>" class="input"  type="text"></label><br>
 <label>sign XMLFileName: <input name="title" value="<%=GlobalVariables.signXMLFileName%>" class="input"  type="text"></label><br>
 <label>crypt XMLFileName: <input name="title" value="<%=GlobalVariables.cryptXMLFileName%>" class="input"  type="text"></label><br>
-<label>pathandnameSSL: <input name="title" value="<%=GlobalVariables.pathandnameSSL%>" class="input"  type="text"></label><br>
-<label>passwordSSL: <input name="title" value="<%=GlobalVariables.passwordSSL%>" class="input"  type="text"></label><br>
 <label>ОГРН МО: <input name="title" value="<%=GlobalVariables.ogrnMo%>" class="input"  type="text"></label><br>
 
 

@@ -32,8 +32,6 @@ public class GlobalVariables {
     public static String signXMLFileName = "";
     public static String cryptXMLFileName = "";
     public static String HDImageStorePath = "";
-    public static String pathandnameSSL = "";
-    public static String passwordSSL = "";
     public static String country = "-";
     public static String urlApi = "";
     public static String innerApi = "";

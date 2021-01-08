@@ -131,9 +131,9 @@ public class sImportLNN extends HttpServlet {
                         SQLrequest.put("previouslyissuedcode", con(row.getPreviouslyIssuedCode()));
                     }
 
-                    /*if (row.getDuplicate() != 0) {
-                        SQLrequest.put("elnduplicate", con(String.valueOf(row.getDUPLICATEFLAG())));
-                    }*/
+                    if (row.isDuplicateFlag()) {
+                        SQLrequest.put("elnduplicate", con(String.valueOf(row.isDuplicateFlag())));
+                    }
 
                     SQLrequest.put("number", con(row.getLnCode()));
                     SQLrequest.put("issuedate", con(row.getLnDate().toString()));
@@ -145,11 +145,11 @@ public class sImportLNN extends HttpServlet {
                     }
                     SQLrequest.put("disabilitycase_id", idDisCase);
 
-                    //if (row.getPRIMARYFLAG() == 1) {
-                    SQLrequest.put("primarity_id", "1");
-                    /*} else {
+                    if (row.isPrimaryFlag()) {
+                        SQLrequest.put("primarity_id", "1");
+                    } else {
                         SQLrequest.put("primarity_id", "2");
-                    }*/
+                    }
                     //SQLrequest.put("job", "'" + row.getLPUEMPLOYER() + "'");
 
                     if (row.getHospitalDt1() != null && !row.getHospitalDt1().toString().isEmpty()) {

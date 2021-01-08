@@ -54,9 +54,6 @@ public class ConfigInit implements ServletContextListener {
         signXMLFileName = resource.getString("signXMLFileName");
 
         cryptXMLFileName = resource.getString("cryptXMLFileName");
-
-        pathandnameSSL = resource.getString("pathandnameSSL");
-        passwordSSL = resource.getString("passwordSSL");
         HDImageStorePath = resource.getString("HDImageStorePath");
         urlApi = resource.getString("urlApi");
         innerApi = resource.getString("innerApi");
