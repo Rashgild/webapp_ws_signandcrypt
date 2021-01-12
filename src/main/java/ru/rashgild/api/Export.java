@@ -171,8 +171,8 @@ public class Export {
         row.setPatronymic(get(jrow, "patronimic"));
         row.setLnCode(get(jrow, "ln_code"));
         row.setPrimaryFlag(getBoolean(jrow, "primary_flag"));
-        row.setPreviouslyIssuedCode(getOrNull(jrow, "previously_issued_code"));
-        row.setDuplicateFlag(Boolean.parseBoolean(get(jrow, "duplicate_flag")));
+        row.setPreviouslyIssuedCode(getOrNull(jrow, "previouslyissuedcode"));
+        row.setDuplicateFlag(getBoolean(jrow, "duplicate_flag"));
         row.setLnDate(getDate(jrow, "ln_date"));
         //row.setIdMo("0");
         row.setLpuName(isNotNullOrEmpty(get(jrow, "lpu_name")) ? get(jrow, "lpu_name") : "ГБУЗ АО АМОКБ");
