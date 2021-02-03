@@ -171,7 +171,6 @@ public class Export {
         row.setPatronymic(get(jrow, "patronimic"));
         row.setLnCode(get(jrow, "ln_code"));
         row.setPrimaryFlag(getBoolean(jrow, "primary_flag"));
-        row.setPreviouslyIssuedCode(getOrNull(jrow, "previouslyissuedcode"));
         row.setDuplicateFlag(getBoolean(jrow, "duplicate_flag"));
         row.setLnDate(getDate(jrow, "ln_date"));
         //row.setIdMo("0");
@@ -193,6 +192,9 @@ public class Export {
         row.setWrittenAgreementFlag(true);
         row.setIntermittentMethodFlag(false);
 
+        if(isNotNullOrEmpty(get(jrow, "previouslyissuedcode"))){
+            row.setPreviouslyIssuedCode(get(jrow, "previouslyissuedcode"));
+        }
         if (isNotNullOrEmpty(get(jrow, "prev_ln"))) {
             row.setPrevLnCode(get(jrow, "prev_ln"));
         }
